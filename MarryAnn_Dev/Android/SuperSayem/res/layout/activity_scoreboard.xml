@@ -1,0 +1,44 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg"
+    tools:context="com.colors.supersaym.Views.ScoreboardActivity"
+    tools:ignore="MergeRootFrame" >
+
+    <include
+        android:id="@+id/headerLayout"
+        layout="@layout/header" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_below="@id/headerLayout"
+        style="@style/SegmentedControlContainerStyle"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:layout_margin="12dp" >
+
+        <RadioButton
+            android:id="@+id/all"
+            style="@style/SegmentedControlStyle.Beginning"
+            android:checked="true"
+            android:text="All" />
+
+        <RadioButton
+            android:id="@+id/friends"
+            style="@style/SegmentedControlStyle.End"
+            android:text="Friends" />
+    </RadioGroup>
+
+    <ListView
+        android:id="@+id/scroreBoardList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/radioGroup"
+        android:layout_marginTop="10dp"
+        android:divider="@drawable/separator" >
+    </ListView>
+
+</RelativeLayout>

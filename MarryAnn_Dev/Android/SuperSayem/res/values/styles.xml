@@ -1,0 +1,62 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+        <!-- <item name="android:background">@drawable/bg</item> -->
+        <!-- <item name="android:windowTitleBackgroundStyle">@style/CustomWindowTitleBackground</item> -->
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- <item name="android:background">@drawable/bg</item> -->
+        <!--
+       <item name="android:windowTitleBackgroundStyle">@style/CustomWindowTitleBackground</item>
+       <item name="android:windowTitleSize">60dip</item>
+        -->
+
+
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+
+    <style name="CustomWindowTitleBackground">
+        <item name="android:background">@drawable/header</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:paddingLeft">10dp</item>
+    </style>
+       <style name="SegmentedControlStyle">
+        <item name="android:textColor">@drawable/selector_sc_text_color</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:button">@null</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="SegmentedControlStyle.Beginning">
+        <item name="android:background">@drawable/selector_sc_bg_beginning</item>
+    </style>
+
+    
+    <style name="SegmentedControlStyle.End">
+        <item name="android:background">@drawable/selector_sc_bg_end</item>
+    </style>
+
+    <style name="SegmentedControlContainerStyle">
+        <item name="android:background">@drawable/shape_sc_container_border</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:divider">@drawable/shape_sc_container_divider</item>
+    </style>
+
+  
+
+
+
+</resources>
