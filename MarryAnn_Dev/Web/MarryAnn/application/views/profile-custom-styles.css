@@ -1,0 +1,822 @@
+/*!
+ * The Color Compitition Custom-Styles v1.0.0
+ */
+
+
+/* ======= Global Styles ======= */
+
+body {
+	color: #888787;
+	background: url('../img/background.png') no-repeat center top;
+	background-size: 100% 100%;
+}
+
+a:link, a:visited, a:active, a:hover, a:focus {
+	text-decoration: none;
+	color: #08c;
+	background: transparent;
+	border-color: transparent;
+	outline: none;
+	-moz-outline-style: none;
+}
+
+.navbar-right {
+	clear: both;
+}
+
+h1, h2, h3 {
+	margin-top: 15px;
+	margin-bottom: 0;
+	font-family: 'Roboto';
+}
+
+h4 {
+	font-family: 'Roboto';
+}
+
+.dropdown-menu {
+ 
+}
+
+/* ======= Page Container Styles ======= */
+
+.container {
+	max-width: 960px;
+	font-family: 'Roboto';
+	overflow-x: hidden;
+	padding: 0;
+	height: auto
+}
+
+/* ======= Header Styles ======= */
+
+.navbar {
+	min-height: 90px;
+	margin-bottom: 15px;
+	border: 0;
+}
+
+.navbar-static-top {
+	background: url('../img/header_bar.png') no-repeat center top;
+	max-height: 90px;
+	min-width: 960px;
+	 z-index: 1000;
+}
+
+.header > ul > li > a:hover, .header > ul > li > a:focus, .header > ul > li > a:link, .header > ul > li > a:visited,
+.header .nav .open > a, .header .nav .open > a:hover, .header .nav .open > a:focus,
+.header .ar > li > a:hover, .header .ar > li > a:focus, .header .ar > li > a:link, .header .ar > li > a:visited {
+	background: transparent;
+	border-color: transparent;
+}
+
+.nav > li > .en {
+	position: relative;
+	display: block;
+	padding: 21px 10px 21px 5px;
+}
+
+.nav > li > a {
+	padding: 21px 0;
+}
+
+.nav > li > a > img {
+	padding: 0 21px;
+}
+
+.nav > li > .indecator {
+	position: absolute;
+	display: inline;
+	top: 19px;
+	left: 98px;
+}
+
+
+.ar {
+	position: absolute;
+	top: 69px;
+	left: 0;
+	min-width: 42px;
+	padding: 0;
+	margin: 0 67px 0 0;
+	background-color: transparent;
+	border: 0;
+	border-radius: 0;
+}
+
+.ar > li > a {
+	padding: 0;
+	clear: both;
+}
+
+.navbar-brand {
+	float: left;
+	padding: 0;
+	font-size: 18px;
+	line-height: 20px;
+	top:0;
+}
+
+.navbar-brand > img {
+	max-height: 90px;
+}
+
+/* ======= Cover Styles ======= */
+
+.container .jumbotron {
+	padding: 0;
+	margin:100px 0 0 0;
+	border-radius: 0;
+}
+
+.jumbotron {
+	background: transparent;
+	min-width: 960px;
+	max-height: 416px;
+}
+
+.jumbotron .cover {
+	overflow: hidden;
+}
+
+.jumbotron .cover-border {
+    width: 960px;
+    height: 416px;
+    border: solid 54px #f4f3eb;
+}
+
+.jumbotron .cover-nav-user .profile-pic-border {
+	width: 160px;
+	height: 160px;
+	border: solid 10px #fff;
+	border-radius: 50%;
+	overflow: hidden;
+}
+
+.jumbotron .cover-nav-user .profile-pic-border img {
+	display: inline-block;
+	border-radius: 50%;
+}
+
+.jumbotron > ul {
+	max-height: 160px;
+}
+
+.jumbotron > .cover-nav-right > li {
+	top: -94px;
+	right: 70px;
+}
+
+.jumbotron > .cover-nav-right > li, .jumbotron > .cover-nav-right > li > a, .jumbotron > .cover-nav-right > li > a > img {
+	padding: 0 1px 0 0;
+}
+
+.jumbotron > .cover-nav-right > li > a:hover, .jumbotron > .cover-nav-right > li > a:focus, .jumbotron > .cover-nav-right > li > a:link, .jumbotron > .cover-nav-right > li > a:visited
+.jumbotron > .cover-nav-user > li > a:hover, .jumbotron > .cover-nav-user > li > a:focus, .jumbotron > .cover-nav-user > li > a:link, .jumbotron > .cover-nav-user > li > a:visited {
+	background: transparent;
+	border-color: transparent;
+}
+
+.jumbotron > .cover-nav-right > li > a > .activebtn {
+	display: none;
+	position: absolute;
+	top: 0;
+}
+
+.jumbotron > .cover-nav-right > li > a:active > .activebtn, .jumbotron > .cover-nav-right > li > a:focus > .activebtn, .jumbotron > .cover-nav-right > li > a:visited > .activebtn {
+	display: block;
+}
+
+.jumbotron > .cover-nav-right > li > a > h3:active, .jumbotron > .cover-nav-right > li > a > h3:focus, .jumbotron > .cover-nav-right > li > a > h3:visited {
+	color: #fff;
+}
+
+.jumbotron > .cover-nav-right > li > a > h3 {
+	color: #888787;
+	text-align: center;
+	font-weight: 600;
+	line-height: 1.0;
+	font-size: 18px;
+	position: absolute;
+	margin: 0;
+	z-index: 1;
+}
+
+.jumbotron > .cover-nav-right > li > a > .marketbtn {
+	padding: 25px 48px 25px 48px;
+}
+
+.jumbotron > .cover-nav-right > li > a > .mycollectionsbtn {
+	padding: 25px 14px 25px 14px;
+}
+
+.jumbotron > .cover-nav-right > li > a > .scoreboardsbtn {
+	padding: 25px 20.5px 25px 20.5px;
+}
+
+.jumbotron > .cover-nav-user > li {
+	top: -180px;
+	left: 70px;
+}
+
+.jumbotron > .cover-nav-user > li, .jumbotron > .cover-nav-user > li > a, .jumbotron > .cover-nav-user > li > a > img {
+	padding: 0 0 0 1px;
+}
+
+.jumbotron > .cover-nav-user > li > a {
+	color: #888787;
+}
+
+.jumbotron > .cover-nav-user > li > .username {
+	top: 128px;
+}
+
+/* ======= Middle-Nav Styles ======= */
+
+.middle-nav {
+	max-height: 80px;
+	width: 960px;
+	margin-bottom: 15px;
+	border: 0;
+	background: transparent;
+	background-repeat: no-repeat;
+	border-radius: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.middle-nav > .grid-nav > li, .middle-nav > .grid-nav > li > a, .middle-nav > .grid-nav > li > a > img  {
+	padding: 0 0 0 1px;
+	margin: 0;
+}
+
+.middle-nav > .grid-nav > li {
+	top: -75px;
+}
+
+.middle-nav > .grid-nav > li > a > span {
+	position: absolute;
+	z-index: -1000;
+	top: 2px;
+	left: 2px;
+	display: none;
+}
+
+.middle-nav > .grid-nav > li > a:focus > span, .middle-nav > .grid-nav > li > a:active > span,
+.middle-nav > .grid-nav > li > a:visited > span {
+	display: block;
+	visibility: visible;
+}
+
+.middle-nav > .points-nav > li, .middle-nav > .points-nav > li > a, .middle-nav > .points-nav > li > a > img  {
+	padding: 0 0 0 0px;
+	margin: 0;
+}
+
+.middle-nav > .points-nav > li > a > .point-bg {
+	background: #fff repeat-x top left;
+	padding: 0 100px 0 0;
+}
+
+.middle-nav > .points-nav > li {
+	top: -105px;
+}
+
+.middle-nav > .points-nav > .get {
+	left: 14px;
+	width: 165px;
+	margin: 0 18px 0 0;
+}
+
+.middle-nav > .points-nav > li > .getpoints  {
+	width: 165px;
+}
+
+.middle-nav > .points-nav > li > a > h3 {
+	color: #888787;
+	text-align: center;
+	font-weight: 600;
+	line-height: 1.0;
+	font-size: 18px;
+	position: absolute;
+	margin: 0;
+	z-index: 1;
+}
+
+.middle-nav > .points-nav > li > a > .getpointsbtn {
+	padding: 31px 12px;
+	width: 165px;
+}
+
+.middle-nav > .points-nav > li > a > .get-points {
+	margin: 0;
+}
+
+.middle-nav .points-nav li .points {
+	position: absolute;
+	color: #888787;
+	top: 5px;
+	left: 90px;
+}
+
+.middle-nav > .points-nav > .buy {
+	width: 112px;
+	left: 14px;
+	position: relative;
+}
+
+.middle-nav > .points-nav > li > .purchase {
+	width: 141px;
+	position: absolute;
+	top: 28px;
+	margin:0px 0px 0px 3px;
+}
+
+.middle-nav > .points-nav > li > .purchase > h6, .middle-nav .missing-games li a .missbtn {
+	color: #888787;
+	text-align: center;
+	position: absolute;
+	margin: 0;
+	z-index: 1;
+}
+
+.middle-nav > .points-nav > li > .purchase > .purchasebtn {
+	padding: 19.5px 7.5px;
+        background-color: #fff;
+        width: 103px;
+}
+
+.middle-nav .missing-games li a .missbtn {
+	padding: 18px 9px   ;
+}
+
+.middle-nav > .points-nav > li > .purchase > img {
+	margin: 0;
+	height: 52px;
+	display: inline;
+        right: 0;
+        position: absolute;
+}
+
+
+
+.missing-games {
+	left: -17px;
+	top: 80px;
+	min-width: 74px;
+	padding: 0;
+	margin: 0 0 0 20px;
+	background-color: transparent;
+	border: 0;
+	border-radius: 0;
+}
+
+.missing-games > li > a {
+	padding: 0;
+clear: both;
+height: 50px;
+width: 103px;
+margin-top: 1px;
+}
+
+/* ======= Page Content Styles ======= */
+
+.row {
+	margin: 0;
+	clear: both;
+	padding: 0;
+	width: 960px;
+}
+
+.row .cards li a:hover, .row .cards li a:focus {
+	text-decoration: none;
+	background: transparent;
+	border-color: transparent;
+	outline: none;
+	-moz-outline-style: none;
+}
+
+.row > .col-lg-5, .row > .col-md-5, .row > .col-sm-5, .row > .col-xs-5 {
+	top: -80px;
+	left: 0;
+	width: 362px;
+	margin: 0;
+	padding: 0;
+	background: url('../img/category_background.png') no-repeat center top;
+	background-position: 0 55px;
+	background-size: 362px 720px;
+	margin-top : 80px;
+}
+
+.scrollable.default-skin {
+	padding-right: 0px;
+	padding-bottom: 0px;
+}
+
+.category-selection {
+	overflow: visible;
+	width: 362px;
+}
+
+.scrollable.default-skin .scroll-bar.vertical {
+	width: 1px;
+}
+
+.card-container {
+	padding-right: 6px;
+	padding-bottom: 0;
+	padding-top: 10px;
+}
+
+.row .fav, .row .fav h1 img, .row .categ, .row .categ h1 img {
+	padding: 0;
+	margin: 0;
+}
+
+.row .fav {
+	overflow-x: visible;
+}
+
+.row .fav .fav-categories-head {
+	margin-top: 18px;
+}
+
+.row .fav h1 {
+	font-size: 18px;
+	position: absolute;
+	left: 10px;
+	margin: 0;
+	padding: 11.5px 0;
+}
+
+.row .categ .categories-head {
+	margin-top: 13px;
+}
+
+.row .categ h1 {
+	font-size: 18px;
+	position: absolute;
+	left: 10px;
+	margin: 0;
+	padding: 11.5px 0;
+}
+
+.row .fav .sidebar {
+	margin: 0;
+	padding: 0;
+}
+
+.row .fav .sidebar li {
+	margin: 12px 0;
+}
+
+.row .categ .sidebar li {
+	margin: 5px 0;
+}
+
+.row .fav .sidebar li, .row .categ .sidebar li {
+	padding: 0;
+	max-height: 116px;
+}
+
+.row .categ .sidebar .first-categ, .row .categ .sidebar .first-categ li {
+	/*height: 100px;*/
+}
+
+.row .fav .sidebar li .score-num {
+	position: absolute;
+	width: 98px;
+	top: 45px;
+}
+
+.row .fav .sidebar li .score-num h4 {
+	color: orange;
+	text-align: center;
+}
+
+.row .fav .sidebar li .name {
+	position: absolute;
+	width: 100px;
+	top: 38px;
+	margin: 0 0 0 25px;
+}
+
+.row .fav .sidebar li .name h4 {
+	color: #fff;
+	text-align: center;
+}
+
+.row .fav .sidebar li .rank {
+	position: absolute;
+	width: 98px;
+	top: 45px;
+	text-align: center;
+}
+
+.row .fav .sidebar li .rank h4 {
+	color: orange;
+	text-align: center;
+	font-size: 1.6em;
+	display: inline-block;
+}
+
+.row .fav .sidebar li .rank p {
+	display: inline-block;
+	color: #888787;
+	vertical-align: baseline;
+	margin: 0 auto;
+}
+
+.row .fav .sidebar li a, .row .fav .sidebar li a img {
+	display: inline-block;
+	margin: 0;
+	padding: 0;
+	text-decoration: none;
+	background: transparent;
+	outline: none;
+}
+
+.row .fav .sidebar ul {
+	width: 374px;
+}
+
+.row .fav .sidebar a .category-selection-left {
+	position: absolute;
+	top: 0;
+	left: -7px;
+	z-index: -1;
+	width: 382px;
+	display: none;
+}
+
+.row .fav .sidebar a:active .category-selection-left,
+.row .fav .sidebar a:focus .category-selection-left,
+.row .fav .sidebar a:visited .category-selection-left {
+	display: block;
+}
+
+.row .fav .sidebar li a {
+	height: 122px;
+	width: 362px;
+	left: 8px;
+	top: -2px;
+}
+
+.row .fav .sidebar {
+	width: 382px;
+}
+
+.row .fav .sidebar, .fav-container, .row .fav .sidebar li {
+	overflow-x: visible;
+}
+
+.row .fav .sidebar .fav-categor {
+	margin: 3px 0 0 0;
+}
+
+/* l touch bta3y */
+/* .row .fav .sidebar li .categor-background {
+	position: absolute;
+} */
+
+.row .fav .sidebar li .categor-color {
+	background-repeat:no-repeat;
+	background-position:center top;
+	background-position: 24px 7px;
+}
+
+ .row .categ .sidebar{
+ 	margin: 0;
+ 	padding: 0;
+ }
+
+.row .categ .sidebar li a, .row .categ .sidebar li a img {
+	display: inline-block;
+	margin: 15px 9px;
+	text-decoration: none;
+	background: transparent;
+	outline: none;
+	padding: 0;
+}
+
+.row .categ .sidebar li a > img {
+	background-repeat:no-repeat;
+	background-position:center top;
+	background-size: 88px 88px;
+	background-position: 5px 5px;
+	margin: 0;
+	padding: 0;
+	opacity: 0.6;
+}
+
+.row .categ .sidebar li a:hover > img {
+	opacity: 1.0;
+}
+
+.row .categ .sidebar li a span {
+	position: absolute;
+	margin: 0 auto;
+	top: 20px;
+	left: 26px;
+	display: none;
+}
+
+.row .categ .sidebar li a:hover span {
+	display: block;
+}
+ 
+.row .categ .sidebar li .categ-name {
+	position: absolute;
+	width: 98px;
+	text-align: center;
+	top: 40px;
+}
+
+.row .categ .sidebar li a:hover .categ-name {
+	display: none;
+}
+
+.row .categ .sidebar li a .categ-name h4 {
+	color: #fff;
+	vertical-align: middle;
+	margin: 0 auto;
+}
+
+.row .col-lg-7, .row.col-md-7, .row .col-sm-7, .row .col-xs-7 {
+	width: 576px;
+	margin: 0;
+	padding: 0;
+	left: 20px;
+	background: url('../img/cards_background.png') no-repeat center top;
+	background-size: 576px 100%;
+	background-position: 0 60px;
+}
+
+
+.row .Cards .cards-head {
+	margin-top: 18px;
+}
+
+.row .Cards .cards-head h1 {
+	font-size: 18px;
+	position: absolute;
+	left: 10px;
+	margin: 0;
+	padding: 11.5px 0;
+}
+
+.cardscon {
+	padding-top: 10px;
+}
+
+.row .cards, .row .cards h1 img {
+	max-width: 560px;
+	padding: 0;
+	margin: 0;
+}
+
+.card-holder {
+	margin: 0;
+}
+
+.card-holder > li > .card {
+	background-size: 118px 130px;
+}
+
+
+.first {
+}
+
+.last {
+	padding-bottom: 49px;
+}
+
+.card {
+	margin: 0 15px 0 0;
+}
+
+.card-holder li .card-info {
+	color: #888787;
+}
+
+.card-holder li .card-info h5 {
+	position: absolute;
+	font-size: 15px;
+	top: 106px;
+	left: 5px;
+}
+
+.card-holder li .card-info .color {
+	position: absolute;
+	top: 136px;
+	left: 5px;
+}
+
+.card-holder li .card-info .color-points {
+	position: absolute;
+	top: 154px;
+	left: 5px;
+}
+
+.card-holder h4 {
+	margin-top: 0;
+	margin-bottom: 5px;
+}
+
+.card-holder .games-title {
+	margin-top: 3px;
+}
+
+.card-status {
+	right: -15px;
+	bottom: -28px;
+}
+
+.card-holder > li > .card, .card-holder > li > .card > img, .card-holder > .card-status > a {
+	padding: 0;
+}
+
+.mg-container {
+	min-height: 176px;
+	bottom: -3px;
+}
+
+.media {
+	margin-top: 0;
+}
+
+.media, .games {
+	min-height: 62px;
+}
+
+.media > .photo > a, .media > .music > a, .media > .video > a,
+.games > .game1 > a, .games > .game2 > a, .games > .game3 > a {
+	padding: 14px 0 14px 0;
+}
+
+.media > .photo > a > img, .media > .music > a > img, .media > .video > a > img,
+.games > .game1 > a > img, .games > .game2 > a > img, .games > .game3 > a > img {
+	padding: 0 28px 0 28px;
+}
+
+.mg-container .media .photo, .mg-container .games .game1 {
+	background: url('../img/cards_icons_background_left.png') no-repeat center top;
+	background-size: 86px 58px;
+	padding: 0;
+}
+
+.mg-container .media .music, .mg-container .games .game2 {
+	background: url('../img/cards_icons_background_center.png') no-repeat center top;
+	background-size: 86px 58px;
+	padding: 0;
+}
+
+.mg-container .media .video, .mg-container .games .game3 {
+	background: url('../img/cards_icons_background_right.png') no-repeat center top;
+	background-size: 86px 58px;
+	padding: 0;
+}
+
+.card-holder > .mg-container, .card-holder > .card-status, .card-holder > .card-status > a > .status {
+	padding: 0;
+	margin: 0;
+}
+
+.card-break > img {
+	float: right;
+	margin: 0 5px 0 0;
+}
+
+/* ======= footer styles ======= */
+
+.footer {
+	margin: 0;
+	border-radius: 0;
+	min-width: 960px;
+	font-size: 0.75em;
+	line-height: 1.2;
+	color: #888787;
+}
+
+.contact-bar, .terms-bar {
+	padding: 20px 0 0 0;
+}
+
+.contact-bar > li > a, .contact-bar > li > p,
+.terms-bar > li > a, .terms-bar > li > p {
+	display: inline;
+	text-decoration: none;
+	background: transparent;
+	outline: none;
+}
+
+.contact-bar > li > a:hover, .terms-bar > li > a:hover,
+.contact-bar > li > a:active, .terms-bar > li > a:active,
+.contact-bar > li > a:visited, .terms-bar > li > a:visited,
+.contact-bar > li > a:focus, .terms-bar > li > a:focus,
+.contact-bar > li > a:link, .terms-bar > li > a:link{
+	text-decoration: none;
+	background: transparent;
+	outline: none;
+	-moz-background: transparent;
+}

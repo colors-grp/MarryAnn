@@ -1,0 +1,14 @@
+[25-Jun-2014 13:02:37 UTC] PHP Fatal error:  Using $this when not in object context in /home/hitsevey/public_html/SS/application/helpers/game_helper.php on line 31
+[25-Jun-2014 13:12:45 UTC] PHP Fatal error:  Using $this when not in object context in /home/hitsevey/public_html/SS/application/helpers/game_helper.php on line 31
+[25-Jun-2014 13:17:11 UTC] PHP Fatal error:  Using $this when not in object context in /home/hitsevey/public_html/SS/application/helpers/game_helper.php on line 31
+[25-Jun-2014 13:17:37 UTC] PHP Fatal error:  Using $this when not in object context in /home/hitsevey/public_html/SS/application/helpers/game_helper.php on line 31
+[25-Jun-2014 13:17:58 UTC] PHP Fatal error:  Using $this when not in object context in /home/hitsevey/public_html/SS/application/helpers/game_helper.php on line 31
+[25-Jun-2014 13:19:26 UTC] PHP Fatal error:  Using $this when not in object context in /home/hitsevey/public_html/SS/application/helpers/game_helper.php on line 31
+[25-Jun-2014 13:19:42 UTC] PHP Fatal error:  Using $this when not in object context in /home/hitsevey/public_html/SS/application/helpers/game_helper.php on line 31
+[26-Jun-2014 08:35:39 Africa/Cairo] PHP Fatal error:  Call to undefined method DateTimeZone::getId() in /home/hitsevey/public_html/SS/application/views/ajax/card_grid_view_ajax.php on line 92
+[26-Jun-2014 08:36:21 Africa/Cairo] PHP Fatal error:  Call to undefined method DateTimeZone::getType() in /home/hitsevey/public_html/SS/application/views/ajax/card_grid_view_ajax.php on line 92
+[26-Jun-2014 08:38:24 Africa/Cairo] PHP Fatal error:  Call to undefined function timezone_offset_string() in /home/hitsevey/public_html/SS/application/views/ajax/card_grid_view_ajax.php on line 92
+[26-Jun-2014 13:15:40 UTC] PHP Fatal error:  Call to a member function result_array() on a non-object in /home/hitsevey/public_html/SS/application/controllers/scoreboard.php on line 323
+[26-Jun-2014 13:15:54 UTC] PHP Fatal error:  Call to a member function result_array() on a non-object in /home/hitsevey/public_html/SS/application/controllers/scoreboard.php on line 323
+[27-Jun-2014 17:05:45 UTC] PHP Fatal error:  Call to a member function sign_out() on a non-object in /home/hitsevey/public_html/SS/application/controllers/sign_out.php on line 26
+[28-Jun-2014 08:38:58 UTC] PHP Fatal error:  Call to undefined method Game_model::get_object_positions() in /home/hitsevey/public_html/SS/application/helpers/game_helper.php on line 63

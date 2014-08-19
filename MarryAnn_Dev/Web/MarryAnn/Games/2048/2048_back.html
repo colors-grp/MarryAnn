@@ -1,0 +1,317 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+      <script src  = "https://code.jquery.com/jquery-2.1.0.min.js"></script>
+      <script>
+	  var imgs = {
+				2:"img/114/doge-derp-114.gif", // 2
+				4:"img/114/doge-fat-114.gif", // 4
+				8:"img/114/doge-gradient-114.gif", // 8
+				16:"img/114/doge-hat-114.gif", // 16
+				32:"img/114/doge-peepers-114.gif", // 32
+				64:"img/114/doge-prizza-114.gif", // 64
+				128:"img/114/doge-rainbow-114.gif", // 128
+				264:"img/114/doge-shake-space-114.gif", // 264
+				512:"img/114/doge-sunglasses-114.gif", // 512
+				1024:"img/114/doge-shake-114.gif", // 1024
+				2048:"img/114/doge-wink-114.gif" // 2048
+			};
+          var animSpeed = 50;
+          var canMove=false;
+          $(document).ready(function(){
+            $('body').append('<div id = "boardcontainer"></div>');
+            for(i=0;i<4;i++){
+                for(j=0;j<4;j++){
+                    $('#boardcontainer').append('<div class = "boardtile emptytile" data-row="'+i+'" data-col="'+j+'"></div>');
+                }
+                $('#boardcontainer').append('<div style = "clear:both"></div>');
+            }
+            $('body').append('<div id = "scorediv"></div>');
+            newTwo();
+            newTwo();              
+        });
+        
+        $(document).keypress(function(event){
+            if(canMove){
+                canMove=false; 
+                somethingMoved=false;
+                switch(event.keyCode){
+                    case 97:
+                        $('.tile').sort(function(a,b){
+                            var attrA = $(a).attr('data-col');
+                            var attrB = $(b).attr('data-col');
+                            if(attrA>attrB){
+                                return 1;
+                            }        
+                            if(attrA<attrB){
+                                return -1;
+                            }
+                            return 0;
+                        }).each(function(){
+                            var currentCol = parseInt($(this).attr('data-col'));
+                            var currentRow = parseInt($(this).attr('data-row'));
+                            var destination = currentCol;
+                            $(this).attr('data-destroy',0)
+                            if(currentCol>0){
+                                for(i=currentCol-1;i>=0;i--){
+                                    if($('.boardtile[data-col='+i+'][data-row='+currentRow+']').hasClass('fulltile')){
+                                        if($(this).html()==$('.tile[data-col='+i+'][data-row='+currentRow+']').html()){
+                                            $(this).attr('data-destroy',1)
+                                            destination = i;
+                                        }
+                                        break;
+                                    }
+                                    else{
+                                        destination = i 
+                                    }
+                                }
+                                if(currentCol!=destination){
+                                    somethingMoved=true;
+                                }
+                                $(this).animate({
+                                    left: '-='+(116*(currentCol-destination))
+                                },animSpeed,function(){
+                                    if($(this).attr('data-destroy')==1){
+                                        $('.tile[data-col='+destination+'][data-row='+currentRow+']').html(parseInt($(this).html()*2));
+                                        $(this).remove();
+                                    }
+                                });
+                                $('.boardtile[data-col='+currentCol+'][data-row='+currentRow+']').removeClass('fulltile').addClass('emptytile');
+                                $(this).attr('data-col',destination);
+                                $('.boardtile[data-col='+destination+'][data-row='+currentRow+']').removeClass('emptytile').addClass('fulltile');
+                            }
+							$('.tile[data-col='+destination+'][data-row='+currentRow+']').css('background-image','url('+imgs[parseInt($(this).html())]+')');
+                        });
+                        break;
+                    case 100:
+                        $('.tile').sort(function(a,b){
+                            var attrA = $(a).attr('data-col');
+                            var attrB = $(b).attr('data-col');
+                            if(attrA>attrB){
+                                return -1;
+                            }        
+                            if(attrA<attrB){
+                                return 1;
+                            }
+                            return 0;
+                        }).each(function(){
+                            var currentCol = parseInt($(this).attr('data-col'));
+                            var currentRow = parseInt($(this).attr('data-row'));
+                            var destination = currentCol;
+                            $(this).attr('data-destroy',0)
+                            if(currentCol<4){
+                                for(i=currentCol+1;i<=3;i++){
+                                    if($('.boardtile[data-col='+i+'][data-row='+currentRow+']').hasClass('fulltile')){
+                                        if($(this).html()==$('.tile[data-col='+i+'][data-row='+currentRow+']').html()){
+                                            $(this).attr('data-destroy',1)
+                                            destination = i;
+                                        }
+                                        break;
+                                    }
+                                    else{
+                                        destination = i 
+                                    }
+                                }
+                                if(currentCol!=destination){
+                                    somethingMoved=true;
+                                }
+                                $(this).animate({
+                                    left: '+='+(116*(destination-currentCol))
+                                },animSpeed,function(){
+                                    if($(this).attr('data-destroy')==1){
+                                        $('.tile[data-col='+destination+'][data-row='+currentRow+']').html(parseInt($(this).html()*2));
+                                        $(this).remove();
+                                    }    
+                                });
+                                $('.boardtile[data-col='+currentCol+'][data-row='+currentRow+']').removeClass('fulltile').addClass('emptytile');
+                                $(this).attr('data-col',destination);
+                                $('.boardtile[data-col='+destination+'][data-row='+currentRow+']').removeClass('emptytile').addClass('fulltile');
+                            }
+							$('.tile[data-col='+destination+'][data-row='+currentRow+']').css('background-image','url('+imgs[parseInt($(this).html())]+')');
+                        });
+                        break;
+                    case 119:
+                        $('.tile').sort(function(a,b){
+                            var attrA = $(a).attr('data-row');
+                            var attrB = $(b).attr('data-row');
+                            if(attrA>attrB){
+                                return 1;
+                            }        
+                            if(attrA<attrB){
+                                return -1;
+                            }
+                            return 0;
+                        }).each(function(){
+                            var currentCol = parseInt($(this).attr('data-col'));
+                            var currentRow = parseInt($(this).attr('data-row'));
+                            var destination = currentRow;
+                            $(this).attr('data-destroy',0)
+                            if(currentRow>0){
+                                for(i=currentRow-1;i>=0;i--){
+                                    if($('.boardtile[data-col='+currentCol+'][data-row='+i+']').hasClass('fulltile')){
+                                        if($(this).html()==$('.tile[data-col='+currentCol+'][data-row='+i+']').html()){
+                                            $(this).attr('data-destroy',1)
+                                            destination = i;
+                                        }
+                                        break;
+                                    }
+                                    else{
+                                        destination = i 
+                                    }
+                                }
+                                if(destination!=currentRow){
+                                    somethingMoved=true;
+                                }
+                                $(this).animate({
+                                    top: '-='+(116*(currentRow-destination))
+                                },animSpeed,function(){
+                                    if($(this).attr('data-destroy')==1){
+                                        $('.tile[data-col='+currentCol+'][data-row='+destination+']').html(parseInt($(this).html()*2));
+                                        $(this).remove();
+                                    }
+                                });
+                                $('.boardtile[data-col='+currentCol+'][data-row='+currentRow+']').removeClass('fulltile').addClass('emptytile');
+                                $(this).attr('data-row',destination);
+                                $('.boardtile[data-col='+currentCol+'][data-row='+destination+']').removeClass('emptytile').addClass('fulltile');        
+                            }
+							$('.tile[data-col='+destination+'][data-row='+currentRow+']').css('background-image','url('+imgs[parseInt($(this).html())]+')');
+                        });
+                        break;
+                    case 115:
+                        $('.tile').sort(function(a,b){
+                            var attrA = $(a).attr('data-row');
+                            var attrB = $(b).attr('data-row');
+                            if(attrA>attrB){
+                                return -1;
+                            }        
+                            if(attrA<attrB){
+                                return 1;
+                            }
+                            return 0;
+                        }).each(function(){
+                            var currentCol = parseInt($(this).attr('data-col'));
+                            var currentRow = parseInt($(this).attr('data-row'));
+                            var destination = currentRow;
+                            $(this).attr('data-destroy',0);
+                            if(currentRow<4){
+                                for(i=currentRow+1;i<=3;i++){
+                                    if($('.boardtile[data-col='+currentCol+'][data-row='+i+']').hasClass('fulltile')){
+                                        if($(this).html()==$('.tile[data-col='+currentCol+'][data-row='+i+']').html()){
+                                            $(this).attr('data-destroy',1)
+                                            destination = i;
+                                        }
+                                        break;
+                                    }
+                                    else{
+                                        destination = i 
+                                    }
+                                }
+                                if(destination!=currentRow){
+                                    somethingMoved=true;
+                                }
+                                    $(this).animate({
+                                        top: '+='+(116*(destination-currentRow))
+                                    },animSpeed,function(){
+                                        if($(this).attr('data-destroy')==1){
+                                            $('.tile[data-col='+currentCol+'][data-row='+destination+']').html(parseInt($(this).html()*2));
+                                            $(this).remove();
+                                        }
+                                    });
+                                    $('.boardtile[data-col='+currentCol+'][data-row='+currentRow+']').removeClass('fulltile').addClass('emptytile');
+                                    $(this).attr('data-row',destination);
+                                    $('.boardtile[data-col='+currentCol+'][data-row='+destination+']').removeClass('emptytile').addClass('fulltile');        
+                            }
+							$('.tile[data-col='+destination+'][data-row='+currentRow+']').css('background-image','url('+imgs[parseInt($(this).html())]+')');
+                        });
+                        break;
+                }
+                if(somethingMoved){
+                    newTwo();
+                }
+                else{
+                    canMove=true;
+                }
+            }
+        });
+        
+        function newTwo(){
+            var emptyTiles = $('.emptytile').length;
+            var randomTwo = Math.floor(Math.random()*emptyTiles);
+            var tile = $('.emptytile').eq(randomTwo);
+            $(tile).removeClass('emptytile');
+            $(tile).addClass('fulltile');
+            var tilePosition = $(tile).position();
+            $('#boardcontainer').append('<div id = "lastadded" class = "tile" data-row="'+$(tile).attr('data-row')+'" data-col="'+$(tile).attr('data-col')+'">2</div>')
+            $('#lastadded').css({top:(tilePosition.top+8)+'px',left:(tilePosition.left+8)+'px'})
+            $('#lastadded').fadeTo(animSpeed*3,1,function(){
+                canMove=true;
+                showScore();
+            })
+            $('#lastadded').attr('id','');
+			$('#lastadded').css('background-image','url('+imgs[parseInt($(this).html())]+')');
+        }
+        
+        function showScore(){
+            var score = 0;
+            $('.tile').sort(function(a,b){
+                var attrA = parseInt($(a).html());
+                var attrB = parseInt($(b).html());
+                if(attrA>attrB){
+                    return -1;
+                }        
+                if(attrA<attrB){
+                    return 1;
+                }
+                return 0;
+            }).each(function(){
+                score = score+parseInt($(this).html());
+            }); 
+            score*=parseInt($('.tile').first().html());
+            score *=0.5;
+            $('#scorediv').html('Your score: '+score);    
+        }
+        
+      </script>
+      <style>
+          body{
+            margin:0px;
+            background-color:#F9F3E3;  
+        }
+        #boardcontainer{
+            border:8px solid #D78B7D;
+            width:464px;
+            margin:0px auto;
+            position:relative;
+        }
+          .boardtile{
+            width:100px;
+            height:100px;
+            border:8px solid #D78B7D; 
+            float:left;     
+        }
+        .tile{
+            width:100px;
+            height:65px;
+            background-color:#CFC8B5;
+            z-index:50;
+            position:absolute;
+            top:0px;
+            left:0px;
+            text-align:center;                                   
+            display:none;
+            font:bold 24px arial;
+            color:#5C5B57;
+            padding-top:35px;
+        }
+        #scorediv{
+            margin:5px;
+            text-align:center;
+            font:bold 48px arial;
+            color:#CFC8B5;
+        }
+        
+      </style>
+</head>
+<body>
+</body>
+</html>

@@ -1,0 +1,17 @@
+﻿<script type="text/javascript" src="jquery-1.6.2.min.js"></script>
+<script type="text/javascript" src="jquery-ui-1.8.16.custom.min.js"></script>
+<script type="text/javascript" src="jquery.wordsearchgame.js" charset="UTF-8"></script>
+<link  rel="stylesheet" type="text/css" href="jquery.wordsearchgame.css">
+
+<script>
+$(document).ready( function () {
+	var words = "سوبر,صايم,حكاية,شهريار,شهرزاد,ملك,ابطال,الهند,دونجوان,"+
+				"زوجة,تنغ,ليله";
+	
+	//attach the game to a div
+	$("#theGrid").wordsearchwidget({"wordlist" : words,"gridsize" : 10});
+});
+
+
+</script>
+<div id="theGrid" style = "direction: rtl;"></div>

@@ -1,0 +1,56 @@
+.countdown-container {
+position: relative;
+-webkit-transform: translateY(-50%);
+-moz-transform: translateY(-50%);
+transform: translateY(-50%);
+}
+.clock-item .inner {
+height: 0px;
+padding-bottom: 57%;
+position: relative;
+width: 77%;
+}
+.clock-canvas {
+background-color: transparent;
+/*background-color: rgb(243, 243, 243);*/
+border-radius: 50%;
+height: 0px;
+padding-bottom: 100%;
+}
+
+
+.text {
+margin-top: -53px;
+position: relative;
+top: 0px;
+text-align: center;
+width: 100%;
+}
+
+.val {
+font-size: 16px;
+font-weight: bold;
+position: relative;
+top: 6px;
+}
+
+.type-time {
+font-size: 7px;
+}
+
+ @media (min-width: 768px) and (max-width: 991px) {
+.clock-item {
+margin-bottom: 30px;
+}
+}
+ @media (max-width: 767px) {
+.clock-item {
+margin: 0px 0px 0px 0px;
+}
+}
+/*mo7eb*/
+#header_counter{
+    position: relative;
+    z-index: 999; 
+}
+/*mo7eb*/

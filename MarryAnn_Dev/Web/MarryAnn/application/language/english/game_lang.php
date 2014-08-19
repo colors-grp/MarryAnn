@@ -1,0 +1,27 @@
+<?php
+$lang['game_intro_mcq'] = 'Solve the puzzle really FAST to score more! <br /> Every 10 seconds				you lose 5 possible score points. <br /> If you solve the game in				more than 2 minutes, you will only score 50 points. <br /> <b>WARNING</b><br />				IF you closed the window or the tab, you will not be able to proceed 				to other questions. <br /> You will get only your current score. <br /> <br />';
+$lang['game_intro_puzzle'] = 'Solve the puzzle really FAST to score more! <br /> Every 10 seconds you lose 10 possible score points.<br /> Until your score is 100 you will lose 5 points  <br /> If you solve the game in more than 145 seconds, you will only score 5 points. <br /> <br /> You can play the game again to get a better score ;)...';
+$lang['game_intro_2048'] = 'Try solving the puzzle and score more! <br /> Use arrow keys or (w,s,d,a) to move the numbers.<br /> Merge 2 and 2 to get 4, merge 4 and 4 to get 8. <br /> Game ends when you dont have any more numbers to merge. <br /> You win when you get the number 2048<br /> <br /> You can play the game again to get a better score ;)...';
+$lang['HOW_TO_PLAY'] = 'HOW TO PLAY?';
+$lang['Are_you_sure_you_want_to_exit'] = 'Are you sure you want to exit ?';
+$lang['Yes'] = 'Yes';
+$lang['No'] = 'No';
+$lang['Pick_the_Correct_Choice'] = 'Pick the Correct Choice';
+$lang['Question'] = 'Question';
+$lang['of'] = 'of';
+$lang['Score_It'] = 'Score It';
+$lang['Play'] = 'Play!';
+$lang['Done'] = 'Done';
+$lang['Points'] = 'POINTS';
+$lang['FINALE'] = 'FINALE';
+$lang['SCORE'] = 'SCORE';
+$lang['Final_Score'] = 'Final Score';
+$lang['Puzzle'] = 'Puzzle';
+$lang['New_Game'] = 'New Game';
+$lang['Keep_going'] = 'Keep going';
+$lang['Try_again'] = 'Try again';
+$lang['congrats'] = ';) أيوة بقى';
+$lang['you_scored'] = 'جبت';
+$lang['up_score'] = 'ونقاطك زادت';
+$lang['will_be_displayed_after_time'] = 'بعد دقيقة هتطلع في السوبر صايمين';
+$lang['try_again_info_message'] = 'إلعب تاني وحاول تجيب نقاط أكنر';

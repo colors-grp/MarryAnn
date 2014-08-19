@@ -1,0 +1,390 @@
+/* 
+	Resets defualt browser settings
+	reset.css
+*/
+
+#Home-container {
+	z-index:0;
+	background:#ffffff url('../img/main-icons/bg_white.jpg') no-repeat center top;
+}
+
+#Home-header{
+	background: rgba(255, 255, 255, 0.7);
+	height: 100px;
+	border-bottom: 2px solid rgba(204, 204, 204, 0.2);
+}
+
+#Home-header-content{
+	width: 980px;
+	margin: 0px auto;
+	padding: 10px 0px;
+}
+
+#header-counter{
+	position: relative;
+	top: -75px;
+	left: 255px;
+}
+
+#slideshow-container {
+	background: rgba(255, 255, 255, 0.7);
+	margin: 25px 0px;
+}
+
+#slideshow-container2 {
+	background: url('../img/main-icons/gold_bg.jpg') repeat-x;
+	margin: 25px 0px;
+}
+
+#slideshow-container3 {
+	background: url('../img/main-icons/silver_bg.jpg') repeat-x;
+	margin: 25px 0px;
+}
+
+#slideshow-container4 {
+	background: url('../img/main-icons/bronze_bg.jpg') repeat-x;
+	margin: 25px 0px;
+}
+
+#slides {
+	z-index:100;
+}
+
+.slides_container {
+	width:100%;
+	height:270px;
+	overflow:hidden;
+	position:relative;
+	display:none;
+}
+
+#first{
+	width: 220px;
+	opacity: 1;
+	z-index: 1;
+	position: relative;
+	left: -465px;
+}
+
+#snd{
+	width: 200px;
+	opacity: 1;
+	position: relative;
+	left: -405px;
+}
+
+#third{
+	width: 180px;
+	opacity: 1;
+	position: relative;
+	left: 87px;
+}
+
+#fourth{
+	width: 160px;
+	opacity: 1;
+	position: relative;
+	left: -154px;
+}
+
+#fifth{
+	width: 140px;
+	opacity: 1;
+	position: relative;
+	left: 530px;
+}
+
+#sixth{
+	width: 120px;
+	opacity: 1;
+	position: relative;
+	left: 42px;
+}
+
+#seventh{
+	width: 100px;
+	opacity: 1;
+	position: relative;
+	left: 861px;
+}
+
+#pos-1{
+	font-size: 43px;
+	width: 65px;
+	height: 65px;
+	border-radius: 50%;
+	border: 5px solid #00bc3f;
+  	box-shadow: 0 0 0 5px white; 
+	background-color: white;
+	padding-right: 4px;
+	position: relative;
+	top: -70px;
+	left: -3px;
+	z-index: 5;
+}
+
+#pos-2{
+	font-size: 38px;
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
+	border: 5px solid #ffff00;
+  	box-shadow: 0 0 0 5px white; 
+	background-color: white;
+	position: relative;
+	top: -134px;
+	left: -160px;
+}
+
+#pos-3{
+	font-size: 33px;
+	width: 55px;
+	height: 55px;
+	border-radius: 50%;
+	border: 5px solid #d300c9;
+  	box-shadow: 0 0 0 5px white; 
+	background-color: white;
+	position: relative;
+	top: -197px;
+	left: 145px;
+}
+
+#pos-4{
+	font-size: 30px;
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	border: 5px solid #ff0000;
+	box-shadow: 0 0 0 5px white;
+	background-color: white;
+	position: relative;
+	top: -259px;
+	left: -275px;
+	padding-right: 2px;
+}
+
+#pos-5{
+	font-size: 25px;
+	width: 45px;
+	height: 45px;
+	border-radius: 50%;
+	border: 5px solid #ff7f00;
+	box-shadow: 0 0 0 5px white;
+	background-color: white;
+	position: relative;
+	top: -312px;
+	left: 257px;
+}
+
+#pos-6{
+	font-size: 20px;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	border: 5px solid #7a00e5;
+	box-shadow: 0 0 0 5px white;
+	background-color: white;
+	position: relative;
+	top: -367px;
+	left: -368px;
+	padding-top: 1px;
+}
+
+#pos-7{
+	font-size: 15px;
+	width: 35px;
+	height: 35px;
+	border-radius: 50%;
+	border: 5px solid #0068ff;
+	box-shadow: 0 0 0 5px white;
+	background-color: white;
+	position: relative;
+	top: -409px;
+	left: 341px;
+	padding-top: 2px;
+}
+
+#medal-div{
+	float: left;
+	position: relative;
+	top: 40px;
+	left: 200px;
+}
+
+.gold-reflected {
+    position: relative;
+}
+.gold-reflected:before, .gold-reflected:after {
+    display: block;
+    position: absolute;
+    bottom: -.8em; 
+    left: 0;
+    right: 0;
+}
+.gold-reflected:before {
+    content: 'GOLD WINNERS';
+    opacity: .3;
+    -webkit-transform: scaleY(-1);
+    -moz-transform: scaleY(-1);
+    -o-transform: scaleY(-1);
+}
+.gold-reflected:after {
+    background: -webkit-gradient(linear, left top, left center, from(rgba(252,213,65,0)), to(rgba(252,213,65,0)));
+    background: -moz-linear-gradient(top, rgba(252,213,65,0), rgba(252,213,65,0));
+    content: ' ';
+    height: 0.3em;
+}
+
+.silver-reflected {
+    position: relative;
+}
+.silver-reflected:before, .silver-reflected:after {
+    display: block;
+    position: absolute;
+    bottom: -.8em; 
+    left: 0;
+    right: 0;
+}
+.silver-reflected:before {
+    content: 'SILVER WINNERS';
+    opacity: .3;
+    -webkit-transform: scaleY(-1);
+    -moz-transform: scaleY(-1);
+    -o-transform: scaleY(-1);
+}
+.silver-reflected:after {
+    background: -webkit-gradient(linear, left top, left center, from(rgba(209,210,211,0)), to(rgba(207,207,207,0)));
+    background: -moz-linear-gradient(top, rgba(209,210,211,0), rgba(207,207,207,0));
+    content: ' ';
+    height: 0.3em;
+}
+
+.bronze-reflected {
+    position: relative;
+}
+.bronze-reflected:before, .bronze-reflected:after {
+    display: block;
+    position: absolute;
+    bottom: -.8em; 
+    left: 0;
+    right: 0;
+}
+.bronze-reflected:before {
+    content: 'BRONZE WINNERS';
+    opacity: .3;
+    -webkit-transform: scaleY(-1);
+    -moz-transform: scaleY(-1);
+    -o-transform: scaleY(-1);
+}
+.bronze-reflected:after {
+    background: -webkit-gradient(linear, left top, left center, from(rgba(240,141,68,0)), to(rgba(241, 136, 61,0)));
+    background: -moz-linear-gradient(top, rgba(240,141,68,0), rgba(241, 136, 61,0));
+    content: ' ';
+    height: 0em;
+}
+
+#top-table{
+	float: right;
+	width: 830px;
+	margin-top: 10px;
+	position: relative;
+	left: 60px;
+}
+
+.left-cat{
+	float: left;
+	margin-top: -2px;
+}
+
+.left-cat-pic{
+	width: 80px;
+	margin-left: 80px;
+	position: relative;
+}
+
+.left-cat-arrow{
+	width: 70px;
+	margin-left: -45px;
+}
+
+.user-info-right{
+	float: right;
+	position: relative;
+	right: 228px;
+}
+
+.right-cat{
+	float: right;
+	margin-top: -2px;
+}
+
+.right-cat-pic{
+	width: 80px;
+	margin-right: 73px;
+}
+
+.right-cat-arrow{
+	width: 70px;
+	margin-left: -162px;
+	margin-right: -45px;
+}
+
+.user-info-left{
+	float: left;
+	position: relative;
+	left: 2px;
+}
+
+.score-profile-pic-home{
+	width: 50px;
+	height: 50px;
+}
+
+/*
+	Each slide
+	Important:
+	Set the width of your slides
+	Offeset for the 20px of padding
+	If height not specified height will be set by the slide content
+	Set to display block
+*/
+
+#slides .slide {
+/* 	padding:20px; */
+	width:100%;
+	height:230px;
+	display:block;
+}
+
+/*
+	Pagination
+*/
+
+.pagination {
+	margin: 0px auto;
+	width: 160px;
+	z-index: 100;
+	position: relative;
+	top: -26px;
+}
+
+.pagination li {
+	float:left;
+	margin:0 4px;
+	list-style:none;
+}
+
+.pagination li a {
+	display:block;
+	width:13px;
+	height:0;
+	padding-top:12px;
+	background-image:url(../img/main-icons/pagination.png);
+	background-position:0 0;
+	float:left;
+	overflow:hidden;
+}
+
+.pagination li.current a {
+	background-position:0 -12px;
+}

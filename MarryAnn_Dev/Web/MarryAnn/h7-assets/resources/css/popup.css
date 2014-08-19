@@ -1,0 +1,236 @@
+/* mo7eb */
+#previous-image{
+    float: left;
+    position: relative;
+    top: 94px;
+    height: 45px;
+    left: 4px;
+    opacity: 0.85;
+}
+#previous-image-mcq{
+    float: left;
+    position: relative;
+    top: 145px;
+    height: 45px;
+    left: 2px;
+}
+
+#next-image{
+    float: right;
+	position: relative;
+	top: -97px;
+	height: 45px;
+	right: 4px;
+	opacity: 0.85;
+}
+#next-image-game{
+    float: right;
+    position: absolute;
+    height: 45px;
+    bottom: 139px;
+    right: 20px;
+}
+#image_content_view_id{
+   margin-top: -2px;
+   width: 600px;
+    height: 339px; 
+}
+#video_content_view_id{
+    width: 592px;
+    height: 337px;
+    margin-top: 60px;
+}
+#audio_content_view_id{
+    width: 592px;
+    height: 337px;
+    margin-top: 60px;
+}
+#game-content-view{
+	float: left;
+	width: 617px;
+	height: 422px;
+}
+#right-bar-view{
+	float: right;
+	width: 261px;
+	height: 385px;
+	margin-top: 18px;
+	border-left: 4px solid #FF0000;
+	position: relative;
+	padding-left: 25px;
+	padding-right: 25px;
+}
+.card-holder-popup-view {
+	width: 90px;
+	height: 80px;
+	background-color: #ECECEC;
+	border: 2px solid red;
+	border-radius: 7px;
+	position: relative;
+	top: 10px;
+	margin-left: auto;
+	margin-right: auto;
+}
+.card-pic-popup-view {
+	position: relative;
+	top: -21px;
+	width: 86px;
+	height: 80px;
+	border: 2px solid white;
+	border-radius: 7px;
+}
+/* mcq game view */
+#Q-score-table{
+	width: 500px;
+	height: 100px;
+	position: relative;
+	top: 30px;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
+.empty-circle{
+	width: 80px;
+	height: 80px;
+	border-radius: 50%;
+	background-color: white;
+	border: 2px solid red;
+	margin-left: auto;
+	margin-right: auto;
+	color: white;
+	font-size: 22px;
+}
+
+.green-circle{
+	width: 80px;
+	height: 80px;
+	border-radius: 50%;
+	background-color: #68c220;
+	margin-left: auto;
+	margin-right: auto;
+	color: white;
+	font-size: 22px;
+}
+.red-circle{
+	width: 80px;
+	height: 80px;
+	border-radius: 50%;
+	background-color: rgb(254, 0, 0);
+	margin-left: auto;
+	margin-right: auto;
+	color: white;
+	font-size: 22px;
+}
+
+.Q-score{
+	position: relative;
+	top: 23px;
+	left: -1px;
+    color: red;
+}
+
+#final_score{
+	position: relative;
+	top: -14px;
+}
+
+#final-score-title{
+	color: #68c220;
+	position: relative;
+	top: 50px;
+	font-size: 35px;
+}
+#total-score{
+	color: #68c220;
+	position: relative;
+	top: 55px;
+	font-size: 48px;
+}
+
+.play-button{
+    position: inherit;
+    margin-top: 5px;
+    width: 158px;
+    height: 50px;
+    border-radius: 5px;
+    background-color: red;
+    font-size: 22px;
+    color: white;
+    margin-left: auto;
+    margin-right: auto;
+}
+#button-text{
+	margin-left: 4px;
+	position: relative;
+	top: 8px;
+}
+#Q-number{
+	position: relative;
+	top: 65px;
+	font-size: 17px;
+}
+.Ques{
+	position: relative;
+	top: 90px;
+	font-size: 16px;
+	text-align: right;
+	width: 560px;
+}
+#How-to-play{
+    width: 326px;
+}
+
+#game-intro{
+    position: relative;
+    left: 13px;
+    font-size: 19px;
+    width: 580px;
+}
+/* end of mcq game view */
+/*puzzle game view */
+
+.popup-container{
+	width: 950px;
+	height: 560px;
+	background: transparent url('../img/popup.png') no-repeat center top;
+	background-size: 950px 560px;
+	padding-top: 93px;
+	padding-bottom: 47px;
+	padding-left: 31px;
+	padding-right: 41px;
+}
+.card-holder-popup {
+	margin-left: 44px;
+    margin-top: 55px;
+	width: 90px;
+	height: 80px;
+	background-color: #ECECEC;
+	border: 2px solid red;
+	border-radius: 7px;
+}
+.card-pic-popup {
+	position: relative;
+	top: -21px;
+	width: 86px;
+	height: 80px;
+	border: 2px solid white;
+	border-radius: 7px;
+}
+#close-popup-button{
+	position: relative;
+	left: 129px;
+	top: -18px;
+}
+
+/*end of puzzle game view */
+/* mo7eb */
+
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+
+#obj_found{
+	-webkit-animation:spin 0.6s linear 1;
+	-moz-animation:spin 0.6s linear 1;
+    animation:spin 0.6s linear 1;
+}

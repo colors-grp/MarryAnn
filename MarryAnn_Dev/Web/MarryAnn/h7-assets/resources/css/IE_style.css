@@ -1,0 +1,50 @@
+@CHARSET "windows-1256";
+
+body{
+	background-image: url('../img/bg.png');
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/bg.png', sizingMethod='scale');
+	-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/bg.png', sizingMethod='scale')";
+}
+
+#header{
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	background: url('../img/header_small_IE.png') no-repeat center top;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/header_small_IE.png', sizingMethod='scale');
+	-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/header_small_IE.png', sizingMethod='scale')";
+	width: 100%;
+	height: 149px;
+	z-index: 99999;
+}
+
+#logo{
+	float: right;
+	width: 200px;
+	margin-top: 30px;
+	margin-right: 220px;
+}
+
+#container{
+	position: absolute;
+	top: 135px;
+	background: url('../img/banner_white.png') no-repeat center top;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/banner_white.png', sizingMethod='scale');
+	-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/banner_white.png', sizingMethod='scale')";
+	width: 100%;
+	height: 365px;
+}
+
+#content{
+	margin-left: auto; 
+	margin-right: auto; 
+	width: 667px; 
+	text-align: center;
+	margin-top: 100px;
+}
+
+#browsers{
+	width:300px; 
+	margin-left: auto; 
+	margin-right: auto;
+}
