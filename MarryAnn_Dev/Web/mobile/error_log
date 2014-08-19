@@ -1,0 +1,67 @@
+[20-Jun-2014 14:50:19 UTC] PHP Fatal error:  Call to undefined function getFriendsIDs() in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 224
+[20-Jun-2014 14:51:00 UTC] PHP Fatal error:  Cannot access protected property Hitcall::$rest in /home/hitsevey/public_html/mobile/system/core/Loader.php on line 1095
+[20-Jun-2014 14:52:46 UTC] PHP Fatal error:  Cannot access protected property Hitcall::$rest in /home/hitsevey/public_html/mobile/system/core/Loader.php on line 1095
+[20-Jun-2014 15:58:14 UTC] PHP Fatal error:  Cannot access protected property Hitcall::$rest in /home/hitsevey/public_html/mobile/system/core/Loader.php on line 1095
+[20-Jun-2014 15:58:18 UTC] PHP Fatal error:  Cannot access protected property Hitcall::$rest in /home/hitsevey/public_html/mobile/system/core/Loader.php on line 1095
+[20-Jun-2014 15:58:27 UTC] PHP Fatal error:  Cannot access protected property Hitcall::$rest in /home/hitsevey/public_html/mobile/system/core/Loader.php on line 1095
+[20-Jun-2014 15:58:45 UTC] PHP Fatal error:  Cannot access protected property Hitcall::$rest in /home/hitsevey/public_html/mobile/system/core/Loader.php on line 1095
+[20-Jun-2014 15:58:49 UTC] PHP Fatal error:  Cannot access protected property Hitcall::$rest in /home/hitsevey/public_html/mobile/system/core/Loader.php on line 1095
+[20-Jun-2014 15:58:51 UTC] PHP Fatal error:  Cannot access protected property Hitcall::$rest in /home/hitsevey/public_html/mobile/system/core/Loader.php on line 1095
+[20-Jun-2014 16:11:28 UTC] PHP Fatal error:  Cannot access protected property Hitcall::$rest in /home/hitsevey/public_html/mobile/system/core/Loader.php on line 1095
+[20-Jun-2014 16:37:54 UTC] PHP Fatal error:  Cannot access protected property Hitcall::$rest in /home/hitsevey/public_html/mobile/system/core/Loader.php on line 1095
+[20-Jun-2014 16:44:04 UTC] PHP Fatal error:  Cannot access protected property Hitcall::$rest in /home/hitsevey/public_html/mobile/system/core/Loader.php on line 1095
+[20-Jun-2014 16:45:26 UTC] PHP Fatal error:  Cannot access protected property Hitcall::$rest in /home/hitsevey/public_html/mobile/system/core/Loader.php on line 1095
+[20-Jun-2014 16:46:01 UTC] PHP Fatal error:  Cannot access protected property Hitcall::$rest in /home/hitsevey/public_html/mobile/system/core/Loader.php on line 1095
+[20-Jun-2014 16:46:54 UTC] PHP Fatal error:  Cannot access protected property Hitcall::$rest in /home/hitsevey/public_html/mobile/system/core/Loader.php on line 1095
+[20-Jun-2014 17:15:10 UTC] PHP Fatal error:  Cannot access protected property Hitcall::$rest in /home/hitsevey/public_html/mobile/system/core/Loader.php on line 1095
+[20-Jun-2014 17:36:25 UTC] PHP Fatal error:  Cannot access protected property Hitcall::$rest in /home/hitsevey/public_html/mobile/system/core/Loader.php on line 1095
+[20-Jun-2014 17:39:22 UTC] PHP Fatal error:  Call to a member function create() on a non-object in /home/hitsevey/public_html/mobile/application/libraries/Rest.php on line 245
+[20-Jun-2014 17:43:05 UTC] PHP Fatal error:  Call to a member function create() on a non-object in /home/hitsevey/public_html/mobile/application/libraries/Rest.php on line 245
+[20-Jun-2014 18:52:01 UTC] PHP Fatal error:  Call to undefined function get_json_col() in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 233
+[20-Jun-2014 18:57:53 UTC] PHP Fatal error:  Cannot use object of type stdClass as array in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 195
+[20-Jun-2014 19:01:43 UTC] PHP Fatal error:  Cannot use object of type stdClass as array in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 195
+[20-Jun-2014 19:03:11 UTC] PHP Fatal error:  Cannot use object of type stdClass as array in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 195
+[20-Jun-2014 19:04:27 UTC] PHP Fatal error:  Cannot use object of type stdClass as array in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 198
+[20-Jun-2014 19:08:22 UTC] PHP Fatal error:  Cannot use object of type stdClass as array in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 198
+[20-Jun-2014 19:09:50 UTC] PHP Fatal error:  Cannot use object of type stdClass as array in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 198
+[20-Jun-2014 19:12:09 UTC] PHP Fatal error:  Cannot use object of type stdClass as array in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 198
+[23-Jun-2014 07:14:45 UTC] PHP Fatal error:  Call to undefined function story_panels_number_get() in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 359
+[23-Jun-2014 12:33:26 UTC] PHP Fatal error:  Call to a member function result() on a non-object in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 409
+[23-Jun-2014 12:46:12 UTC] PHP Fatal error:  Call to a member function result() on a non-object in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 409
+[23-Jun-2014 12:46:36 UTC] PHP Fatal error:  Call to a member function result() on a non-object in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 409
+[23-Jun-2014 14:18:52 UTC] PHP Fatal error:  Call to a member function result() on a non-object in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 409
+[23-Jun-2014 14:23:33 UTC] PHP Fatal error:  Call to a member function result() on a non-object in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 409
+[23-Jun-2014 14:26:24 UTC] PHP Fatal error:  Call to a member function result() on a non-object in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 409
+[23-Jun-2014 14:27:01 UTC] PHP Fatal error:  Call to a member function result() on a non-object in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 409
+[28-Jun-2014 10:51:04 UTC] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 72 bytes) in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 215
+[28-Jun-2014 10:51:40 UTC] PHP Fatal error:  Cannot use object of type stdClass as array in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 215
+[28-Jun-2014 10:52:51 UTC] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 72 bytes) in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 215
+[28-Jun-2014 11:01:32 UTC] PHP Fatal error:  Cannot use object of type stdClass as array in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 217
+[28-Jun-2014 11:27:36 UTC] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 384 bytes) in /home/hitsevey/public_html/mobile/application/errors/error_php.php on line 5
+[28-Jun-2014 11:47:50 UTC] PHP Fatal error:  Cannot use object of type stdClass as array in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 225
+[28-Jun-2014 14:19:30 UTC] PHP Fatal error:  Cannot use object of type stdClass as array in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 253
+[28-Jun-2014 14:22:06 UTC] PHP Fatal error:  Cannot use object of type stdClass as array in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 253
+[28-Jun-2014 14:24:14 UTC] PHP Fatal error:  Cannot use object of type stdClass as array in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 253
+[28-Jun-2014 14:25:14 UTC] PHP Fatal error:  Cannot use object of type stdClass as array in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 253
+[28-Jun-2014 14:25:30 UTC] PHP Fatal error:  Cannot use object of type stdClass as array in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 253
+[01-Jul-2014 11:05:02 UTC] PHP Parse error:  syntax error, unexpected 'cardId' (T_STRING) in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 421
+[02-Jul-2014 09:59:21 UTC] PHP Fatal error:  Call to undefined function platform_url() in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 588
+[02-Jul-2014 10:05:13 UTC] PHP Fatal error:  Call to undefined method CI_Config::platform_url() in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 587
+[02-Jul-2014 10:06:10 UTC] PHP Fatal error:  Call to undefined method CI_Config::platform_url() in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 588
+[02-Jul-2014 10:14:19 UTC] PHP Fatal error:  Call to undefined function directory_map() in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 590
+[06-Jul-2014 01:09:47 UTC] PHP Fatal error:  Cannot access empty property in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 546
+[06-Jul-2014 01:11:19 UTC] PHP Fatal error:  Cannot access empty property in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 546
+[06-Jul-2014 01:12:40 UTC] PHP Fatal error:  Cannot access empty property in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 546
+[06-Jul-2014 01:13:16 UTC] PHP Fatal error:  Cannot access empty property in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 546
+[06-Jul-2014 01:14:28 UTC] PHP Fatal error:  Cannot access empty property in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 546
+[06-Jul-2014 01:15:02 UTC] PHP Fatal error:  Cannot access empty property in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 546
+[06-Jul-2014 01:15:13 UTC] PHP Fatal error:  Cannot access empty property in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 546
+[06-Jul-2014 01:15:23 UTC] PHP Fatal error:  Cannot access empty property in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 546
+[06-Jul-2014 08:54:56 UTC] PHP Fatal error:  Cannot access empty property in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 546
+[06-Jul-2014 08:55:15 UTC] PHP Fatal error:  Cannot access empty property in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 546
+[06-Jul-2014 08:55:43 UTC] PHP Fatal error:  Cannot access empty property in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 546
+[06-Jul-2014 08:56:02 UTC] PHP Fatal error:  Cannot access empty property in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 546
+[06-Jul-2014 09:41:51 UTC] PHP Fatal error:  Call to undefined method Card_model::get_card() in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 546
+[06-Jul-2014 11:42:06 Africa/Cairo] PHP Fatal error:  Call to undefined function now() in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 574
+[06-Jul-2014 11:46:06 Africa/Cairo] PHP Fatal error:  Call to undefined function now() in /home/hitsevey/public_html/mobile/application/controllers/api/hitcall.php on line 575
+[09-Jul-2014 13:40:53 UTC] PHP Fatal error:  Call to undefined method stdClass::result_array() in /home/hitsevey/public_html/mobile/application/models/card_model.php on line 166
