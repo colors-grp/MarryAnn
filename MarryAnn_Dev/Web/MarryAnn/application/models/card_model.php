@@ -226,11 +226,18 @@ class Card_model extends CI_Model {
         	return $this->db->get()->result_array();
         }
         
-        function get_card_score($cards_ids){
-            $this->db->select('SUM(price) AS total');
-            $this->db->from('card');
-            $this->db->where_in('id',$cards_ids);
-            $query = $this->db->get()->result_array();
-            return $query;
+        function get_cards_score($cards_ids){
+            $total = 0;
+            for($i=0;$i<count($cards_ids);$i++){
+                $this->db->select('price');
+                $this->db->from('card');
+                $this->db->where('id',$cards_ids[0]['card_id']);
+                $this->db->where('category_id',$cards_ids[0]['cat_id']);
+                $query = $this->db->get()->result_array();
+                if(count($query)){
+                    $total += $query[0]['price'];
+                }
+            }
+            return $total;
         }
 }

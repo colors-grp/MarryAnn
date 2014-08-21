@@ -20,7 +20,7 @@ class TRADE extends REST_Controller
 {
 	// Add request trade request into DB then return a success flag.
         // inputs: senderId, receiverId, offerdCardsSerials, demandedCardsSerials, message.
-        // output: success flag.
+        // output: success flag. (0 failed to insert into DB, 1 succeeded, 2 sender doesnot have a card, 3 receiver doesnot have a card, 4 demanded lower than offered) AND List of sender requests
 	function addRequest_get()
 	{
         // Get Inputs
@@ -33,60 +33,63 @@ class TRADE extends REST_Controller
             $this->load->model('request_model');
             $this->load->model('card_model');
         // Get Cards & Check if both users still has the card
-            $demanded = array(array());
-            $offered = array(array());
-            echo print_r($offered_cards_serials,1);
-            echo '<br>'.print_r($demanded_cards_serials,1);
+            $demanded = array();
+            $offered = array();
             for($i=0;$i<count($offered_cards_serials);$i++){
                 $user_cards = $this->card_model->get_user_cards($sender_id,2,$offered_cards_serials[$i]);
-                echo '<br>'.print_r($user_cards,1);
                 if(count($user_cards) == 0){
-                    $this->response(array('success' => '0'));
+                    $this->response(array('success' => '2'));
                 } else {
-                    $data = array(
+                    $temp = array(
                         'cat_id' => $user_cards[0]['category_id'],
                         'card_id' => $user_cards[0]['card_id'],
                     );
-                    array_push($offered, $data);
+                    array_push($offered, $temp);
                 }
             }
-            echo '<br>'.print_r($offered,1);
             for($i=0;$i<count($demanded_cards_serials);$i++){
                 $user_cards = $this->card_model->get_user_cards($receiver_id,2,$demanded_cards_serials[$i]);
                 if(count($user_cards) == 0){
-                    $this->response(array('success' => '0'));
+                    $this->response(array('success' => '3'));
                 } else {
-                    $data = array(
+                    $temp = array(
                         'cat_id' => $user_cards[0]['category_id'],
                         'card_id' => $user_cards[0]['card_id'],
                     );
-                    array_push($demanded, $data);
+                    array_push($demanded, $temp);
                 }
             }
-            echo '<br>'.print_r($demanded,1);
         // Get and Check cards values
             $demanded_value = $this->card_model->get_cards_score($demanded);
             $offered_value = $this->card_model->get_cards_score($offered);
             if($offered_value[0]['total'] >= $demanded_value[0]['total']){
+                $offered_cards_serials = json_encode($offered_cards_serials);
+                $demanded_cards_serials = json_encode($demanded_cards_serials);
             // Add Request into DB
                 $data['success'] = $this->request_model->add_request($sender_id, $receiver_id, $demanded_cards_serials, $offered_cards_serials, $message, $demanded_value, $offered_value);
+                $data['demanded_value'] = $demanded_value;
+                $data['offered_value'] = $offered_value;
             } else {
-                $data['success'] = 0;
+                $data['success'] = 5;
             }
+            $data['requests'] = $this->request_model->get_sender_requests($sender_id);
             $this->response($data, 200);
 	}
         
         
         // cancle request from db if still on
-        // inputs: request id.
-        // output: success Flag AND List of receiver requests.
+        // inputs: request id, user id
+        // output: success Flag (0 failed, 1 succeeded) AND List of user requests.
         function cancleRequest_get(){
         // Get Inputs
             $request_id = $this->get('requestId');
+            $user_id = $this->get('userId');
         // Load needed models
             $this->load->model('request_model');
         // Update request status if is still on (NOT DECLINED)
             $data['success'] = $this->request_model->update_status_msgs('5','',$request_id);
+        // Get user requests
+            $data['requests'] = $this->request_model->get_sender_requests($user_id);
             $this->response($data, 200);
         }
         
@@ -97,6 +100,8 @@ class TRADE extends REST_Controller
         function acceptRequest_get(){
         // Get Inputs
             $request_id = $this->get('requestId');
+            $user_id = $this->get('userId');
+            $message = $this->get('message');
         // Load needed models
             $this->load->model('request_model');
             $this->load->model('card_model');
@@ -122,7 +127,7 @@ class TRADE extends REST_Controller
                     $this->request_model->lock_user_request($request[0]['sender_id'], 0);
                 }
                 if($lock['receiver']){
-                    $this->request_model->lock_user_request($request[0]['receiver_id']);
+                    $this->request_model->lock_user_request($request[0]['receiver_id'], 0);
                 }
             } else {
                 

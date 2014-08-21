@@ -43,10 +43,10 @@ class Request_model extends CI_Model {
 	function update_status_msgs($status, $msg, $req_id){
 		/*Inactive 	0
 		 *Active 	1
-		 *Approved  2
-		 *Declined  3
+		 *Approved      2
+		 *Declined      3
 		 *Invalid 	4
-		 *Cancelled 5 
+		 *Cancelled     5 
 		 */
 		$this->db->where('request_id' , $req_id);
 		$data = array('status' =>  $status, 'message' => $msg);
