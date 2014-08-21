@@ -20,8 +20,8 @@ class core_call extends CI_Model
 
 		log_message('error', 'The Core URL -> '.$this->CI->config->item('core_api_url'));
 
-		$this->CI->load->library('rest');
-		$this->CI->rest->initialize(array(
+		$this->CI->load->library('rest_client');
+		$this->CI->rest_client->initialize(array(
 				'server' => $this->CI->config->item('core_api_url'),
 				'http_user' => '',
 				'http_pass' => '',
@@ -38,7 +38,7 @@ class core_call extends CI_Model
 		// 		return $this->CI->rest->get($method, array('accountid', $params['accountid']), 'json');
 		//log_message('error', 'core call ->>>>>>', count($params));
                 log_message('error', 'core call ->>>>>>', print_r($params,TRUE));
-		return $this->CI->rest->get($method, $params, 'json');
+		return $this->CI->rest_client->get($method, $params, 'json');
 	}
 
 	// call ( <Method Name>, Parameter Array) ...

@@ -1,5 +1,5 @@
 <?php
-class request_model extends CI_Model {
+class Request_model extends CI_Model {
 	
 	//insert a new request when a user send a trade request
 	function add_request($sender_id, $receiver_id, $demand, $offer, $msg, $demand_value, $offer_value) {

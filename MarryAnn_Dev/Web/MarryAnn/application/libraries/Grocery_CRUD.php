@@ -4811,3 +4811,554 @@ class Grocery_CRUD extends grocery_CRUD_States
 	 *
 	 * This method is useful when the path is not specified correctly.
 	 * Especially when we are using routes.
+	 * For example:
+	 * Let's say we have the path http://www.example.com/ however the original url path is
+	 * http://www.example.com/example/index . We have to specify the url so we can have
+	 * all the CRUD operations correctly.
+	 * The url path has to be set from this method like this:
+	 * <code>
+	 * 		$crud->set_crud_url_path(site_url('example/index'));
+	 * </code>
+	 *
+	 * @param string $crud_url_path
+	 * @param string $list_url_path
+	 * @return grocery_CRUD
+	 */
+	public function set_crud_url_path($crud_url_path, $list_url_path = null)
+	{
+		$this->crud_url_path = $crud_url_path;
+
+		//If the list_url_path is empty so we are guessing that the list_url_path
+		//will be the same with crud_url_path
+		$this->list_url_path = !empty($list_url_path) ? $list_url_path : $crud_url_path;
+
+		return $this;
+	}
+
+	/**
+	 *
+	 * Set a subject to understand what type of CRUD you use.
+	 * @example In this CRUD we work with the table db_categories. The $subject will be the 'Category'
+	 * @param string $subject
+	 * @param bool $has_plural
+	 * @return grocery_CRUD
+	 */
+	public function set_subject( $subject )
+	{
+		$this->subject 			= $subject;
+		$this->subject_plural 	= $subject;
+
+		return $this;
+	}
+
+	/**
+	 *
+	 * Enter description here ...
+	 * @param $title
+	 * @param $image_url
+	 * @param $url
+	 * @param $css_class
+	 * @param $url_callback
+	 */
+	public function add_action( $label, $image_url = '', $link_url = '', $css_class = '', $url_callback = null)
+	{
+		$unique_id = substr($label,0,1).substr(md5($label.$link_url),-8); //The unique id is used for class name so it must begin with a string
+
+		$this->actions[$unique_id]  = (object)array(
+			'label' 		=> $label,
+			'image_url' 	=> $image_url,
+			'link_url'		=> $link_url,
+			'css_class' 	=> $css_class,
+			'url_callback' 	=> $url_callback,
+			'url_has_http'	=> substr($link_url,0,7) == 'http://' || substr($link_url,0,8) == 'https://' ? true : false
+		);
+
+		return $this;
+	}
+
+	/**
+	 *
+	 * Set a simple 1-n foreign key relation
+	 * @param string $field_name
+	 * @param string $related_table
+	 * @param string $related_title_field
+	 * @param mixed $where_clause
+	 * @param string $order_by
+	 */
+	public function set_relation($field_name , $related_table, $related_title_field, $where_clause = null, $order_by = null)
+	{
+		$this->relation[$field_name] = array($field_name, $related_table,$related_title_field, $where_clause, $order_by);
+		return $this;
+	}
+
+	/**
+	 *
+	 * Sets a relation with n-n relationship.
+	 * @param string $field_name
+	 * @param string $relation_table
+	 * @param string $selection_table
+	 * @param string $primary_key_alias_to_this_table
+	 * @param string $primary_key_alias_to_selection_table
+	 * @param string $title_field_selection_table
+	 * @param string $priority_field_relation_table
+	 * @param mixed $where_clause
+	 */
+	public function set_relation_n_n($field_name, $relation_table, $selection_table, $primary_key_alias_to_this_table, $primary_key_alias_to_selection_table , $title_field_selection_table , $priority_field_relation_table = null, $where_clause = null)
+	{
+		$this->relation_n_n[$field_name] =
+			(object)array(
+				'field_name' => $field_name,
+				'relation_table' => $relation_table,
+				'selection_table' => $selection_table,
+				'primary_key_alias_to_this_table' => $primary_key_alias_to_this_table,
+				'primary_key_alias_to_selection_table' => $primary_key_alias_to_selection_table ,
+				'title_field_selection_table' => $title_field_selection_table ,
+				'priority_field_relation_table' => $priority_field_relation_table,
+				'where_clause' => $where_clause
+			);
+
+		return $this;
+	}
+
+	/**
+	 *
+	 * Transform a field to an upload field
+	 *
+	 * @param string $field_name
+	 * @param string $upload_path
+	 */
+	public function set_field_upload($field_name, $upload_dir = '')
+	{
+		$upload_dir = !empty($upload_dir) && substr($upload_dir,-1,1) == '/'
+						? substr($upload_dir,0,-1)
+						: $upload_dir;
+		$upload_dir = !empty($upload_dir) ? $upload_dir : 'assets/uploads/files';
+
+		/** Check if the upload Url folder exists. If not then throw an exception **/
+		if (!is_dir(FCPATH.$upload_dir)) {
+			throw new Exception("It seems that the folder \"".FCPATH.$upload_dir."\" for the field name
+					\"".$field_name."\" doesn't exists. Please create the folder and try again.");
+		}
+
+		$this->upload_fields[$field_name] = (object) array(
+				'field_name' => $field_name,
+				'upload_path' => $upload_dir,
+				'encrypted_field_name' => $this->_unique_field_name($field_name));
+		return $this;
+	}
+}
+
+if(defined('CI_VERSION'))
+{
+	$ci = &get_instance();
+	$ci->load->library('Form_validation');
+
+	class grocery_CRUD_Form_validation extends CI_Form_validation{
+
+		public $CI;
+		public $_field_data			= array();
+		public $_config_rules		= array();
+		public $_error_array		= array();
+		public $_error_messages		= array();
+		public $_error_prefix		= '<p>';
+		public $_error_suffix		= '</p>';
+		public $error_string		= '';
+		public $_safe_form_data		= FALSE;
+	}
+}
+
+/*
+ * jQuery File Upload Plugin PHP Example 5.5
+ * https://github.com/blueimp/jQuery-File-Upload
+ *
+ * Copyright 2010, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * http://www.opensource.org/licenses/MIT
+ */
+
+class UploadHandler
+{
+    private $options;
+    public $default_config_path = null;
+
+    function __construct($options=null) {
+        $this->options = array(
+            'script_url' => $this->getFullUrl().'/'.basename(__FILE__),
+            'upload_dir' => dirname(__FILE__).'/files/',
+            'upload_url' => $this->getFullUrl().'/files/',
+            'param_name' => 'files',
+            // The php.ini settings upload_max_filesize and post_max_size
+            // take precedence over the following max_file_size setting:
+            'max_file_size' => null,
+            'min_file_size' => 1,
+            'accept_file_types' => '/.+$/i',
+            'max_number_of_files' => null,
+            // Set the following option to false to enable non-multipart uploads:
+            'discard_aborted_uploads' => true,
+            // Set to true to rotate images based on EXIF meta data, if available:
+            'orient_image' => false,
+            'image_versions' => array(
+                // Uncomment the following version to restrict the size of
+                // uploaded images. You can also add additional versions with
+                // their own upload directories:
+                /*
+                'large' => array(
+                    'upload_dir' => dirname(__FILE__).'/files/',
+                    'upload_url' => dirname($_SERVER['PHP_SELF']).'/files/',
+                    'max_width' => 1920,
+                    'max_height' => 1200
+                ),
+
+                'thumbnail' => array(
+                    'upload_dir' => dirname(__FILE__).'/thumbnails/',
+                    'upload_url' => $this->getFullUrl().'/thumbnails/',
+                    'max_width' => 80,
+                    'max_height' => 80
+                )
+                */
+            )
+        );
+        if ($options) {
+            // Or else for PHP >= 5.3.0 use: $this->options = array_replace_recursive($this->options, $options);
+            foreach($options as $option_name => $option)
+            {
+            	$this->options[$option_name] = $option;
+            }
+        }
+    }
+
+    function getFullUrl() {
+      	return
+        		(isset($_SERVER['HTTPS']) ? 'https://' : 'http://').
+        		(isset($_SERVER['REMOTE_USER']) ? $_SERVER['REMOTE_USER'].'@' : '').
+        		(isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : ($_SERVER['SERVER_NAME'].
+        		(isset($_SERVER['HTTPS']) && $_SERVER['SERVER_PORT'] === 443 ||
+        		$_SERVER['SERVER_PORT'] === 80 ? '' : ':'.$_SERVER['SERVER_PORT']))).
+        		substr($_SERVER['SCRIPT_NAME'],0, strrpos($_SERVER['SCRIPT_NAME'], '/'));
+    }
+
+    private function get_file_object($file_name) {
+        $file_path = $this->options['upload_dir'].$file_name;
+        if (is_file($file_path) && $file_name[0] !== '.') {
+            $file = new stdClass();
+            $file->name = $file_name;
+            $file->size = filesize($file_path);
+            $file->url = $this->options['upload_url'].rawurlencode($file->name);
+            foreach($this->options['image_versions'] as $version => $options) {
+                if (is_file($options['upload_dir'].$file_name)) {
+                    $file->{$version.'_url'} = $options['upload_url']
+                        .rawurlencode($file->name);
+                }
+            }
+            $file->delete_url = $this->options['script_url']
+                .'?file='.rawurlencode($file->name);
+            $file->delete_type = 'DELETE';
+            return $file;
+        }
+        return null;
+    }
+
+    private function get_file_objects() {
+        return array_values(array_filter(array_map(
+            array($this, 'get_file_object'),
+            scandir($this->options['upload_dir'])
+        )));
+    }
+
+    private function create_scaled_image($file_name, $options) {
+        $file_path = $this->options['upload_dir'].$file_name;
+        $new_file_path = $options['upload_dir'].$file_name;
+        list($img_width, $img_height) = @getimagesize($file_path);
+        if (!$img_width || !$img_height) {
+            return false;
+        }
+        $scale = min(
+            $options['max_width'] / $img_width,
+            $options['max_height'] / $img_height
+        );
+        if ($scale > 1) {
+            $scale = 1;
+        }
+        $new_width = $img_width * $scale;
+        $new_height = $img_height * $scale;
+        $new_img = @imagecreatetruecolor($new_width, $new_height);
+        switch (strtolower(substr(strrchr($file_name, '.'), 1))) {
+            case 'jpg':
+            case 'jpeg':
+                $src_img = @imagecreatefromjpeg($file_path);
+                $write_image = 'imagejpeg';
+                break;
+            case 'gif':
+                @imagecolortransparent($new_img, @imagecolorallocate($new_img, 0, 0, 0));
+                $src_img = @imagecreatefromgif($file_path);
+                $write_image = 'imagegif';
+                break;
+            case 'png':
+                @imagecolortransparent($new_img, @imagecolorallocate($new_img, 0, 0, 0));
+                @imagealphablending($new_img, false);
+                @imagesavealpha($new_img, true);
+                $src_img = @imagecreatefrompng($file_path);
+                $write_image = 'imagepng';
+                break;
+            default:
+                $src_img = $image_method = null;
+        }
+        $success = $src_img && @imagecopyresampled(
+            $new_img,
+            $src_img,
+            0, 0, 0, 0,
+            $new_width,
+            $new_height,
+            $img_width,
+            $img_height
+        ) && $write_image($new_img, $new_file_path);
+        // Free up memory (imagedestroy does not delete files):
+        @imagedestroy($src_img);
+        @imagedestroy($new_img);
+        return $success;
+    }
+
+    private function has_error($uploaded_file, $file, $error) {
+        if ($error) {
+			switch($error) {
+				case UPLOAD_ERR_INI_SIZE:
+					return 'The uploaded file exceeds the upload_max_filesize directive in php.ini.';
+					break;
+				case UPLOAD_ERR_PARTIAL:
+					return 'The uploaded file was only partially uploaded.';
+					break;
+				case UPLOAD_ERR_NO_FILE:
+					return 'No file was uploaded.';
+					break;
+				case UPLOAD_ERR_CANT_WRITE:
+					return 'Failed to write file to disk.';
+					break;
+				case UPLOAD_ERR_EXTENSION:
+					return 'File upload stopped by extension.';
+					break;
+				default:
+					return $error;
+					break;
+			}
+        }
+        if (!preg_match($this->options['accept_file_types'], $file->name)) {
+            return 'acceptFileTypes';
+        }
+        if ($uploaded_file && is_uploaded_file($uploaded_file)) {
+            $file_size = filesize($uploaded_file);
+        } else {
+            $file_size = $_SERVER['CONTENT_LENGTH'];
+        }
+
+        if ($this->options['max_file_size'] && (
+                $file_size > $this->options['max_file_size'] ||
+                $file->size > $this->options['max_file_size'])
+            ) {
+            return 'maxFileSize';
+        }
+        if ($this->options['min_file_size'] &&
+            $file_size < $this->options['min_file_size']) {
+            return 'minFileSize';
+        }
+        if (is_int($this->options['max_number_of_files']) && (
+                count($this->get_file_objects()) >= $this->options['max_number_of_files'])
+            ) {
+            return 'maxNumberOfFiles';
+        }
+        return $error;
+    }
+
+    private function trim_file_name($name, $type) {
+        // Remove path information and dots around the filename, to prevent uploading
+        // into different directories or replacing hidden system files.
+        // Also remove control characters and spaces (\x00..\x20) around the filename:
+        $file_name = trim(basename(stripslashes($name)), ".\x00..\x20");
+        // Add missing file extension for known image types:
+        if (strpos($file_name, '.') === false &&
+            preg_match('/^image\/(gif|jpe?g|png)/', $type, $matches)) {
+            $file_name .= '.'.$matches[1];
+        }
+
+        //Ensure that we don't have disallowed characters and add a unique id just to ensure that the file name will be unique
+        $file_name = substr(uniqid(),-5).'-'.$this->_transliterate_characters($file_name);
+
+        //all the characters has to be lowercase
+        $file_name = strtolower($file_name);
+
+        return $file_name;
+    }
+
+    private function _transliterate_characters($file_name)
+	{
+		include($this->default_config_path.'/translit_chars.php');
+		if ( ! isset($translit_characters))
+		{
+			return preg_replace("/([^a-zA-Z0-9\.\-\_]+?){1}/i", '-', $file_name);
+		}
+		$transformed_file_name = preg_replace(array_keys($translit_characters), array_values($translit_characters), $file_name);
+		return str_replace(" ", "-", $transformed_file_name);
+	}
+
+    private function orient_image($file_path) {
+      	$exif = exif_read_data($file_path);
+      	$orientation = intval(@$exif['Orientation']);
+      	if (!in_array($orientation, array(3, 6, 8))) {
+      	    return false;
+      	}
+      	$image = @imagecreatefromjpeg($file_path);
+      	switch ($orientation) {
+        	  case 3:
+          	    $image = @imagerotate($image, 180, 0);
+          	    break;
+        	  case 6:
+          	    $image = @imagerotate($image, 270, 0);
+          	    break;
+        	  case 8:
+          	    $image = @imagerotate($image, 90, 0);
+          	    break;
+          	default:
+          	    return false;
+      	}
+      	$success = imagejpeg($image, $file_path);
+      	// Free up memory (imagedestroy does not delete files):
+      	@imagedestroy($image);
+      	return $success;
+    }
+
+    private function handle_file_upload($uploaded_file, $name, $size, $type, $error) {
+        $file = new stdClass();
+        $file->name = $this->trim_file_name($name, $type);
+        $file->size = intval($size);
+        $file->type = $type;
+        $error = $this->has_error($uploaded_file, $file, $error);
+        if (!$error && $file->name) {
+            $file_path = $this->options['upload_dir'].$file->name;
+            $append_file = !$this->options['discard_aborted_uploads'] &&
+                is_file($file_path) && $file->size > filesize($file_path);
+            clearstatcache();
+            if ($uploaded_file && is_uploaded_file($uploaded_file)) {
+                // multipart/formdata uploads (POST method uploads)
+                if ($append_file) {
+                    file_put_contents(
+                        $file_path,
+                        fopen($uploaded_file, 'r'),
+                        FILE_APPEND
+                    );
+                } else {
+                    move_uploaded_file($uploaded_file, $file_path);
+                }
+            } else {
+                // Non-multipart uploads (PUT method support)
+                file_put_contents(
+                    $file_path,
+                    fopen('php://input', 'r'),
+                    $append_file ? FILE_APPEND : 0
+                );
+            }
+            $file_size = filesize($file_path);
+            if ($file_size === $file->size) {
+            		if ($this->options['orient_image']) {
+            		    $this->orient_image($file_path);
+            		}
+                $file->url = $this->options['upload_url'].rawurlencode($file->name);
+                foreach($this->options['image_versions'] as $version => $options) {
+                    if ($this->create_scaled_image($file->name, $options)) {
+                        $file->{$version.'_url'} = $options['upload_url']
+                            .rawurlencode($file->name);
+                    }
+                }
+            } else if ($this->options['discard_aborted_uploads']) {
+                unlink($file_path);
+                $file->error = "It seems that this user doesn't have permissions to upload to this folder";
+            }
+            $file->size = $file_size;
+            $file->delete_url = $this->options['script_url']
+                .'?file='.rawurlencode($file->name);
+            $file->delete_type = 'DELETE';
+        } else {
+            $file->error = $error;
+        }
+        return $file;
+    }
+
+    public function get() {
+        $file_name = isset($_REQUEST['file']) ?
+            basename(stripslashes($_REQUEST['file'])) : null;
+        if ($file_name) {
+            $info = $this->get_file_object($file_name);
+        } else {
+            $info = $this->get_file_objects();
+        }
+        header('Content-type: application/json');
+        echo json_encode($info);
+    }
+
+    public function post() {
+        if (isset($_REQUEST['_method']) && $_REQUEST['_method'] === 'DELETE') {
+            return $this->delete();
+        }
+        $upload = isset($_FILES[$this->options['param_name']]) ?
+            $_FILES[$this->options['param_name']] : null;
+        $info = array();
+        if ($upload && is_array($upload['tmp_name'])) {
+            foreach ($upload['tmp_name'] as $index => $value) {
+                $info[] = $this->handle_file_upload(
+                    $upload['tmp_name'][$index],
+                    isset($_SERVER['HTTP_X_FILE_NAME']) ?
+                        $_SERVER['HTTP_X_FILE_NAME'] : $upload['name'][$index],
+                    isset($_SERVER['HTTP_X_FILE_SIZE']) ?
+                        $_SERVER['HTTP_X_FILE_SIZE'] : $upload['size'][$index],
+                    isset($_SERVER['HTTP_X_FILE_TYPE']) ?
+                        $_SERVER['HTTP_X_FILE_TYPE'] : $upload['type'][$index],
+                    $upload['error'][$index]
+                );
+            }
+        } elseif ($upload || isset($_SERVER['HTTP_X_FILE_NAME'])) {
+            $info[] = $this->handle_file_upload(
+                isset($upload['tmp_name']) ? $upload['tmp_name'] : null,
+                isset($_SERVER['HTTP_X_FILE_NAME']) ?
+                    $_SERVER['HTTP_X_FILE_NAME'] : $upload['name'],
+                isset($_SERVER['HTTP_X_FILE_SIZE']) ?
+                    $_SERVER['HTTP_X_FILE_SIZE'] : $upload['size'],
+                isset($_SERVER['HTTP_X_FILE_TYPE']) ?
+                    $_SERVER['HTTP_X_FILE_TYPE'] : $upload['type'],
+                isset($upload['error']) ? $upload['error'] : null
+            );
+        }
+        header('Vary: Accept');
+
+        $redirect = isset($_REQUEST['redirect']) ?
+            stripslashes($_REQUEST['redirect']) : null;
+        if ($redirect) {
+            header('Location: '.sprintf($redirect, rawurlencode($json)));
+            return;
+        }
+        if (isset($_SERVER['HTTP_ACCEPT']) &&
+            (strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false)) {
+            header('Content-type: application/json');
+        } else {
+            header('Content-type: text/plain');
+        }
+        return $info;
+    }
+
+    public function delete() {
+        $file_name = isset($_REQUEST['file']) ?
+            basename(stripslashes($_REQUEST['file'])) : null;
+        $file_path = $this->options['upload_dir'].$file_name;
+        $success = is_file($file_path) && $file_name[0] !== '.' && unlink($file_path);
+        if ($success) {
+            foreach($this->options['image_versions'] as $version => $options) {
+                $file = $options['upload_dir'].$file_name;
+                if (is_file($file)) {
+                    unlink($file);
+                }
+            }
+        }
+        header('Content-type: application/json');
+        echo json_encode($success);
+    }
+
+}

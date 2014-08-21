@@ -72,4 +72,17 @@ class User_model extends CI_Model {
             $query = $this->db->get()->result_array();
             return $query;
         }
+        
+        // Change user's day value in user_day table
+        // Inputs: user id, day
+        // Output: success flag
+        function change_user_day($user_id, $days){
+            $this->db->where('user_id', $user_id);
+            $data = array(
+                'days' => $days,
+                'lastsignedin' => date('Y-m-d')
+            );
+            $this->db->update('user_day',$data);
+            return $this->db->affected_rows();
+        }
 }

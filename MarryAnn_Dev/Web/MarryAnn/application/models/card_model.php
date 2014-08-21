@@ -45,6 +45,7 @@ class Card_model extends CI_Model {
                                 'card_state' => $status
 		);
 		$this->db->insert('user_card', $data);
+		return $this->db->affected_rows();
 	}
         
         function get_category_cards($cat_id){
@@ -104,11 +105,14 @@ class Card_model extends CI_Model {
         }
         // Return user's cards in 1 of 3 areas (Free, Album OR Trade Center).
         // Given card state flag with ( 0 (default) = Free, 1 = Album, Trade Center = 2).
-        function get_user_cards($user_id,$card_state=0){
+        function get_user_cards($user_id,$card_state=0,$card_serial=0){
             $this->db->select('*');
             $this->db->from('user_card');
             $this->db->where('user_id',$user_id);
             $this->db->where('card_state',$card_state);
+            if($card_serial){
+                $this->db->where('card_serial',$card_serial);
+            }
             return $this->db->get()->result_array();
         }
         // Remove card(s) from user cards table according to given user id and cards array
@@ -118,7 +122,7 @@ class Card_model extends CI_Model {
             for($i=0; $i<count($cat_id); $i++){
                 for($j=0;$j<count($card_id[$i]);$j++){
                     $this->db->where('user_id',$user_id);
-                    $this->db->where('cat_id',$cat_id[$i]);
+                    $this->db->where('category_id',$cat_id[$i]);
                     $this->db->where('card_id',$card_id[$i][$j]);
                     $this->db->limit(1);
                     $this->db->delete('user_card');
@@ -130,7 +134,7 @@ class Card_model extends CI_Model {
         // Update card's state and card's user given user id, cat id, card id and card state
         function update_user_card($user_id_from,$user_id_to ,$cat_id, $card_id, $card_state_from, $card_state_to){
             $this->db->where('user_id',$user_id_from);
-            $this->db->where('cat_id',$cat_id);
+            $this->db->where('category_id',$cat_id);
             $this->db->where('card_id',$card_id);
             $this->db->where('card_state',$card_state_from);
             $data = array(
@@ -173,7 +177,7 @@ class Card_model extends CI_Model {
         function update_user_gift($sender_id, $receiver_id, $cat_id, $card_id, $date){
             $this->db->where('sender_id',$sender_id);
             $this->db->where('receiver_id',$receiver_id);
-            $this->db->where('cat_id',$cat_id);
+            $this->db->where('category_id',$cat_id);
             $this->db->where('card_id',$card_id);
             $this->db->where('date',$date);
             $this->db->where('seen','0');
@@ -182,5 +186,51 @@ class Card_model extends CI_Model {
             );
             $this->db->update('user_gift_cards',$data);
             return $this->db->affected_rows();
+        }
+        
+        function get_user_cards_count($user_id,$card_state=0){
+        	$this->db->select('count(*) as count');
+        	$this->db->from('user_card');
+        	$this->db->where('user_id',$user_id);
+        	$this->db->where('card_state',$card_state);
+        	 
+        	return $this->db->get()->result_array();
+        }
+        
+        function count_user_gifts($user_id, $date){
+        	$this->db->select('count(*) as count');
+        	$this->db->from('user_gift_cards');
+        	$this->db->where('sender_id',$user_id);
+        	$this->db->where('date',$date);
+        	return $this->db->get()->result_array();
+        }
+        
+        // Return card from database given name
+        // inputs: card name.
+        // outputs: card id and category id
+        function get_card_by_name($card_name){
+        	$this->db->select('*');
+        	$this->db->from('card');
+        	$this->db->where('name',$card_name);
+        	$query = $this->db->get();
+        	return $query->result_array();
+        }
+        
+        function get_card_holders($card_id, $cat_id, $card_state){
+        	$this->db->select('*');
+        	$this->db->from('user_card');
+        	$this->db->where('card_id',$card_id);
+        	$this->db->where('category_id',$cat_id);
+        	$this->db->where('card_state',$card_state);
+        	 
+        	return $this->db->get()->result_array();
+        }
+        
+        function get_card_score($cards_ids){
+            $this->db->select('SUM(price) AS total');
+            $this->db->from('card');
+            $this->db->where_in('id',$cards_ids);
+            $query = $this->db->get()->result_array();
+            return $query;
         }
 }

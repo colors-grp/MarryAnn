@@ -30,21 +30,34 @@ class CREDIT extends REST_Controller
         $this->load->model('credit_model');
         $this->load->model('core_call');
     // Get and Check user las signed in day and daily coming
-        $user = $this->user_mode->get_user_day($user_id);
-        $date = date('Y-m-d');
-        $difference = $date - $user[0]['lastsignedin'];
-        if($difference == 1){
+        $user = $this->user_model->get_user_day($user_id);
+        $date = date('Y-m-d 00:00:00');
+        $user[0]['lastsignedin'] = date_format(date_create($user[0]['lastsignedin']), 'Y-m-d 00:00:00');
+        $difference = strtotime($date)- strtotime($user[0]['lastsignedin']);
+        if($difference == 86400){ // a day => 86400 seconds / 60 = 1440 minutes / 60 = 24 hours / 60 = 1 day
         // Get platform credit value
-            $platform_credit = $this->credit_model->get_patform_credit($platform_id, $user[0]['day']+1);
+            $platform_day = $this->credit_model->get_platform_credit($platform_id, $user[0]['days']+1);
+            if(count($platform_day)){
+                $platform_credit = $platform_day[0]['daily_credit'];
+            } else {
+                $platform_day = $this->credit_model->get_platform_credit($platform_id, 1);
+                $platform_credit = $platform_day[0]['daily_credit'];
+            }
         // Increment user's credit with platform credit AND get his new credit
-            $temp = $this->core_call->buy_credit($user_id, $platform_credit);
-            $data['success'] = $temp['invoke'];
+            $data['success'] = $this->core_call->buy_credit($user_id, $platform_credit);
             if($data['success']){
-                $data['credit'] = $temp['data'];
+            // Change user days and lastsignedin
+                $data['success'] = $this->user_model->change_user_day($user_id,$platform_day[0]['day']);
+                if(!$data['success']){
+                    do{
+                        $success_temp = $this->core_call->buy_credit($user_id, -1*$platform_credit);
+                    }while(!$success_temp);
+                }
             }
         } else {
             $data['success'] = 2;
         }
+        $data['credit'] = $this->core_call->getUserCredit($user_id);
         $this->response($data, 200);
     }
     // Chenge user's credit with given value
@@ -57,10 +70,9 @@ class CREDIT extends REST_Controller
     // Load needed models
         $this->load->model('core_call');
     // Change user's credit AND Get new credit
-        $temp = $this->core_call->buy_credit($user_id, $value);
-        $data['success'] = $temp['invoke'];
+        $data['success'] = $this->core_call->buy_credit($user_id, $value);
         if($data['success']){
-            $data['credit'] = $temp['data'];
+            $data['credit'] = $this->core_call->getUserCredit($user_id);
         }
         $this->response($data, 200);
     }
@@ -79,26 +91,25 @@ class CREDIT extends REST_Controller
         $pack = $this->pack_model->get_pack($pack_id);
         $pack_price = $pack[0]['pack_price'];
     // Get then Check user's current credit
-        $temp = $this->core_call->getUserCredit($user_id);
-        $data['success'] = $temp['invoke'];
+        $data['success'] = $this->core_call->getUserCredit($user_id);
         if($data['success']){
-            $user_credit = $temp['data'];
+            $user_credit = $data['success'];
             if($user_credit >= $pack_price){
             // Decrement pack price from user's credit AND Get user's new credit
-                $temp = $this->core_call->buy_credit($user_id, -1*$pack_price);
-                $data['success'] = $temp['invoke'];
+                $data['success'] = $this->core_call->buy_credit($user_id, -1*$pack_price);
                 if($data['success']){
-                    $data['credit'] = $temp['data'];
+                    $data['credit'] = $this->core_call->getUserCredit($user_id);
                 // Add new pack into user's packs
                     $data['success'] = $this->pack_model->update_user_packs($user_id, $pack_id, 1);
                 // Return pack price into user's credit if faild to add pack into user's packs
                     if(!$data['success']){
                         do{
                             $temp = $this->core_call->buy_credit($user_id, $pack_price);
-                        }while(!$temp['invoke']);
+                        }while(!$temp);
                     }
                 }
             } else {
+                $data['credit'] = $data['success'];
                 $data['success'] = 2;
             }
         }

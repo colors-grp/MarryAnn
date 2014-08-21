@@ -21,11 +21,11 @@ class pack_model extends CI_Model {
 	}
 	
 	//get user packs
-	function get_user_packs($user_id, $pack_id){
+	function get_user_packs($user_id){//, $pack_id){
 		$this->db->select('*');
 		$this->db->from('user_pack');
 		$this->db->where('user_id', $user_id);
-		$this->db->where('pack_id', $pack_id);
+		//$this->db->where('pack_id', $pack_id);
 		$query = $this->db->get()->result_array();	
 		return $query;
 	}

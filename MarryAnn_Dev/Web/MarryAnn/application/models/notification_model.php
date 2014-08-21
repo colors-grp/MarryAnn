@@ -4,10 +4,10 @@ class Notification_model extends CI_Model{
     // inputs: non
     // output: array
     function get_current_broadcasts(){
-        $date = date('Y-m-d');
+        $date = date('Y-m-d 00:00:00');
         $this->db->select('*');
         $this->db->from('notification');
         $this->db->where('date',$date);
-        return $this->db->get->result_array();
+        return $this->db->get()->result_array();
     }
 }

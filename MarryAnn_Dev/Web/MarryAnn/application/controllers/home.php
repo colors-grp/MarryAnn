@@ -26,6 +26,8 @@ class Home extends CI_Controller {
 	{
 
 		maintain_ssl();
+                
+                //echo 'We are here';
 
 		$accountid = $this->input->get('accountid');
 		$_SESSION['language'] = 'arabic';
