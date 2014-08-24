@@ -104,7 +104,7 @@ class Card_model extends CI_Model {
             }
         }
         // Return user's cards in 1 of 3 areas (Free, Album OR Trade Center).
-        // Given card state flag with ( 0 (default) = Free, 1 = Album, Trade Center = 2).
+        // Given card state flag with ( 0 (default) = Free, 1 = Album, Trade Center = 2, Requested = 3).
         function get_user_cards($user_id,$card_state=0,$card_serial=0){
             $this->db->select('*');
             $this->db->from('user_card');
@@ -137,7 +137,7 @@ class Card_model extends CI_Model {
             $this->db->where('category_id',$cat_id);
             $this->db->where('card_id',$card_id);
             $this->db->where('card_state',$card_state_from);
-            $data = array(
+            $data = array( 
                 'user_id' => $user_id_to,
                 'card_state' => $card_state_to
             );
@@ -240,4 +240,24 @@ class Card_model extends CI_Model {
             }
             return $total;
         }
+        
+        // Change user's cards status given list of cards.
+        // Inputs: user id from, user id to, list of cards, from status, to status.
+        // Output: total of changed cards.
+        function change_cards_state($user_from, $user_to, $card_serial, $from_state, $to_state){
+            $total = 0;
+            for($i=0;$i<count($card_serial);$i++){
+                $this->db->where('user_id',$user_from);
+                $this->db->where('card_serial',$card_serial[$i]);
+                $this->db->where('card_state',$from_state);
+                $data = array(
+                  'user_id' => $user_to,
+                  'card_state' => $to_state 
+                );
+                $this->db->update('user_card',$data);
+                $total += $this->db->affected_rows();
+            }
+            return ($total == count($card_serial))?1:0;
+        }
+        
 }
