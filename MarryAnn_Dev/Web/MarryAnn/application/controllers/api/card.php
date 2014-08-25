@@ -29,7 +29,7 @@ class CARD extends REST_Controller
         // Get pack information from DB
             $pack = $this->pack_model->get_pack($pack_id);
         // Get List of cards having type = pack type
-            $card = $this->card_model->get_card_by_type($pack[0]['pack_type']);
+            $card = $this->card_model->get_card_by_type_and_opened($pack[0]['pack_type']);
             
 
         //get number of cards in this pack type

@@ -28,13 +28,18 @@ class Connect_twitter extends CI_Controller {
 		{
 			try
 			{
+                            log_message('error','inside try');
 				// Perform token exchange
 				$this->twitter_lib->etw->setToken($this->input->get('oauth_token'));
+                            log_message('error','after $this->twitter_lib->etw->setToken');
 				$twitter_token = $this->twitter_lib->etw->getAccessToken();
+                            log_message('error','after $twitter_token = '.  print_r($twitter_token,1));
 				$this->twitter_lib->etw->setToken($twitter_token->oauth_token, $twitter_token->oauth_token_secret);
-
+                            log_message('error','after $this->twitter_lib->etw->setToken');
+                            log_message('error','before using etw->get_accountVerify_credentials() = '.  print_r($this->twitter_lib->etwget_accountVerify_credentials(),1));
 				// Get account credentials
 				$twitter_info = $this->twitter_lib->etw->get_accountVerify_credentials()->response;
+                            log_message('error','after $twitter_info = '.  print_r($twitter_info,1));
 			} catch (Exception $e)
 			{
 				$this->authentication->is_signed_in() ? redirect('account/account_linked') : redirect('account/sign_up');
