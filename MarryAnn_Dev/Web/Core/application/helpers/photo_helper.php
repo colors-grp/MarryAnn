@@ -1,5 +1,11 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+ * Shows users photo
+ * @param string $picture Description
+ * @param Array $param Array with parameters to be included in the generated img tag (height, width, id, check, nocache, title, class)
+ * @return string
+ */
 function showPhoto($picture = NULL, $param = NULL)
 {
 
@@ -7,7 +13,6 @@ function showPhoto($picture = NULL, $param = NULL)
 	$height = (isset($param['height'])) ? $param['height'] : 100;
 	$width = (isset($param['width'])) ? $param['width'] : 100;
 	$id = (isset($param['id'])) ? $param['id'] : FALSE;
-	$align = (isset($param['align'])) ? $param['align'] : "absmiddle";
 	$check = (isset($param['check'])) ? $param['check'] : FALSE;
 	$nocache = (isset($param['nocache'])) ? $param['nocache'] : FALSE; // TRUE = disable caching, add time string to image url
 	$title = (isset($param['title'])) ? $param['title'] : "User's Photo";
@@ -23,7 +28,7 @@ function showPhoto($picture = NULL, $param = NULL)
 			{
 				$picture = $picture.'?t='.md5(time());
 			} // only if $nocache is TRUE
-			$path = site_url(RES_DIR.'/user/profile/'.$picture); //.		-- disabled time attachment, no need to break cache
+			$path = base_url().RES_DIR.'/user/profile/'.$picture; //.		-- disabled time attachment, no need to break cache
 		}
 		else
 		{
@@ -57,14 +62,14 @@ function showPhoto($picture = NULL, $param = NULL)
 			if ( ! fileExists($path))
 			{
 				$title = "Photo not found! ";
-				$path = site_url(RES_DIR.'/img/default-person.png');
+				$path = base_url().RES_DIR.'/img/default-person.png';
 			}
 		}
 
 	}
 	else
 	{
-		$path = site_url(RES_DIR.'/img/default-person.png');
+		$path = base_url().RES_DIR.'/img/default-person.png';
 	}
 
 

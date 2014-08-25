@@ -18,57 +18,33 @@ require APPPATH.'/libraries/REST_Controller.php';
 
 class CARD extends REST_Controller
 {
-	// Call facebook to get the login URL and pass it back to the platform ...
-	function loginurl_get()
-	{
-		// Load core_fbutils ... 
-		$this->load->model('core_fbutils');
-		 
-		// Set the redirect URL which facebook will return to after logging in ...
-		// base_url (is the URL of the CORE -> send you to Core.php.index())
-		// Add Sitecode parameter to send the platform URL to Core
-		// ex: "http://www.colors-studios.com/core" . '?' . "&sitecode=" . encrypted ("http://www.colors-grp.com/test1") ...
-// 		$redirect_uri = base_url() . '?'. '&sitecode=' . $this->get('platform_url');
-		$redirect_uri = base_url() . '?'. 'sitecode=' . $this->get('platform_url');
-
-// 		$redirect_uri = base_url();
-
-		// get the login url from facebook with the configured return uri
-		$loginurl = $this->facebook->getLoginUrl(array('redirect_uri' => "$redirect_uri", 'scope' => 'email,read_friendlists')); // , 'sitecode' => $this->get('platform_url') 
-		
-		if($loginurl)
-		{
-			$this->response($loginurl, 200); // 200 being the HTTP response code
-		}
-
-		else
-		{
-			$this->response(array('error' => 'Couldn\'t find any users!'), 404);
-		}
-	}
-	
-	//return list of card for a specific user
+	// return list of card for a specific user
 	function openNewPack_get(){
-		//load needed models
-		$this->load->model('pack_model');
-		$this->load->model('card_model');
-	
-		//get the input
-		$user_id = $this->get('user_id');
-		$pack_id = $this->get('pack_id');
-	
-		//get number of cards in this pack type
-		$num_of_cards = $this->pack_model->get_pack($pack_id)['cards_num'];
-	
-		//here we are gonna call random algorithm to generate the cards
-		//output should be list of cards(card_id, cat_id)
-	
-		//add the generated cards to the user
-		//$success = $this->card_model->insert_user_card($category_id , $card_id , $user_id, 0)
-	
-		//decrease the count of user's packs in this type
-		//update the number of user's packs, if flag is 0 decrement the count, 1 increase the count
-		//$added = $this->pack_model->update_user_packs($user_id, $pack_id, 0);
+        // load needed models
+            $this->load->model('pack_model');
+            $this->load->model('card_model');
+        // get the input
+            $user_id = $this->get('userId');
+            $pack_id = $this->get('packId');
+        // Get pack information from DB
+            $pack = $this->pack_model->get_pack($pack_id);
+        // Get List of cards having type = pack type
+            $card = $this->card_model->get_card_by_type($pack[0]['pack_type']);
+            
+
+        //get number of cards in this pack type
+            $num_of_cards = $this->pack_model->get_pack($pack_id)['cards_num'];
+
+        //here we are gonna call random algorithm to generate the cards
+
+        //output should be list of cards(card_id, cat_id)
+
+        //add the generated cards to the user
+        //$success = $this->card_model->insert_user_card($category_id , $card_id , $user_id, 0)
+
+        //decrease the count of user's packs in this type
+        //update the number of user's packs, if flag is 0 decrement the count, 1 increase the count
+        //$added = $this->pack_model->update_user_packs($user_id, $pack_id, 0);
 	}
 	
 	// return list of packs for a specific user
@@ -104,7 +80,7 @@ class CARD extends REST_Controller
 		$cat_id = $this->get('cat_id');
 		
 		//call the needed function from the model
-		//card states{0 -> free, 1 -> album, 2 -> trade, 3 -> gift}
+		//card states{0 -> free, 1 -> album, 2 -> trade, 3 -> gift, 4 -> blocked}
 		$success = $this->card_model->update_user_card($id, $id, $cat_id, $card_id, 0, 1);
 		
 		$this->response($success, 200);

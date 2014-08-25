@@ -18,9 +18,9 @@
 //$proto = "http" . ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "s" : "") . "://";
 //$config['base_url'] = $proto . 'http://dev.hitseven.net/';
 
-$config['base_url']	= 'http://dev.hitseven.net/';
-$config['core_url']	= 'http://dev.hitseven.net/';
-$config['platform_url']	= 'http://dev.hitseven.net/SS/';
+$config['base_url']	= 'http://dev.hitseven.net/MarryAnn/Web/Core/';
+$config['core_url']	= 'http://dev.hitseven.net/MarryAnn/Web/Core/';
+$config['platform_url']	= 'http://dev.hitseven.net/MarryAnn/Web/MarryAnn';
 
 /*
 |--------------------------------------------------------------------------

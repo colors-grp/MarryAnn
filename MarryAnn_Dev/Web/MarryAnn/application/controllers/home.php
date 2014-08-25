@@ -52,6 +52,7 @@ class Home extends CI_Controller {
 //                            $data['error_num'] = 1;
 //                        }
 		}
+                //echo 'after if user is signed in' . '<br />';
 
 		// This is true for redirections from Core ...
 		if($accountid)
@@ -60,12 +61,15 @@ class Home extends CI_Controller {
 			$this->authentication->sign_in($accountid);
                         $this->session->userdata($accountid);
 		}
+                //echo 'after if redirection from core'. '<br />';
                 // contains top 3 users for each category
         // Get homepage top 3 ranks with thier facebook IDs
             // Get all categories from db
                 $result = $this->category_model->get_all_category()->result_array();
+                //echo 'after getting all categories'. '<br />';
             // Get top 3 of every category from current scoreboards
                 $data['scoreboard_home_view'] = $this->scoreboard_model->get_home_page_scoreboard($result);
+                //echo 'after loading home scoreboard view'. '<br />';
             // Get Facebook IDs of all users from core db
                 $users_ids = array();
                 for($i=0;$i<count($data['scoreboard_home_view']);$i++){
@@ -101,13 +105,14 @@ class Home extends CI_Controller {
                     $this->load->view('pages/mob_home');
                     return;
                 }
+                //echo 'before loading home not logged'. '<br />';
 		$this->load->view('pages/Home_not_logged', $data);
+                //echo 'after loading home not logged'. '<br />';
 	}
         
         function home_page(){
         // Get user_id from session cuz will be used many times
             $user_id = $this->session->userdata('account_id');
-            $user_id = 0;
             if($user_id == 0){
                 $this->authentication->sign_out();
                 redirect('home');

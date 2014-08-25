@@ -236,7 +236,7 @@ $this->lang->load('message',$_SESSION['language']);
 				</td>
 				<td>
 		            <!--the facebook login -->
-					<a href = "<?php echo $this->config->item('core_url');?>?sitecode=<?=$this->config->item('sitecode');?>&mode=signin<?php echo '&cfbid='.$canvas_fbid;?>" id = "fb-div" >
+                            <a href = "<?php echo $this->config->item('core_url');?>?sitecode=<?=$this->config->item('sitecode');?>&mode=google<?php if(isset($canvas_fbid)){echo '&cfbid='.$canvas_fbid;}?>" id = "fb-div" >
 						<img src = "<?=base_url();?>h7-assets/resources/img/fb_login.png" id = "fb_img">
 					</a>
 					<!-- end of FB login -->

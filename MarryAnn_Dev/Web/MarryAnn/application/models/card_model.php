@@ -260,4 +260,14 @@ class Card_model extends CI_Model {
             return ($total == count($card_serial))?1:0;
         }
         
+        // Get List of cards given type
+        // Inputs: Type number.
+        // Output: List of cards.
+        function get_card_by_type($type){
+            $this->db->select('category_id, card_id');
+            $this->db->from('card');
+            $this->db->where('type', $type);
+            $query = $this->db->get()->result_array();
+            return $query;
+        }
 }

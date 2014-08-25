@@ -144,14 +144,14 @@ class TRADE extends REST_Controller
                 // Try locking AND Swapping THEN Check swaping both players cards
                     $demand_card = json_decode($request[0]['request_demand']);
                     $offer_card = json_decode($request[0]['request_offer']);
-                    $demanded_lock = $this->card_model->change_cards_state($request[0]['sender_id'],$request[0]['receiver_id'],$offer_card,2,3);
-                    $offered_lock = $this->card_model->change_cards_state($request[0]['receiver_id'],$request[0]['sender_id'],$demand_card,2,3);
+                    $demanded_lock = $this->card_model->change_cards_state($request[0]['sender_id'],$request[0]['receiver_id'],$offer_card,2,4);
+                    $offered_lock = $this->card_model->change_cards_state($request[0]['receiver_id'],$request[0]['sender_id'],$demand_card,2,4);
                     if(!$demanded_lock || !$offered_lock){// if not all locked
-                        $this->card_model->change_cards_state($request[0]['sender_id'],$request[0]['receiver_id'],$offer_card,3,2);
-                        $this->card_model->change_cards_state($request[0]['receiver_id'],$request[0]['sender_id'],$demand_card,3,2);
+                        $this->card_model->change_cards_state($request[0]['sender_id'],$request[0]['receiver_id'],$offer_card,4,2);
+                        $this->card_model->change_cards_state($request[0]['receiver_id'],$request[0]['sender_id'],$demand_card,4,2);
                     } else {// change user's cards state into 0 (As free) to confirm its swapping
-                        $this->card_model->change_cards_state($request[0]['sender_id'],$request[0]['sender_id'],$demand_card,3,0);
-                        $this->card_model->change_cards_state($request[0]['receiver_id'],$request[0]['receiver_id'],$offer_card,3,0);
+                        $this->card_model->change_cards_state($request[0]['sender_id'],$request[0]['sender_id'],$demand_card,4,0);
+                        $this->card_model->change_cards_state($request[0]['receiver_id'],$request[0]['receiver_id'],$offer_card,4,0);
                     // Auto Decline all other requests having common cards serials
                         $this->request_model->auto_decline($request[0]['request_id'],$demand_card);
                         $this->request_model->auto_decline($request[0]['request_id'],$offer_card);

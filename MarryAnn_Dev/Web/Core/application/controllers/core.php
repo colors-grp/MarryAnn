@@ -178,7 +178,31 @@ class Core extends CI_Controller {
 			log_message('error', 'core 3 Jul: Check this Session ->>> : ' . print_r($_SESSION, TRUE));
 			// Load facebook redirect view
 			redirect('account/redirect_fb');
-		}
+		} else if($mode == 'google') {
+                    $cnt ++;
+                    log_message('error', 'core.php: mode ====== sign in : '.$mode);
+                    $_SESSION['sitecode'] = $sitecode;
+                    log_message('error', 'core 3 Jul :Added site code to session, redirecting to redirect_fb');
+
+                    // trying to check if user is logged in
+                    // 
+//                    $facebook = new Facebook(array(
+//                            'appId' => '170161316509571',
+//                            'secret' =>'92fcf6d4ac1dc115b01755afaacd4f9f',
+//                            'cookie' =>true
+//                    ));
+
+                    log_message('error', 'core 3 Jul : defined facebook variable ...');
+                    // Try to get a logged in facebook user ID ...
+//                    $fb_id = $facebook->getUser();
+
+                    log_message('error', 'core 3 Jul : called getUser ...');
+
+//                    log_message('error', 'core 3 Jul: Check this Facebook ID ->>> : ' . $fb_id );
+                    log_message('error', 'core 3 Jul: Check this Session ->>> : ' . print_r($_SESSION, TRUE));
+                    // Load facebook redirect view
+                    redirect('account/connect_google');
+                }
 
 		// Handle a redirect coming from Facebook ...
 		if($code){
