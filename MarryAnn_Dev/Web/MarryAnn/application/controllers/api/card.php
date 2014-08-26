@@ -168,21 +168,20 @@ class CARD extends REST_Controller
 		$this->load->model('card_model');
 		
 		//get the input, user id
-		$id = $this->get('user_id');
-		
+		$id = $this->get('userId');
 		//call the needed function from the model
-		//card states{0 -> free, 1 -> album, 2 -> trade, 3 -> gift}
+		//card states{0 -> free, 1 -> album, 2 -> trade, 3 -> gift, 4 -> locked}
 		$free_cards = $this->card_model->get_user_cards($id, 0);
-		if(count($free_cards) == 0){
-			$this->response(0, 200);
-		}else{
+		if(count($free_cards)){
+                        $data = array();
 			for ($i = 0; $i < count($free_cards); $i++) {
-				$data['card_serial'][$i] = $free_cards[$i]['card_serial'];
-				$data['cat_id'][$i] = $free_cards[$i]['category_id'];
-				$data['card_id'][$i] = $free_cards[$i]['card_id'];
+				$data[$i]['card_serial'] = $free_cards[$i]['card_serial'];
+				$data[$i]['cat_id'] = $free_cards[$i]['category_id'];
+				$data[$i]['card_id'] = $free_cards[$i]['card_id'];
 			}
-			
 			$this->response($data, 200);
+		}else{
+                        $this->response(array('success' => 0), 200);
 		}
 	}
 	
@@ -192,21 +191,21 @@ class CARD extends REST_Controller
 		$this->load->model('card_model');
 	
 		//get the input, user id
-		$id = $this->get('user_id');
+		$id = $this->get('userId');
 	
 		//call the needed function from the model
 		//card states{0 -> free, 1 -> album, 2 -> trade, 3 -> gift}
 		$trade_cards = $this->card_model->get_user_cards($id, 2);
-		if(count($trade_cards) == 0){
-			$this->response(0, 200);
+		if(count($trade_cards)){
+                    $data = array();
+                    for ($i = 0; $i < count($trade_cards); $i++) {
+                            $data['card_serial'][$i] = $trade_cards[$i]['card_serial'];
+                            $data['cat_id'][$i] = $trade_cards[$i]['category_id'];
+                            $data['card_id'][$i] = $trade_cards[$i]['card_id'];
+                    }
+                    $this->response($data, 200);
 		}else{
-			for ($i = 0; $i < count($trade_cards); $i++) {
-				$data['card_serial'][$i] = $trade_cards[$i]['card_serial'];
-				$data['cat_id'][$i] = $trade_cards[$i]['category_id'];
-				$data['card_id'][$i] = $trade_cards[$i]['card_id'];
-			}
-		
-			$this->response($data, 200);
+                    $this->response(array('success' => 0), 200);
 		}
 	}
 	
