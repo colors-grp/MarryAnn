@@ -263,10 +263,11 @@ class Card_model extends CI_Model {
         // Get List of cards given type
         // Inputs: Type number.
         // Output: List of cards.
-        function get_card_by_type($type){
-            $this->db->select('category_id, card_id');
+        function get_card_by_type_and_opened($type){
+            $this->db->select('category_id, id, start_date');
             $this->db->from('card');
-            $this->db->where('type', $type);
+            $this->db->where('type_id', $type);
+            $this->db->where('start_date < ',date('Y-m-d 00:00:00'));
             $query = $this->db->get()->result_array();
             return $query;
         }

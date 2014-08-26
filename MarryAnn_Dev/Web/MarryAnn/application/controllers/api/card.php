@@ -26,47 +26,89 @@ class CARD extends REST_Controller
         // get the input
             $user_id = $this->get('userId');
             $pack_id = $this->get('packId');
-        // Get pack information from DB
-            $pack = $this->pack_model->get_pack($pack_id);
-        // Get List of cards having type = pack type
-            $card = $this->card_model->get_card_by_type_and_opened($pack[0]['pack_type']);
-            
-
-        //get number of cards in this pack type
-            $num_of_cards = $this->pack_model->get_pack($pack_id)['cards_num'];
-
-        //here we are gonna call random algorithm to generate the cards
-
-        //output should be list of cards(card_id, cat_id)
-
-        //add the generated cards to the user
-        //$success = $this->card_model->insert_user_card($category_id , $card_id , $user_id, 0)
-
-        //decrease the count of user's packs in this type
-        //update the number of user's packs, if flag is 0 decrement the count, 1 increase the count
-        //$added = $this->pack_model->update_user_packs($user_id, $pack_id, 0);
+        // Check if user can open this pack
+            $user_pack = $this->pack_model->get_user_packs($user_id, $pack_id);
+            if(count($user_pack) && $user_pack[0]['count'] > 0){
+            // Get pack information from DB
+                $pack = $this->pack_model->get_pack($pack_id);
+            // Get List of cards having type = pack type
+                $card = $this->card_model->get_card_by_type_and_opened($pack[0]['pack_type']);
+//                echo 'after $card='.  print_r($card,1).'<br /><br />';
+                if(count($card)){
+                // Calculate frequescies and Set the randomization array
+                    $date = date('Y-m-d 00:00:00');
+                    $total_domain = array();
+                    for($i=0; $i<count($card); $i++){
+                        $start_date = date_format(date_create($card[$i]['start_date']), 'Y-m-d 00:00:00');
+                        $difference = (strtotime($date)- strtotime($start_date)) / 60 / 60 / 24;
+                        while($difference > 0){
+                            $difference--;
+                            $temp = array(
+                                0 => $card[$i]['category_id'],
+                                1 => $card[$i]['id']
+                                );
+                            array_push($total_domain, $temp);
+                        }
+                    }
+                // Generate cards randomly and make sure they are not dubplicated
+                    if(count($card) < $pack[0]['cards_num']){
+                        $data['success'] = 2;
+                    } else {
+                        unset($card);
+                        $card = array();
+                        while(count($card) < $pack[0]['cards_num']){
+                        // Get random number
+                            $num = rand (0,count($total_domain));
+                        // insert card if not exists in the card array
+                            $flag = 1;
+                            foreach($card as $o){
+                                if($o[0] == $total_domain[$num][0] && $o[1] == $total_domain[$num][1]){
+                                    $flag = 0;
+                                }
+                            }
+                            if($flag){
+                                array_push($card, $total_domain[$num]);
+                            }
+                        }
+                    //add the generated cards to the user
+                        for($i=0;$i<count($card);$i++){
+                            $data['success'] = $this->card_model->insert_user_card($card[$i][0] , $card[$i][1] , $user_id);
+                            $data['card'][$i]['cat_id'] = $card[$i][0];
+                            $data['card'][$i]['card_id'] = $card[$i][1];
+                        }
+                    //decrease the count of user's packs in this type
+                        $data['pack_update'] = $this->pack_model->update_user_packs($user_id, $pack_id, 0);
+                    }
+                } else {
+                    $data['success'] = 4;
+                }
+            } else {
+                $data['success'] = 3;
+            }
+        // Get user's packs
+            $data['pack'] = $this->pack_model->get_user_packs($user_id);
+            $this->response($data, 200);
 	}
 	
 	// return list of packs for a specific user
 	function getUserPacks_get(){
-		//load needed models
-		$this->load->model('pack_model');
-
-		//get the input, the user id
-		$id = $this->get('user_id');
-		
-		//call the needed function from the model
-		$packs_list = $this->pack_model->get_user_packs($id);
-        if(count($packs_list) == 0){
-        	$this->response(0, 200);
-        }else{
-			for ($i = 0; $i < count($packs_list); $i++) {
-				$data['pack_id'][$i] = $packs_list[$i]['pack_id'];
-				$data['count'][$i] = $packs_list[$i]['count'];
-			}
-			//return array contains pack_id and count
-			$this->response($data, 200);
-        }
+        //load needed models
+            $this->load->model('pack_model');
+        //get the input, the user id
+            $id = $this->get('user_id');
+        //call the needed function from the model
+            $data['pack'] = $this->pack_model->get_user_packs($id);
+            $this->response($data, 200);
+//            if(count($packs_list) == 0){
+//                $this->response(0, 200);
+//            }else{
+//                for ($i = 0; $i < count($packs_list); $i++) {
+//                        $data['pack_id'][$i] = $packs_list[$i]['pack_id'];
+//                        $data['count'][$i] = $packs_list[$i]['count'];
+//                }
+//                //return array contains pack_id and count
+//                $this->response($data, 200);
+//            }
 	}
 	
 	//change the state of the user's card from free to album

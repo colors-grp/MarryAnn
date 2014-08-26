@@ -34,7 +34,7 @@ class CREDIT extends REST_Controller
         $date = date('Y-m-d 00:00:00');
         $user[0]['lastsignedin'] = date_format(date_create($user[0]['lastsignedin']), 'Y-m-d 00:00:00');
         $difference = strtotime($date)- strtotime($user[0]['lastsignedin']);
-        if($difference == 86400){ // a day => 86400 seconds / 60 = 1440 minutes / 60 = 24 hours / 60 = 1 day
+        if($difference == 86400){ // a day => 86400 seconds / 60 = 1440 minutes / 60 = 24 hours / 24 = 1 day
         // Get platform credit value
             $platform_day = $this->credit_model->get_platform_credit($platform_id, $user[0]['days']+1);
             if(count($platform_day)){
