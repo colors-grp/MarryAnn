@@ -71,13 +71,27 @@ $this->lang->load('message',$_SESSION['language']);
  		document.getElementById("header-content").style.marginTop = h*0.066469 + "px";
 		
 		document.getElementById("left-flag").style.width = w * 0.247437 + "px";
- 		
- 		document.getElementById("fb-div").style.width = (w * 0.153733) + "px";
- 		document.getElementById("fb-div").style.height = (h * 0.0576) + "px";
- 		document.getElementById("fb-div").style.left = -(w * 0.042459) + "px";
- 		document.getElementById("fb-div").style.top = -(h * 0.00738) + "px";
+                
+ 		document.getElementById("fb-div1").style.width = (w * 0.153733) + "px";
+ 		document.getElementById("fb-div1").style.height = (h * 0.0576) + "px";
+ 		document.getElementById("fb-div1").style.left = -(w * 0.042459) + "px";
+ 		document.getElementById("fb-div1").style.top = -(h * 0.00738) + "px";
 
- 		document.getElementById("fb_img").style.width = (w * 0.153733) + "px";
+ 		document.getElementById("fb_img1").style.width = (w * 0.153733) + "px";
+                
+                document.getElementById("fb-div2").style.width = (w * 0.153733) + "px";
+ 		document.getElementById("fb-div2").style.height = (h * 0.0576) + "px";
+ 		document.getElementById("fb-div2").style.left = -(w * 0.042459) + "px";
+ 		document.getElementById("fb-div2").style.top = -(h * 0.00738) + "px";
+
+ 		document.getElementById("fb_img2").style.width = (w * 0.153733) + "px";
+                
+                document.getElementById("fb-div3").style.width = (w * 0.153733) + "px";
+ 		document.getElementById("fb-div3").style.height = (h * 0.0576) + "px";
+ 		document.getElementById("fb-div3").style.left = -(w * 0.042459) + "px";
+ 		document.getElementById("fb-div3").style.top = -(h * 0.00738) + "px";
+
+ 		document.getElementById("fb_img3").style.width = (w * 0.153733) + "px";
 
  		document.getElementById("mid-flag").style.width = (w * 0.247437) + "px";
  		document.getElementById("mid-flag").style.marginLeft = -(w * 0.05636) + "px";
@@ -235,10 +249,16 @@ $this->lang->load('message',$_SESSION['language']);
 					<img src = "<?=base_url();?>h7-assets/resources/img/flags_single.png" id = "left-flag">
 				</td>
 				<td>
-		            <!--the facebook login -->
-                            <a href = "<?php echo $this->config->item('core_url');?>?sitecode=<?=$this->config->item('sitecode');?>&mode=twitter<?php if(isset($canvas_fbid)){echo '&cfbid='.$canvas_fbid;}?>" id = "fb-div" >
-						<img src = "<?=base_url();?>h7-assets/resources/img/fb_login.png" id = "fb_img">
-					</a>
+                                        <!--the facebook login -->
+                                        <a href = "<?php echo $this->config->item('core_url');?>?sitecode=<?=$this->config->item('sitecode');?>&mode=signin<?php if(isset($canvas_fbid)){echo '&cfbid='.$canvas_fbid;}?>" id = "fb-div1" >
+                                                            <img src = "<?=base_url();?>h7-assets/resources/img/fb_login.png" id = "fb_img1">
+                                                    </a>
+                                        <a href = "<?php echo $this->config->item('core_url');?>?sitecode=<?=$this->config->item('sitecode');?>&mode=twitter<?php if(isset($canvas_fbid)){echo '&cfbid='.$canvas_fbid;}?>" id = "fb-div2" >
+                                                            <img src = "<?=base_url();?>h7-assets/resources/img/fb_login.png" id = "fb_img2">
+                                                    </a>
+                                        <a href = "<?php echo $this->config->item('core_url');?>?sitecode=<?=$this->config->item('sitecode');?>&mode=google<?php if(isset($canvas_fbid)){echo '&cfbid='.$canvas_fbid;}?>" id = "fb-div3" >
+                                                            <img src = "<?=base_url();?>h7-assets/resources/img/fb_login.png" id = "fb_img3">
+                                                    </a>
 					<!-- end of FB login -->
 				</td>
 				<td>

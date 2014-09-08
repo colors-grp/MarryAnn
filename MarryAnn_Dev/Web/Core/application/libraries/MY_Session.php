@@ -53,11 +53,10 @@ class MY_Session extends CI_Session {
 		{
 			$cookie_data = $this->CI->encrypt->encode($cookie_data);
 		}
-		else
-		{
-			// if encryption is not used, we provide an md5 hash to prevent userside tampering
-			$cookie_data = $cookie_data.md5($cookie_data.$this->encryption_key);
-		}
+                // if encryption is not used, we provide an md5 hash to prevent userside tampering
+//                $cookie_data = $cookie_data.md5($cookie_data.$this->encryption_key);
+                $cookie_data .= hash_hmac('sha1', $cookie_data, $this->encryption_key);
+		
 
 		// Set the cookie
 		setcookie($this->sess_cookie_name, $cookie_data, // if cookie monster exist and is awake, generate a session cookie that expires on browser close

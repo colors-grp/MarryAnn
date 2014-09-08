@@ -3,6 +3,7 @@
 require_once(APPPATH.'helpers/account/jmathai-twitter-async/EpiCurl.php');
 require_once(APPPATH.'helpers/account/jmathai-twitter-async/EpiOAuth.php');
 require_once(APPPATH.'helpers/account/jmathai-twitter-async/EpiTwitter.php');
+require_once(APPPATH.'helpers/account/jmathai-twitter-async/EpiSequence.php');
 
 
 /* End of file twitter_helper.php */

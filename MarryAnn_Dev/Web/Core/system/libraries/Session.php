@@ -31,19 +31,19 @@ class CI_Session {
 	var $sess_table_name			= '';
 	var $sess_expiration			= 7200;
 	var $sess_expire_on_close		= FALSE;
-	var $sess_match_ip				= FALSE;
+	var $sess_match_ip			= FALSE;
 	var $sess_match_useragent		= TRUE;
-	var $sess_cookie_name			= 'ci_session';
-	var $cookie_prefix				= '';
-	var $cookie_path				= '';
-	var $cookie_domain				= '';
-	var $cookie_secure				= FALSE;
+	var $sess_cookie_name			= 'cii_session';
+	var $cookie_prefix			= '';
+	var $cookie_path			= '';
+	var $cookie_domain			= '';
+	var $cookie_secure			= FALSE;
 	var $sess_time_to_update		= 300;
-	var $encryption_key				= '';
-	var $flashdata_key				= 'flash';
-	var $time_reference				= 'time';
-	var $gc_probability				= 5;
-	var $userdata					= array();
+	var $encryption_key			= '';
+	var $flashdata_key			= 'flash';
+	var $time_reference			= 'time';
+	var $gc_probability			= 5;
+	var $userdata				= array();
 	var $CI;
 	var $now;
 
@@ -672,11 +672,8 @@ class CI_Session {
 		{
 			$cookie_data = $this->CI->encrypt->encode($cookie_data);
 		}
-		else
-		{
-			// if encryption is not used, we provide an md5 hash to prevent userside tampering
-			$cookie_data .= hash_hmac('sha1', $cookie_data, $this->encryption_key);
-		}
+                // if encryption is not used, we provide an md5 hash to prevent userside tampering
+                $cookie_data .= hash_hmac('sha1', $cookie_data, $this->encryption_key);
 
 		$expire = ($this->sess_expire_on_close === TRUE) ? 0 : $this->sess_expiration + time();
 

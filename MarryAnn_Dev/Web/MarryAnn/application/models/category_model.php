@@ -7,7 +7,7 @@ class Category_model extends CI_Model{
 		$this->db->from('category');
 		$this->db->join('user_category' ,'user_category.category_id = category.id');
 		$this->db->where('user_id' , $user_id);
-		$query = $this->db->get();
+                $this->db->where('status' , 0);
 		if($query->num_rows() > 0)
 			return $query;
 		return FALSE;
@@ -18,9 +18,7 @@ class Category_model extends CI_Model{
             $this->db->select('*');
             $this->db->order_by('id', 'asc');
             $query = $this->db->get('category');
-            if($query->num_rows())
-                    return $query;
-            return FALSE;
+            return $query->result_array();
 	}
 
 	//Given a category id, returns the category name
@@ -79,4 +77,43 @@ class Category_model extends CI_Model{
 		return $query;
 	}
 	
+        
+        // Insert new category into DB
+        // Input: list of data.
+        // Output: success flag.
+        function insert_new_category($data){
+            $this->db->insert('category', $data);
+            return $this->db->affected_rows();
+        }
+        
+        // Return category id by name
+        // Input: category name.
+        // Output: category data.
+        function get_category_by_name($cat_name){
+            $this->db->select('*');
+            $this->db->from('category');
+            $this->db->where('name', $cat_name);
+            $query = $this->db->get();
+            return $query->result_array();
+        }
+        
+        // Return category by id
+        // Input: category id.
+        // Output: category data.
+        function get_category_by_id($cat_id){
+            $this->db->select('*');
+            $this->db->from('category');
+            $this->db->where('id', $cat_id);
+            $query = $this->db->get();
+            return $query->result_array();
+        }
+        
+        // Update category information given it's id
+        // Inputs: category id, list of data
+        // Output: success flag.
+        function update_category($cat_id, $data){
+            $this->db->where('id',$cat_id);
+            $this->db->update('category', $data);
+            return $this->db->affected_rows();
+        }
 }

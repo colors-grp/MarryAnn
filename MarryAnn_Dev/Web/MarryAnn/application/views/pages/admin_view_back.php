@@ -36,10 +36,6 @@
 		text-decoration: underline;
 	}
 	</style>
-    <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>-->	
-<!-- 	<script src="<?=base_url()?>/h7-assets/resources/bootstrap/js/bootstrap.min.js"></script> -->
-    <script src="<?=base_url()?>/h7-assets/resources/bootstrap/js/dropdown.js"></script>
-    <!--<script type="text/javascript" src="<?=base_url()?>/h7-assets/resources/js/jquery.js"></script>--> 
 <!-- 	End of CRUD Stuff -->
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1256">
 	<title>The Colors Concorrenza</title>
@@ -49,10 +45,16 @@
 	
 	<link href="http://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" type="text/css" href="<?=base_url()?>/h7-assets/resources/css/demo.css">
+	
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>	
+<!-- 	<script src="<?=base_url()?>/h7-assets/resources/bootstrap/js/bootstrap.min.js"></script> -->
+	<script src="<?=base_url()?>/h7-assets/resources/bootstrap/js/dropdown.js"></script>
+    <script type="text/javascript" src="<?=base_url()?>/h7-assets/resources/js/jquery.js"></script> 
 
 <!-- Simple Modal -->
 <link rel="stylesheet"
-	href="<?= $this->config->item('base_url');?>assets/js/simplemodal/css/basic.css">
+	href="<?= $this->config->item('platform_url');?>assets/js/simplemodal/css/basic.css">
 <!-- End of Simple Modal -->
     
 <!-- Header Begin -->
@@ -60,7 +62,7 @@
 		 <div id = "header-container">
 		 <div class="navbar-header">
 			<h4 style = "color: white;">
-                            <img id = "header-pic" src = "http://graph.facebook.com/<?=$fb_id?>/picture" alt="Profile Picture" height="30">
+				<img id = "header-pic" src = "http://graph.facebook.com/<?=$fb_id?>/picture" alt="Profile Picture">
 				<?=$name?>
 			</h4>
 		 </div>
@@ -104,14 +106,10 @@
          </ul>
          </div>
 	</div>
-        <div>
-            <?='<br />';?>
-            <a href='<?php echo site_url('admin_page/tables')?>'>Tables</a> | 
-        </div>
 </head>
 <body onload = "container_height()">
 <div class="container" id="My-container" style="position: relative;top: 40px;">
-<!--	<div id="add_mcq">
+	<div id="add_mcq">
 	<h2>Enter Question and 4 answers</h2>
 		<form id="add_mcq_form" action = "" method="post">
 			<input name = "question" type = "text"></br>
@@ -123,7 +121,7 @@
 			<input type="submit" value="Submit" name="mcq_submission">
 		</form>
 
-	</div>-->
+	</div>
 	<table>
 			<?php for ($i = 0; $i < count($tables); $i++) {?>
 		<tr>

@@ -304,6 +304,28 @@ class core_call extends CI_Model
 		}
 	}
         
+        // Get user's facebook data from a3m_facebook table
+        function tw_get_by_account_id($account_id) {
+		$method = 'tw_get_by_account_id';
+		$rValue = $this->callCore($method, array('account_id' => $account_id));
+                log_message('error','core_call fb_get_by_account_id $account_id='.$account_id.' $rValue='.print_r($rValue,TRUE));
+		// Validation for return values ...
+		// The API call will return an array with 2 parameters:
+		// invoke: a boolean that indicates correct processing at API side
+		// data: The returned value itself
+		// If invoke was false, a 3rd parameter is returned containing error message "named: error" ...
+
+		// If the method was executed successfully ...
+		if($rValue->invoke) {
+			// 			log_message('error', ' the data : ' . $rValue->data);
+			// return required data ...
+			return $rValue->data;
+		} else {
+			// 			log_message('error', 'Error calling H7 API, Method: '. $method . ', error message: ' . $rValue->error);
+			return $rValue->error;
+		}
+	}
+        
         function get_user_access_token($user_id){
             $method = 'get_user_access_token';
             $rValue = $this->callCore($method, array('user_id' => $user_id));

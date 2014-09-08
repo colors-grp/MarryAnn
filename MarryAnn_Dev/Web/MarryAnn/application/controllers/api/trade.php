@@ -7,8 +7,8 @@
  * all done with a hardcoded array.
  *
  * @package		CodeIgniter
- * @subpackage	Rest Server
- * @category	Controller
+ * @subpackage          Rest Server
+ * @category            Controller
  * @author		Phil Sturgeon
  * @link		http://philsturgeon.co.uk/code/
 */

@@ -30,20 +30,32 @@ class Home extends CI_Controller {
                 //echo 'We are here';
 
 		$accountid = $this->input->get('accountid');
+                $mode = $this->input->get('mode');
 		$_SESSION['language'] = 'arabic';
 
 		// If the user is signed in ...
 		if ($this->authentication->is_signed_in())
 		{
-			log_message('error', 'signed in and back home !!! account id = '. $this->session->userdata('account_id'));
-			$data['account'] = $this->core_call->get_by_id($this->session->userdata('account_id'));
-			$data['account_details'] = $this->core_call->get_by_account_id($this->session->userdata('account_id'));
-			// 			$data['friends'] = $this->core_call->getFacebookFriends($this->session->userdata('account_id'));
-
-			$fb = json_decode($this->core_call->fb_get_by_account_id($this->session->userdata('account_id')));
+                    $mode = $this->session->userdata('mode');
+                    $accountid = $this->session->userdata('account_id');
+                    log_message('error', 'signed in and back home !!! account id = '. $accountid .' mode='.$mode);
+                    $data['account'] = $this->core_call->get_by_id($accountid);
+                    $data['account_details'] = $this->core_call->get_by_account_id($accountid);
+                    if($mode == 1){ // Facebook
+			$fb = json_decode($this->core_call->fb_get_by_account_id($accountid));
                         log_message('error','mo7eb home index() $fb='.  print_r($fb,TRUE));
 			$_SESSION['fb_id'] = $fb[0]->facebook_id;
 			log_message('error', 'redirect 3la platform, FB ID = ' . $_SESSION['fb_id']);
+                    } elseif ($mode == 2){ // Twitter
+                        $tw = json_decode($this->core_call->tw_get_by_account_id($accountid));
+                        log_message('error','mo7eb home index() $tw='.  print_r($tw,TRUE));
+                        $this->session->set_userdata('fb_id', $tw[0]->twitter_id);
+			$_SESSION['fb_id'] = $tw[0]->twitter_id;
+                        log_message('error', 'redirect 3la platform, TW ID = ' . $_SESSION['fb_id']);
+                    } else {
+                        $this->authentication->sign_out();
+                        redirect('home');
+                    }
 //                        $fb_ids = array('503964508','1287496630','100000130552768','100000147991301','534012208','100008288062011','714507342','100005231178418','534012208', '821250159', '589150229', '580380268', '631392176', '634330188', '686740606', '100002305830180', '100002634478630', '100000167610543', '628380766', '842640084', '685960645', '828585787', '890660370', '801500509', '100000672895347', '686250625', '779900470', '896615017', '100005211378470','100007619778464', '100008351148673', '842942205', '1016382824','100008314040779','545098544','100001237441620','806355203','1754575577','100004176396136','100000141955961','1123570696','100004978659406','100008349759501','10202950961627802','100004342754999', '100005953815028', '100006296058790');
 //                        if( in_array($_SESSION['fb_id'], $fb_ids))
 //                        {
@@ -57,9 +69,11 @@ class Home extends CI_Controller {
 		// This is true for redirections from Core ...
 		if($accountid)
 		{
+                        $this->session->set_userdata('account_id', $accountid);
+                        $this->session->set_userdata('mode', $mode);
+                        log_message('error', 'back from core !!! account id = '. $accountid .' mode='.$mode);
 			log_message('error', 'bevore Sign in acc id == '.$accountid);
 			$this->authentication->sign_in($accountid);
-                        $this->session->userdata($accountid);
 		}
                 //echo 'after if redirection from core'. '<br />';
                 // contains top 3 users for each category
@@ -118,6 +132,7 @@ class Home extends CI_Controller {
                 redirect('home');
                 return;
             }
+            $_SESSION['user_id'] = $user_id;
         // Load needed models
             $this->load->model('scoreboard_model');
             $this->load->model('card_model');

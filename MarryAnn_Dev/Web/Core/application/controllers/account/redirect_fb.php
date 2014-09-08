@@ -65,7 +65,7 @@ class redirect_fb extends CI_Controller {
 
 				//log_message('error', 'redirect_fb:  user has connect facebook to a3m::  ' .$redirect_url);
 				// Redirect to Platform with account ID parameter ...
-				$redirect_url =  $this->authentication->getSiteUrl($_SESSION['sitecode']). '?accountid='.$user->account_id;
+				$redirect_url =  $this->authentication->getSiteUrl($_SESSION['sitecode']). '?accountid='.$user->account_id.'&mode=1';
                                 $this->account_facebook_model->update_user_token($fb_id, $facebook->getAccessToken());
 				redirect($redirect_url);
 				//redirect('http://colors-studios.com/jlaw/index.php?accountid='.$user->account_id);

@@ -205,7 +205,7 @@ class Core extends CI_Controller {
                 } else if($mode == 'twitter') {
                     $cnt ++;
                     log_message('error', 'core.php: mode ====== sign in : '.$mode);
-                    $_SESSION['sitecode'] = $sitecode;
+                    $this->session->set_userdata('sitecode', $sitecode);
                     log_message('error', 'core 3 Jul :Added site code to session, redirecting to redirect_fb');
 
                     // trying to check if user is logged in
@@ -278,16 +278,23 @@ class Core extends CI_Controller {
                         if($competition){
                             $this->credit_model->buy_credit($this->session->userdata('account_id'), $competition->start_credit);
                         }
+                        $provider = $this->session->userdata('provider');
+                        if($provider == 'facebook'){
+                            $mode = '1';
+                        } elseif($provider == 'twitter'){
+                            $mode = '2';
+                        } elseif($provider == 'google'){
+                            $mode = '3';
+                        }
+                        
 			// Redirect to Platform with account ID parameter ...
-			$redirect_url =  $this->authentication->getSiteUrl($sitecode). '?accountid='.$this->session->userdata('account_id');
+			$redirect_url =  $this->authentication->getSiteUrl($sitecode). '?accountid='.$this->session->userdata('account_id').'&mode='.$mode;
 			log_message('error', 'SAFARIIIIII 222 reditecttt toooo ->> ' . $redirect_url);
 			redirect($redirect_url);
 		}
-else {
-		log_message('error', 'NOT SIGNED IN: ');
-	
-}
-			
+                else {
+                    log_message('error', 'NOT SIGNED IN: ');
+                }
 		if ($cnt == 0){
 			log_message('error', 'teeeeeet1 session = ' . print_r($_SESSION, TRUE));
 			log_message('error', 'teeeeeet1 account id ellye fyl session' . print_r($this->session->userdata('account_id'), TRUE));

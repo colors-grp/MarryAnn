@@ -368,6 +368,36 @@ class H7FB extends REST_Controller
 		// response acts as "return" for the function
 		$this->response($rValue);
 	}
+    // Get user's twitter data from a3m_account table
+	function tw_get_by_account_id_get() {
+		$account_id = $this->get('account_id');
+		// Load the credit model and buy credit for user sending the facebook ID
+		// and desired credit to be bought
+		//log_message('error', 'fb_get_by_account_id  ' . $account_id);
+		$this->load->model('account/account_twitter_model');
+		$query = $this->account_twitter_model->get_by_account_id($account_id);
+                log_message('error','mo7eb h7fb tw_get_by_account_id_get() $query='.  print_r($query,TRUE));
+                //$rValue = array();
+                
+                //log_message('error', 'fb_get_by_account_id gettype($query)='.gettype($query).'  $query' . print_r($query,TRUE)); 
+                //log_message('error', 'fb_get_by_account_id count($query)='.count($query));
+		if(count($query))
+		{
+                    //log_message('error', 'fb_get_by_account_id inside');
+			$rValue['invoke'] = TRUE;
+			$rValue['data']	= json_encode($query);
+                      //  log_message('error', 'fb_get_by_account_id json_encode($query->row())='.json_encode($query->row()));
+		}
+		else
+		{
+			$rValue['invoke'] = FALSE;
+			$rValue['error'] = 'Unable to get user twitter data from a3m_facebook';
+                        //log_message('error', 'fb_get_by_account_id $rValue='.print_r($rValue,TRUE));
+		}
+                log_message('error', 'tw_get_by_account_id  $account_id=' . $account_id . '$rValue='.print_r($rValue,TRUE));
+		// response acts as "return" for the function
+		$this->response($rValue);
+	}
 	
 	function friends_get() {
 		

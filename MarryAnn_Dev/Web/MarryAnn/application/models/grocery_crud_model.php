@@ -27,7 +27,7 @@
  * @version    	1.2
  * @link		http://www.grocerycrud.com/documentation
  */
-class grocery_CRUD_Model  extends CI_Model  {
+class Grocery_crud_model  extends CI_Model  {
 
 	protected $primary_key = null;
 	protected $table_name = null;
@@ -481,8 +481,11 @@ class grocery_CRUD_Model  extends CI_Model  {
     	return $this->db->update($this->table_name,$post_array, array( $primary_key_field => $primary_key_value));
     }
 
-    function db_insert($post_array)
+    function db_insert($post_array, $table_name = 0)
     {
+        if($table_name){
+            $this->table_name = $table_name;
+        }
     	$insert = $this->db->insert($this->table_name,$post_array);
     	if($insert)
     	{
@@ -580,6 +583,15 @@ class grocery_CRUD_Model  extends CI_Model  {
     function escape_str($value)
     {
     	return $this->db->escape_str($value);
+    }
+    
+    function db_create_table($table_name,$fields, $keys){
+        $this->load->dbforge();
+        $this->dbforge->add_field($fields);
+        foreach($keys as $key){
+            $this->dbforge->add_key($key, TRUE);
+        }
+        $this->dbforge->create_table($table_name, TRUE);
     }
 
 }

@@ -33,21 +33,30 @@ class Connect_create extends CI_Controller {
 
 		// Redirect user to home if sign ups are disabled
 		//if ( ! ($this->config->item("sign_up_enabled"))) redirect('');
-
+                log_message('error','inside connect create CI_VERSION='.  print_r(CI_VERSION,1));
+                log_message('error','inside connect create $this->session->userdata(connect_create)='.  print_r($this->session->userdata('connect_create'),1));
 		// Redirect user to home if 'connect_create' session data doesn't exist
 		if ( ! $this->session->userdata('connect_create')) redirect('');
-
+                
 		$data['connect_create'] = $this->session->userdata('connect_create');
-		$MyData['username'] = $data['connect_create'][0]['provider_UN'];
-		$MyData['email'] = $data['connect_create'][0]['provider_email'];
-		$MyData['birthday'] = $data['connect_create'][1]['dateofbirth'];
+                
+                $this->session->set_userdata('provider', $data['connect_create'][0]['provider']);
+                if($data['connect_create'][0]['provider'] == 'twitter'){
+                    $MyData['username'] = $data['connect_create'][0]['username'];
+                    $MyData['email'] = isset($data['connect_create'][0]['email'])?$data['connect_create'][0]['email']:'twitter_'.$data['connect_create'][0]['provider_id'].'@twitter.com';
+                    $MyData['birthday'] = isset($data['connect_create'][1]['dateofbirth'])?$MyData['birthday'] = $data['connect_create'][1]['dateofbirth']:date('d-m-Y');
+                } else {
+                    $MyData['username'] = $data['connect_create'][0]['provider_UN'];
+                    $MyData['email'] = $data['connect_create'][0]['provider_email'];
+                    $MyData['birthday'] = $data['connect_create'][1]['dateofbirth'];
+                }
 
 		// Setup form validation
 		$this->form_validation->set_error_delimiters('<span class="field_error">', '</span>');
 		$this->form_validation->set_rules(array(array('field' => 'connect_create_username', 'label' => 'lang:connect_create_username', 'rules' => 'trim|required|min_length[2]'),
 												array('field' => 'connect_create_email', 'label' => 'lang:connect_create_email', 'rules' => 'trim|required|valid_email|max_length[160]'),
 												array('field' => 'connect_create_birthday', 'label' => 'lang:connect_create_birthday', 'rules' => 'trim|required|min_length[2]')));
-
+                log_message('error','after setting $MyData= '.  print_r($MyData,1));
 		// Run form validation
 		if ($this->form_validation->run())
 		{
@@ -66,18 +75,12 @@ class Connect_create extends CI_Controller {
 			{
 				// Destroy 'connect_create' session data
 				$this->session->unset_userdata('connect_create');
-                                /*$this->load->model('competition_model');
-
-                                $this->load->helper('date');
-                                $currenTime = now();
-                                $competition = $this->competition_model->get_current_competition($_SESSION['sitecode']);
-                                log_message('error','mo7eb connect_create index $competition='.print_r($competition,TRUE));
-				// Create user and giving him credit from default competition credit*/
-				$user_id = $this->account_model->create($this->input->post('connect_create_username', TRUE), $this->input->post('connect_create_email', TRUE), $this->input->post('connect_create_birthday', TRUE));//, $competition->start_credit);
-
+				// Create user
+				$user_id = $this->account_model->create($this->input->post('connect_create_username', TRUE), $this->input->post('connect_create_email', TRUE), $this->input->post('connect_create_birthday', TRUE));
+                                log_message('error','after user id ='.  print_r($user_id,1));
 				// Add user details
 				$this->account_details_model->update($user_id, $data['connect_create'][1]);
-
+                                log_message('error','after $this->account_details_model->update');
 				// Connect third party account to user
 				switch ($data['connect_create'][0]['provider'])
 				{
@@ -91,9 +94,10 @@ class Connect_create extends CI_Controller {
 						$this->account_openid_model->insert($data['connect_create'][0]['provider_id'], $user_id);
 						break;
 				}
-
+                                log_message('error','after inserting into DB');
 				// Run sign in routine
 				$this->authentication->sign_in($user_id);
+                                log_message('error','before = $this->authentication->sign_in => '.  print_r($this->authentication->is_signed_in(),1));
 			}
 		}
 

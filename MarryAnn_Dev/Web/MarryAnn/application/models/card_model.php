@@ -271,4 +271,22 @@ class Card_model extends CI_Model {
             $query = $this->db->get()->result_array();
             return $query;
         }
+        
+        // Update card's information
+        // Input: card id, list of new data
+        // Output: affected rows.
+        function update_card($card_id, $data){
+            $this->db->where('id',$card_id);
+            $this->db->update('card', $data);
+            return $this->db->affected_rows();
+        }
+        
+        // Insert card into DB
+        // Input: list of data.
+        // Output: affected rows.
+        function insert_card($data){
+            $this->db->insert('card', $data);
+            return $this->db->affected_rows();
+        }
+        
 }

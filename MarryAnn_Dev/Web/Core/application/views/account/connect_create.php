@@ -159,12 +159,14 @@ $this->lang->load('general',$language);
                         </div>
                         <div class="span4">
                                 <?php
+                                        log_message('error','connect_create view $birthday= '.  print_r($birthday,1));
                                         $year = substr($birthday,6,10);
                                         $day = substr($birthday,0,2);
                                         $month = substr($birthday,3,2);
-                                        $BD = $year ."-".$day."-".$month;
+                                        $BD = $year ."-".$month."-".$day;
                                 ?>
-                                        <input type="date" value="<?=$BD ?>" name = "connect_create_birthday" id = "connect_create_birthday" >
+                                        <input type="date" value="<?=$BD;?>" name = "connect_create_birthday" id = "connect_create_birthday" >
+                                        <input type="hidden" value="<?=$this->session->userdata('provider');?>" name = "provider" id = "provider" >
                                 <?php echo form_error('connect_create_birthday'); ?>
                                         <?php if (isset($connect_create_birthday_error)) : ?>
                         <span class="field_error"><?php echo $connect_create_birthday_error; ?></span>
