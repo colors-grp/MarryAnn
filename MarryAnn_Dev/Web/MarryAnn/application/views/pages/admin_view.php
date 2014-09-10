@@ -38,21 +38,21 @@
 	</style>
     <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>-->	
 <!-- 	<script src="<?=base_url()?>/h7-assets/resources/bootstrap/js/bootstrap.min.js"></script> -->
-    <script src="<?=base_url()?>/h7-assets/resources/bootstrap/js/dropdown.js"></script>
+    <!--<script src="<?=base_url()?>/h7-assets/resources/bootstrap/js/dropdown.js"></script>-->
     <!--<script type="text/javascript" src="<?=base_url()?>/h7-assets/resources/js/jquery.js"></script>--> 
 <!-- 	End of CRUD Stuff -->
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1256">
 	<title>The Colors Concorrenza</title>
-	<link type="text/css" rel="stylesheet" href="<?=base_url()?>/h7-assets/resources/bootstrap/css/bootstrap.css"/>
+<!--	<link type="text/css" rel="stylesheet" href="<?=base_url()?>/h7-assets/resources/bootstrap/css/bootstrap.css"/>
 	<link type="text/css" rel="stylesheet" href="<?=base_url()?>/h7-assets/resources/bootstrap/css/bootstrap-theme.css"/>
 	<link type="text/css" rel="stylesheet" href="<?=base_url()?>/h7-assets/resources/css/style.css"/>
 	
 	<link href="http://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet" type="text/css">
-	<link rel="stylesheet" type="text/css" href="<?=base_url()?>/h7-assets/resources/css/demo.css">
+	<link rel="stylesheet" type="text/css" href="<?=base_url()?>/h7-assets/resources/css/demo.css">-->
 
 <!-- Simple Modal -->
-<link rel="stylesheet"
-	href="<?= $this->config->item('base_url');?>assets/js/simplemodal/css/basic.css">
+<!--<link rel="stylesheet"
+	href="<?= $this->config->item('base_url');?>assets/js/simplemodal/css/basic.css">-->
 <!-- End of Simple Modal -->
     
 <!-- Header Begin -->
@@ -96,7 +96,7 @@
                 <ul class="dropdown-menu ar">
                     <li>
                         <a href="#">
-                        	<img src="<?=base_url()?>/h7-assets/resources/img/main-icons/ar_icon.png" alt="Arabic" width = "22">
+                        	<img src="<?=base_url();?>/h7-assets/resources/img/main-icons/ar_icon.png" alt="Arabic" width = "22">
                     	</a>
                 	</li>
             	</ul>
@@ -104,9 +104,13 @@
          </ul>
          </div>
 	</div>
-        <div>
+        <div style="position: relative; top: 30px; left: 15px;">
             <?='<br />';?>
-            <a href='<?php echo site_url('admin_page/tables')?>'>Tables</a> | 
+            <a href='<?=base_url();?>'>Home</a> | 
+            <a href='<?=site_url('admin_page/type');?>'>Type</a> | 
+            <a href='<?=site_url('admin_page/category');?>'>Categories</a> | 
+            <a href='<?=site_url('admin_page/card');?>'>Cards</a> | 
+            <a href='<?=site_url('admin_page/credit');?>'>Credits</a> | 
         </div>
 </head>
 <body onload = "container_height()">

@@ -692,4 +692,36 @@ class H7FB extends REST_Controller
                     log_message('error', 'NOUR, gwa el catch ' . $e);
             }
         }
+        
+        // Create new record for the given parameters into competition table
+        // Input: site url, platform name and platform type.
+        // Output: site code.
+        function getNewSiteCode_get(){
+            $data = json_decode(urldecode($this->get('data')), true);
+            // Load the credit model and buy credit for user sending the facebook ID
+            // and desired credit to be bought
+            $this->load->model('competition_model');
+            log_message('error', 'getNewSiteCode  $data=' . print_r($data,1));
+            if(count($this->competition_model->get_competition_by_url($data['url']))){
+                $id = 0;
+                log_message('error', 'getNewSiteCode_get inside if   $id=' . print_r($id,1));
+            } else {
+                $id = $this->competition_model->create($data);
+                log_message('error', 'getNewSiteCode_get inside else  $id=' . print_r($id,1));
+            }
+            log_message('error', 'getNewSiteCode_get after if condition  $id=' . print_r($id,1));
+            if($id)
+            {
+                    $rValue['invoke'] = TRUE;
+                    $rValue['data']	= $id;
+            }
+            else
+            {
+                    $rValue['invoke'] = FALSE;
+                    $rValue['error'] = 'This site already has been registered';
+            }
+            log_message('error', 'getNewSiteCode_get response $rValue=' . print_r($rValue,1));
+            // response acts as "return" for the function
+            $this->response($rValue);
+        }
 }

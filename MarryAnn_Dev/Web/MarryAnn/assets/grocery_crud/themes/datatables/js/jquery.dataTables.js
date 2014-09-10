@@ -11301,4 +11301,563 @@
 		"sSortIcon": "DataTables_sort_icon",
 		
 		/* Scrolling */
-		"sScrollHead": "dataTables_scrollHead ui-state-default
+		"sScrollHead": "dataTables_scrollHead ui-state-default",
+		"sScrollFoot": "dataTables_scrollFoot ui-state-default",
+		
+		/* Misc */
+		"sFooterTH": "ui-state-default",
+		"sJUIHeader": "fg-toolbar ui-toolbar ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix",
+		"sJUIFooter": "fg-toolbar ui-toolbar ui-widget-header ui-corner-bl ui-corner-br ui-helper-clearfix"
+	} );
+	
+	
+	/*
+	 * Variable: oPagination
+	 * Purpose:  
+	 * Scope:    jQuery.fn.dataTableExt
+	 */
+	$.extend( DataTable.ext.oPagination, {
+		/*
+		 * Variable: two_button
+		 * Purpose:  Standard two button (forward/back) pagination
+		 * Scope:    jQuery.fn.dataTableExt.oPagination
+		 */
+		"two_button": {
+			/*
+			 * Function: oPagination.two_button.fnInit
+			 * Purpose:  Initialise dom elements required for pagination with forward/back buttons only
+			 * Returns:  -
+			 * Inputs:   object:oSettings - dataTables settings object
+			 *           node:nPaging - the DIV which contains this pagination control
+			 *           function:fnCallbackDraw - draw function which must be called on update
+			 */
+			"fnInit": function ( oSettings, nPaging, fnCallbackDraw )
+			{
+				var oLang = oSettings.oLanguage.oPaginate;
+				var oClasses = oSettings.oClasses;
+				var fnClickHandler = function ( e ) {
+					if ( oSettings.oApi._fnPageChange( oSettings, e.data.action ) )
+					{
+						fnCallbackDraw( oSettings );
+					}
+				};
+	
+				var sAppend = (!oSettings.bJUI) ?
+					'<a class="'+oSettings.oClasses.sPagePrevDisabled+'" tabindex="'+oSettings.iTabIndex+'" role="button">'+oLang.sPrevious+'</a>'+
+					'<a class="'+oSettings.oClasses.sPageNextDisabled+'" tabindex="'+oSettings.iTabIndex+'" role="button">'+oLang.sNext+'</a>'
+					:
+					'<a class="'+oSettings.oClasses.sPagePrevDisabled+'" tabindex="'+oSettings.iTabIndex+'" role="button"><span class="'+oSettings.oClasses.sPageJUIPrev+'"></span></a>'+
+					'<a class="'+oSettings.oClasses.sPageNextDisabled+'" tabindex="'+oSettings.iTabIndex+'" role="button"><span class="'+oSettings.oClasses.sPageJUINext+'"></span></a>';
+				$(nPaging).append( sAppend );
+				
+				var els = $('a', nPaging);
+				var nPrevious = els[0],
+					nNext = els[1];
+				
+				oSettings.oApi._fnBindAction( nPrevious, {action: "previous"}, fnClickHandler );
+				oSettings.oApi._fnBindAction( nNext,     {action: "next"},     fnClickHandler );
+				
+				/* ID the first elements only */
+				if ( !oSettings.aanFeatures.p )
+				{
+					nPaging.id = oSettings.sTableId+'_paginate';
+					nPrevious.id = oSettings.sTableId+'_previous';
+					nNext.id = oSettings.sTableId+'_next';
+	
+					nPrevious.setAttribute('aria-controls', oSettings.sTableId);
+					nNext.setAttribute('aria-controls', oSettings.sTableId);
+				}
+			},
+			
+			/*
+			 * Function: oPagination.two_button.fnUpdate
+			 * Purpose:  Update the two button pagination at the end of the draw
+			 * Returns:  -
+			 * Inputs:   object:oSettings - dataTables settings object
+			 *           function:fnCallbackDraw - draw function to call on page change
+			 */
+			"fnUpdate": function ( oSettings, fnCallbackDraw )
+			{
+				if ( !oSettings.aanFeatures.p )
+				{
+					return;
+				}
+				
+				var oClasses = oSettings.oClasses;
+				var an = oSettings.aanFeatures.p;
+	
+				/* Loop over each instance of the pager */
+				for ( var i=0, iLen=an.length ; i<iLen ; i++ )
+				{
+					if ( an[i].childNodes.length !== 0 )
+					{
+						an[i].childNodes[0].className = ( oSettings._iDisplayStart === 0 ) ? 
+							oClasses.sPagePrevDisabled : oClasses.sPagePrevEnabled;
+						
+						an[i].childNodes[1].className = ( oSettings.fnDisplayEnd() == oSettings.fnRecordsDisplay() ) ? 
+							oClasses.sPageNextDisabled : oClasses.sPageNextEnabled;
+					}
+				}
+			}
+		},
+		
+		
+		/*
+		 * Variable: iFullNumbersShowPages
+		 * Purpose:  Change the number of pages which can be seen
+		 * Scope:    jQuery.fn.dataTableExt.oPagination
+		 */
+		"iFullNumbersShowPages": 5,
+		
+		/*
+		 * Variable: full_numbers
+		 * Purpose:  Full numbers pagination
+		 * Scope:    jQuery.fn.dataTableExt.oPagination
+		 */
+		"full_numbers": {
+			/*
+			 * Function: oPagination.full_numbers.fnInit
+			 * Purpose:  Initialise dom elements required for pagination with a list of the pages
+			 * Returns:  -
+			 * Inputs:   object:oSettings - dataTables settings object
+			 *           node:nPaging - the DIV which contains this pagination control
+			 *           function:fnCallbackDraw - draw function which must be called on update
+			 */
+			"fnInit": function ( oSettings, nPaging, fnCallbackDraw )
+			{
+				var oLang = oSettings.oLanguage.oPaginate;
+				var oClasses = oSettings.oClasses;
+				var fnClickHandler = function ( e ) {
+					if ( oSettings.oApi._fnPageChange( oSettings, e.data.action ) )
+					{
+						fnCallbackDraw( oSettings );
+					}
+				};
+	
+				$(nPaging).append(
+					'<a  tabindex="'+oSettings.iTabIndex+'" class="'+oClasses.sPageButton+" "+oClasses.sPageFirst+'">'+oLang.sFirst+'</a>'+
+					'<a  tabindex="'+oSettings.iTabIndex+'" class="'+oClasses.sPageButton+" "+oClasses.sPagePrevious+'">'+oLang.sPrevious+'</a>'+
+					'<span></span>'+
+					'<a tabindex="'+oSettings.iTabIndex+'" class="'+oClasses.sPageButton+" "+oClasses.sPageNext+'">'+oLang.sNext+'</a>'+
+					'<a tabindex="'+oSettings.iTabIndex+'" class="'+oClasses.sPageButton+" "+oClasses.sPageLast+'">'+oLang.sLast+'</a>'
+				);
+				var els = $('a', nPaging);
+				var nFirst = els[0],
+					nPrev = els[1],
+					nNext = els[2],
+					nLast = els[3];
+				
+				oSettings.oApi._fnBindAction( nFirst, {action: "first"},    fnClickHandler );
+				oSettings.oApi._fnBindAction( nPrev,  {action: "previous"}, fnClickHandler );
+				oSettings.oApi._fnBindAction( nNext,  {action: "next"},     fnClickHandler );
+				oSettings.oApi._fnBindAction( nLast,  {action: "last"},     fnClickHandler );
+				
+				/* ID the first elements only */
+				if ( !oSettings.aanFeatures.p )
+				{
+					nPaging.id = oSettings.sTableId+'_paginate';
+					nFirst.id =oSettings.sTableId+'_first';
+					nPrev.id =oSettings.sTableId+'_previous';
+					nNext.id =oSettings.sTableId+'_next';
+					nLast.id =oSettings.sTableId+'_last';
+				}
+			},
+			
+			/*
+			 * Function: oPagination.full_numbers.fnUpdate
+			 * Purpose:  Update the list of page buttons shows
+			 * Returns:  -
+			 * Inputs:   object:oSettings - dataTables settings object
+			 *           function:fnCallbackDraw - draw function to call on page change
+			 */
+			"fnUpdate": function ( oSettings, fnCallbackDraw )
+			{
+				if ( !oSettings.aanFeatures.p )
+				{
+					return;
+				}
+				
+				var iPageCount = DataTable.ext.oPagination.iFullNumbersShowPages;
+				var iPageCountHalf = Math.floor(iPageCount / 2);
+				var iPages = Math.ceil((oSettings.fnRecordsDisplay()) / oSettings._iDisplayLength);
+				var iCurrentPage = Math.ceil(oSettings._iDisplayStart / oSettings._iDisplayLength) + 1;
+				var sList = "";
+				var iStartButton, iEndButton, i, iLen;
+				var oClasses = oSettings.oClasses;
+				var anButtons, anStatic, nPaginateList;
+				var an = oSettings.aanFeatures.p;
+				var fnBind = function (j) {
+					oSettings.oApi._fnBindAction( this, {"page": j+iStartButton-1}, function(e) {
+						/* Use the information in the element to jump to the required page */
+						oSettings.oApi._fnPageChange( oSettings, e.data.page );
+						fnCallbackDraw( oSettings );
+						e.preventDefault();
+					} );
+				};
+				
+				/* Pages calculation */
+				if ( oSettings._iDisplayLength === -1 )
+				{
+					iStartButton = 1;
+					iEndButton = 1;
+					iCurrentPage = 1;
+				}
+				else if (iPages < iPageCount)
+				{
+					iStartButton = 1;
+					iEndButton = iPages;
+				}
+				else if (iCurrentPage <= iPageCountHalf)
+				{
+					iStartButton = 1;
+					iEndButton = iPageCount;
+				}
+				else if (iCurrentPage >= (iPages - iPageCountHalf))
+				{
+					iStartButton = iPages - iPageCount + 1;
+					iEndButton = iPages;
+				}
+				else
+				{
+					iStartButton = iCurrentPage - Math.ceil(iPageCount / 2) + 1;
+					iEndButton = iStartButton + iPageCount - 1;
+				}
+	
+				
+				/* Build the dynamic list */
+				for ( i=iStartButton ; i<=iEndButton ; i++ )
+				{
+					sList += (iCurrentPage !== i) ?
+						'<a tabindex="'+oSettings.iTabIndex+'" class="'+oClasses.sPageButton+'">'+oSettings.fnFormatNumber(i)+'</a>' :
+						'<a tabindex="'+oSettings.iTabIndex+'" class="'+oClasses.sPageButtonActive+'">'+oSettings.fnFormatNumber(i)+'</a>';
+				}
+				
+				/* Loop over each instance of the pager */
+				for ( i=0, iLen=an.length ; i<iLen ; i++ )
+				{
+					if ( an[i].childNodes.length === 0 )
+					{
+						continue;
+					}
+					
+					/* Build up the dynamic list forst - html and listeners */
+					$('span:eq(0)', an[i])
+						.html( sList )
+						.children('a').each( fnBind );
+					
+					/* Update the premanent botton's classes */
+					anButtons = an[i].getElementsByTagName('a');
+					anStatic = [
+						anButtons[0], anButtons[1], 
+						anButtons[anButtons.length-2], anButtons[anButtons.length-1]
+					];
+	
+					$(anStatic).removeClass( oClasses.sPageButton+" "+oClasses.sPageButtonActive+" "+oClasses.sPageButtonStaticDisabled );
+					$([anStatic[0], anStatic[1]]).addClass( 
+						(iCurrentPage==1) ?
+							oClasses.sPageButtonStaticDisabled :
+							oClasses.sPageButton
+					);
+					$([anStatic[2], anStatic[3]]).addClass(
+						(iPages===0 || iCurrentPage===iPages || oSettings._iDisplayLength===-1) ?
+							oClasses.sPageButtonStaticDisabled :
+							oClasses.sPageButton
+					);
+				}
+			}
+		}
+	} );
+	
+	$.extend( DataTable.ext.oSort, {
+		/*
+		 * text sorting
+		 */
+		"string-pre": function ( a )
+		{
+			if ( typeof a != 'string' ) {
+				a = (a !== null && a.toString) ? a.toString() : '';
+			}
+			return a.toLowerCase();
+		},
+	
+		"string-asc": function ( x, y )
+		{
+			return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+		},
+		
+		"string-desc": function ( x, y )
+		{
+			return ((x < y) ? 1 : ((x > y) ? -1 : 0));
+		},
+		
+		
+		/*
+		 * html sorting (ignore html tags)
+		 */
+		"html-pre": function ( a )
+		{
+			return a.replace( /<.*?>/g, "" ).toLowerCase();
+		},
+		
+		"html-asc": function ( x, y )
+		{
+			return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+		},
+		
+		"html-desc": function ( x, y )
+		{
+			return ((x < y) ? 1 : ((x > y) ? -1 : 0));
+		},
+		
+		
+		/*
+		 * date sorting
+		 */
+		"date-pre": function ( a )
+		{
+			var x = Date.parse( a );
+			
+			if ( isNaN(x) || x==="" )
+			{
+				x = Date.parse( "01/01/1970 00:00:00" );
+			}
+			return x;
+		},
+	
+		"date-asc": function ( x, y )
+		{
+			return x - y;
+		},
+		
+		"date-desc": function ( x, y )
+		{
+			return y - x;
+		},
+		
+		
+		/*
+		 * numerical sorting
+		 */
+		"numeric-pre": function ( a )
+		{
+			return (a=="-" || a==="") ? 0 : a*1;
+		},
+	
+		"numeric-asc": function ( x, y )
+		{
+			return x - y;
+		},
+		
+		"numeric-desc": function ( x, y )
+		{
+			return y - x;
+		}
+	} );
+	
+	
+	$.extend( DataTable.ext.aTypes, [
+		/*
+		 * Function: -
+		 * Purpose:  Check to see if a string is numeric
+		 * Returns:  string:'numeric' or null
+		 * Inputs:   mixed:sText - string to check
+		 */
+		function ( sData )
+		{
+			/* Allow zero length strings as a number */
+			if ( typeof sData === 'number' )
+			{
+				return 'numeric';
+			}
+			else if ( typeof sData !== 'string' )
+			{
+				return null;
+			}
+			
+			var sValidFirstChars = "0123456789-";
+			var sValidChars = "0123456789.";
+			var Char;
+			var bDecimal = false;
+			
+			/* Check for a valid first char (no period and allow negatives) */
+			Char = sData.charAt(0); 
+			if (sValidFirstChars.indexOf(Char) == -1) 
+			{
+				return null;
+			}
+			
+			/* Check all the other characters are valid */
+			for ( var i=1 ; i<sData.length ; i++ ) 
+			{
+				Char = sData.charAt(i); 
+				if (sValidChars.indexOf(Char) == -1) 
+				{
+					return null;
+				}
+				
+				/* Only allowed one decimal place... */
+				if ( Char == "." )
+				{
+					if ( bDecimal )
+					{
+						return null;
+					}
+					bDecimal = true;
+				}
+			}
+			
+			return 'numeric';
+		},
+		
+		/*
+		 * Function: -
+		 * Purpose:  Check to see if a string is actually a formatted date
+		 * Returns:  string:'date' or null
+		 * Inputs:   string:sText - string to check
+		 */
+		function ( sData )
+		{
+			var iParse = Date.parse(sData);
+			if ( (iParse !== null && !isNaN(iParse)) || (typeof sData === 'string' && sData.length === 0) )
+			{
+				return 'date';
+			}
+			return null;
+		},
+		
+		/*
+		 * Function: -
+		 * Purpose:  Check to see if a string should be treated as an HTML string
+		 * Returns:  string:'html' or null
+		 * Inputs:   string:sText - string to check
+		 */
+		function ( sData )
+		{
+			if ( typeof sData === 'string' && sData.indexOf('<') != -1 && sData.indexOf('>') != -1 )
+			{
+				return 'html';
+			}
+			return null;
+		}
+	] );
+	
+
+	// jQuery aliases
+	$.fn.DataTable = DataTable;
+	$.fn.dataTable = DataTable;
+	$.fn.dataTableSettings = DataTable.settings;
+	$.fn.dataTableExt = DataTable.ext;
+
+
+	// Information about events fired by DataTables - for documentation.
+	/**
+	 * Draw event, fired whenever the table is redrawn on the page, at the same point as
+	 * fnDrawCallback. This may be useful for binding events or performing calculations when
+	 * the table is altered at all.
+	 *  @name DataTable#draw
+	 *  @event
+	 *  @param {event} e jQuery event object
+	 *  @param {object} o DataTables settings object {@link DataTable.models.oSettings}
+	 */
+
+	/**
+	 * Filter event, fired when the filtering applied to the table (using the build in global
+	 * global filter, or column filters) is altered.
+	 *  @name DataTable#filter
+	 *  @event
+	 *  @param {event} e jQuery event object
+	 *  @param {object} o DataTables settings object {@link DataTable.models.oSettings}
+	 */
+
+	/**
+	 * Page change event, fired when the paging of the table is altered.
+	 *  @name DataTable#page
+	 *  @event
+	 *  @param {event} e jQuery event object
+	 *  @param {object} o DataTables settings object {@link DataTable.models.oSettings}
+	 */
+
+	/**
+	 * Sort event, fired when the sorting applied to the table is altered.
+	 *  @name DataTable#sort
+	 *  @event
+	 *  @param {event} e jQuery event object
+	 *  @param {object} o DataTables settings object {@link DataTable.models.oSettings}
+	 */
+
+	/**
+	 * DataTables initialisation complete event, fired when the table is fully drawn,
+	 * including Ajax data loaded, if Ajax data is required.
+	 *  @name DataTable#init
+	 *  @event
+	 *  @param {event} e jQuery event object
+	 *  @param {object} oSettings DataTables settings object
+	 *  @param {object} json The JSON object request from the server - only
+	 *    present if client-side Ajax sourced data is used</li></ol>
+	 */
+
+	/**
+	 * State save event, fired when the table has changed state a new state save is required.
+	 * This method allows modification of the state saving object prior to actually doing the
+	 * save, including addition or other state properties (for plug-ins) or modification
+	 * of a DataTables core property.
+	 *  @name DataTable#stateSaveParams
+	 *  @event
+	 *  @param {event} e jQuery event object
+	 *  @param {object} oSettings DataTables settings object
+	 *  @param {object} json The state information to be saved
+	 */
+
+	/**
+	 * State load event, fired when the table is loading state from the stored data, but
+	 * prior to the settings object being modified by the saved state - allowing modification
+	 * of the saved state is required or loading of state for a plug-in.
+	 *  @name DataTable#stateLoadParams
+	 *  @event
+	 *  @param {event} e jQuery event object
+	 *  @param {object} oSettings DataTables settings object
+	 *  @param {object} json The saved state information
+	 */
+
+	/**
+	 * State loaded event, fired when state has been loaded from stored data and the settings
+	 * object has been modified by the loaded data.
+	 *  @name DataTable#stateLoaded
+	 *  @event
+	 *  @param {event} e jQuery event object
+	 *  @param {object} oSettings DataTables settings object
+	 *  @param {object} json The saved state information
+	 */
+
+	/**
+	 * Processing event, fired when DataTables is doing some kind of processing (be it,
+	 * sort, filter or anything else). Can be used to indicate to the end user that
+	 * there is something happening, or that something has finished.
+	 *  @name DataTable#processing
+	 *  @event
+	 *  @param {event} e jQuery event object
+	 *  @param {object} oSettings DataTables settings object
+	 *  @param {boolean} bShow Flag for if DataTables is doing processing or not
+	 */
+
+	/**
+	 * Ajax (XHR) event, fired whenever an Ajax request is completed from a request to 
+	 * made to the server for new data (note that this trigger is called in fnServerData,
+	 * if you override fnServerData and which to use this event, you need to trigger it in
+	 * you success function).
+	 *  @name DataTable#xhr
+	 *  @event
+	 *  @param {event} e jQuery event object
+	 *  @param {object} o DataTables settings object {@link DataTable.models.oSettings}
+	 */
+
+	/**
+	 * Destroy event, fired when the DataTable is destroyed by calling fnDestroy or passing
+	 * the bDestroy:true parameter in the initialisation object. This can be used to remove
+	 * bound events, added DOM nodes, etc.
+	 *  @name DataTable#destroy
+	 *  @event
+	 *  @param {event} e jQuery event object
+	 *  @param {object} o DataTables settings object {@link DataTable.models.oSettings}
+	 */
+}(jQuery, window, document, undefined));

@@ -16,9 +16,12 @@ class Category_model extends CI_Model{
 	//Returns all categories in competition
 	function get_all_category() {
             $this->db->select('*');
+            $this->db->where('status','active');
             $this->db->order_by('id', 'asc');
             $query = $this->db->get('category');
-            return $query->result_array();
+            if($query -> num_rows() > 0)
+                return $query;
+            return  FALSE;
 	}
 
 	//Given a category id, returns the category name

@@ -41,4 +41,19 @@ class Competition_model extends CI_Model {
             }
             return FALSE;
         }
+        
+        function create($data){
+            $this->db->insert('competition', $data);
+            return $this->db->insert_id();
+        }
+        
+        function get_competition_by_url($url){
+            log_message('error', 'get_competition_by_url $url=' . print_r($url,1));
+            $this->db->select('*');
+            $this->db->where('url',$url);
+            $this->db->from('competition');
+            $query = $this->db->get();
+            log_message('error', 'get_competition_by_url $query=' . print_r($query,1));
+            return $query->result_array();
+        }
 }

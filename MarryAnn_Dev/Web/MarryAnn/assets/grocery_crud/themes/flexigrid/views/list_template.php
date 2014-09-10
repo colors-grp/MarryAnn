@@ -41,7 +41,7 @@ if($success_message !== null){?>
 	<p><?php echo $success_message; ?></p>
 <?php }
 ?></div>
-<div class="flexigrid" style='' data-unique-hash="<?php echo $unique_hash; ?>">
+<div class="flexigrid" style='width: 100%;' data-unique-hash="<?php echo $unique_hash; ?>">
 	<div id="hidden-operations" class="hidden-operations"></div>
 	<div class="mDiv">
 		<div class="ftitle">

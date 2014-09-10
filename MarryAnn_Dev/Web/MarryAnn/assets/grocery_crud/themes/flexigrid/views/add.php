@@ -7,7 +7,7 @@
 	$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/jquery.noty.js');
 	$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/config/jquery.noty.config.js');
 ?>
-<div class="flexigrid crud-form" style='' data-unique-hash="<?php echo $unique_hash; ?>">
+<div class="flexigrid crud-form" style='width: 100%;' data-unique-hash="<?php echo $unique_hash; ?>">
 	<div class="mDiv">
 		<div class="ftitle">
 			<div class='ftitle-left'>
