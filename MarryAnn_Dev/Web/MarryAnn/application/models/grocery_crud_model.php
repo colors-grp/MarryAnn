@@ -585,13 +585,26 @@ class Grocery_crud_model  extends CI_Model  {
     	return $this->db->escape_str($value);
     }
     
-    function db_create_table($table_name,$fields, $keys){
+    function db_create_table($table_name, $fields, $keys){
         $this->load->dbforge();
         $this->dbforge->add_field($fields);
         foreach($keys as $key){
             $this->dbforge->add_key($key, TRUE);
         }
-        $this->dbforge->create_table($table_name, TRUE);
+        return $this->dbforge->create_table($table_name, TRUE);
+    }
+    
+    function db_drop_table($table_name){
+        $this->load->dbforge();
+        return $this->dbforge->drop_table($table_name);
+    }
+    
+    function db_copy_create_table($table1,$table2){
+        $sql = '';
+        foreach($table1 as $table_name){
+            $sql = ' CREATE TABLE `'.$table_name.'` ( SELECT * FROM `'.$table2.'` ); ';
+            $this->db->query($sql);
+        }
     }
 
 }

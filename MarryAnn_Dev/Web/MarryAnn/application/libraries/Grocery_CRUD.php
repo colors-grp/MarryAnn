@@ -1890,7 +1890,10 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 
 	protected function insert_layout($insert_result = false)
 	{
-		@ob_end_clean();
+		if (ob_get_contents()) {
+                    @ob_end_clean();
+                }
+//                @ob_end_clean();
 		if($insert_result === false)
 		{
 			echo json_encode(array('success' => false));
@@ -1927,7 +1930,10 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 
 	protected function validation_layout($validation_result)
 	{
-		@ob_end_clean();
+            if (ob_get_contents()) {
+                @ob_end_clean();
+            }
+//        @ob_end_clean();
 		echo "<textarea>".json_encode($validation_result)."</textarea>";
 		$this->set_echo_and_die();
 	}

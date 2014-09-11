@@ -118,11 +118,11 @@
             <h1>Description</h1><br />
             <p>
                 <B>Name:</B>Category name.<br />
-                <B>Created:</B>When was created.<br />
+                <B>Created:</B>The date when the category was created.<br />
                 <B>Status:</B>Status of the category active or inactive.(if set to inactive players will not be able to see it).<br />
                 <B>Start date:</B>When the category will be available to players.<br />
                 <B>End date:</B>When the category will stop being available to players.<br />
-                <B>Total score:</B>Total score of all games played in this category.<br />
+                <B>Total score:</B>Total score of all games played in this category.<B>(This section is calculated by the system)</B><br />
                 <B>Num of cards:</B>Number of cards in this category.<br />
                 <B>Rank:</B>Its rank among all active categories.<br />
                 <B>Color:</B>Its back ground color in the platform.(In hex)<br />

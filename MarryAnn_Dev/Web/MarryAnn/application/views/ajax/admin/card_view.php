@@ -128,6 +128,7 @@
 		</form>
 
 	</div>-->
+        <?php if(count($category)){ ?>
         <div id="category">
             <h2>Choose your category</h2>
             <form id="choose_category" action = "<?=site_url('admin_page/card/'.time())?>" method="post">
@@ -136,9 +137,10 @@
                             echo '<input name = "category_id" type="radio" value="'.$row['id'].'" '.(($cat_id==$row['id'])?'checked':'').' >'.$row['name'].'<br />';
                         }
                     ?>    
-                    <input type="submit" value="Select">
+                <input type="submit" value="Select">
             </form>
 	</div>
+        <?php } ?>
         <div id="card_descriptionn">
                 <h1>Description</h1><br />
                 <p>
