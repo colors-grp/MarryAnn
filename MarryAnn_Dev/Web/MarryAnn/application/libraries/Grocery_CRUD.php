@@ -1707,7 +1707,10 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$this->set_echo_and_die();
 
 		$total_results = (int)$this->get_total_results();
-		@ob_end_clean();
+                if (ob_get_contents()) {
+                    @ob_end_clean();
+                }
+//		@ob_end_clean();
 		echo json_encode(array('total_results' => $total_results));
 		die();
 	}

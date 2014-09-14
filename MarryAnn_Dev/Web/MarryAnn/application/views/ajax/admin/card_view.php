@@ -129,14 +129,20 @@
 
 	</div>-->
         <?php if(count($category)){ ?>
-        <div id="category">
-            <h2>Choose your category</h2>
+        <div id="choose">
             <form id="choose_category" action = "<?=site_url('admin_page/card/'.time())?>" method="post">
+                <h2>Choose your category and pack</h2>
                     <?php
                         foreach($category as $row){
                             echo '<input name = "category_id" type="radio" value="'.$row['id'].'" '.(($cat_id==$row['id'])?'checked':'').' >'.$row['name'].'<br />';
                         }
-                    ?>    
+                    ?>
+                <h2>Choose your pack</h2>
+                    <?php
+                        foreach($pack as $row){
+                            echo '<input name = "pack_id" type="radio" value="'.$row['id'].'" '.(($pack_id==$row['id'])?'checked':'').' >'.$row['name'].'<br />';
+                        }
+                    ?>
                 <input type="submit" value="Select">
             </form>
 	</div>

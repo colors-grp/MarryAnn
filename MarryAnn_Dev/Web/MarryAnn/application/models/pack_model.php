@@ -4,7 +4,7 @@ class pack_model extends CI_Model {
 	function get_pack($pack_id){
 		$this->db->select('*');
 		$this->db->from('pack');
-		$this->db->where('pack_id', $pack_id);
+		$this->db->where('id', $pack_id);
 		$query = $this->db->get()->result_array();
 		return $query;
 	}
@@ -52,5 +52,14 @@ class pack_model extends CI_Model {
 		$this->db->update('user_pack' , $data);
 		return $this->db->affected_rows();
 	}
+        
+        // Get all packs from DB
+        // Input: non.
+        // Output: List of packs.
+        function get_all_packs(){
+            $this->db->select('*');
+            $query = $this->db->get('pack');
+            return $query->result_array();
+        }
 }
 	

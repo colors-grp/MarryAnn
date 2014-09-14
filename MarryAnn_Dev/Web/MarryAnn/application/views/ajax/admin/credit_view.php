@@ -118,7 +118,7 @@
     <div id="credit_descriptionn">
         <h1>Description</h1><br />
         <p>
-            <B>Platform Id:</B>All platforms with the same name should have the same id.<br />
+            <!--<B>Platform Id:</B>All platforms with the same name should have the same id.<br />-->
             <B>Platform Name:</B>This Field is for your information.(Like: web, ios, android, facebook or twitter)</B><br />
             <B>Day:</B>Number of day the credit will be given in.<B>(Like: 1, 2, 3, etc.)</B><br />
             <B>Daily Credit:</B>The amount of credit will be given to player.<br />
