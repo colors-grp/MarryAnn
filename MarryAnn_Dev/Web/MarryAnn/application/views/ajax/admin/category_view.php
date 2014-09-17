@@ -110,6 +110,9 @@
             <a href='<?=site_url('admin_page/category');?>'>Categories</a> | 
             <a href='<?=site_url('admin_page/card');?>'>Cards</a> | 
             <a href='<?=site_url('admin_page/credit');?>'>Platform Credits</a> | 
+        <?php if($site_type == 2){ ?>
+            <a href='<?=site_url('admin_page/pack');?>'>Pack</a> |
+        <?php } ?>
         </div>
 </head>
 <body onload = "container_height()">

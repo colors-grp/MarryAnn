@@ -110,7 +110,11 @@
             <a href='<?=site_url('admin_page/type');?>'>Type</a> | 
             <a href='<?=site_url('admin_page/category');?>'>Categories</a> | 
             <a href='<?=site_url('admin_page/card');?>'>Cards</a> | 
-            <a href='<?=site_url('admin_page/credit');?>'>Platform Credits</a> | 
+            <a href='<?=site_url('admin_page/credit');?>'>Platform Credits</a> |
+        <?php if($site_type == 2){ ?>
+            <a href='<?=site_url('admin_page/pack');?>'>Pack</a> |
+        <?php } ?>
+            
         </div>
 </head>
 <body onload = "container_height()">
@@ -136,11 +140,13 @@
                         foreach($category as $row){
                             echo '<input name = "category_id" type="radio" value="'.$row['id'].'" '.(($cat_id==$row['id'])?'checked':'').' >'.$row['name'].'<br />';
                         }
+                        if($site_type == 2){
                     ?>
                 <h2>Choose your pack</h2>
                     <?php
-                        foreach($pack as $row){
-                            echo '<input name = "pack_id" type="radio" value="'.$row['id'].'" '.(($pack_id==$row['id'])?'checked':'').' >'.$row['name'].'<br />';
+                            foreach($pack as $row){
+                                echo '<input name = "pack_id" type="radio" value="'.$row['id'].'" '.(($pack_id==$row['id'])?'checked':'').' >'.$row['name'].'<br />';
+                            }
                         }
                     ?>
                 <input type="submit" value="Select">

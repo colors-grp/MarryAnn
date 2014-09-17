@@ -111,6 +111,9 @@
             <a href='<?=site_url('admin_page/category');?>'>Categories</a> | 
             <a href='<?=site_url('admin_page/card');?>'>Cards</a> | 
             <a href='<?=site_url('admin_page/credit');?>'>Platform Credits</a> | 
+        <?php if($site_type == 2) {//album ?>
+            <a href='<?=site_url('admin_page/pack');?>'>Pack</a> | 
+        <?php } ?>
         </div>
 </head>
 <body onload = "container_height()">
@@ -128,6 +131,7 @@
 		</form>
 
 	</div>-->
+<!--
 <?php if (isset($error) && $error == 1) { ?>
     <div id="platform_type">
 	<h2>This site is already registered!!</h2>
@@ -160,8 +164,8 @@
 	<h2>Your Platform type: <?=($site_type==1)?'Competition':'Album';?></h2>
         <h3>Please choose another tab</h3>
     </div>
-<?php } ?>
-<!--	<table>
+<?php } ?> -->
+	<table>
 			<?php for ($i = 0; $i < count($tables); $i++) {?>
 		<tr>
 				<td>
@@ -172,7 +176,7 @@
 			<?php }?>
 	</table>
 	<div id="show_tables">
-	</div>-->
+	</div>
 </div>
 
 <script>

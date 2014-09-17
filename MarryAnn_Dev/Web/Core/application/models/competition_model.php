@@ -53,7 +53,13 @@ class Competition_model extends CI_Model {
             $this->db->where('url',$url);
             $this->db->from('competition');
             $query = $this->db->get();
-            log_message('error', 'get_competition_by_url $query=' . print_r($query,1));
+            log_message('error', 'get_competition_by_url $query=' . print_r($query->result_array(),1));
             return $query->result_array();
+        }
+        
+        function update_competition_name($id, $data){
+            $this->db->where('id',$id);
+            $this->db->update('competition', $data);
+            return $this->db->affected_rows();
         }
 }

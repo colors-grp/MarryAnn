@@ -2121,7 +2121,10 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 
 	protected function update_layout($update_result = false, $state_info = null)
 	{
-		@ob_end_clean();
+                if (ob_get_contents()) {
+                    @ob_end_clean();
+                }
+//		@ob_end_clean();
 		if($update_result === false)
 		{
 			echo json_encode(array('success' => $update_result));

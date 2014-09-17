@@ -697,30 +697,53 @@ class H7FB extends REST_Controller
         // Input: site url, platform name and platform type.
         // Output: site code.
         function getNewSiteCode_get(){
-            $data = json_decode(urldecode($this->get('data')), true);
+            $data_input = json_decode(urldecode($this->get('data')), true);
             // Load the credit model and buy credit for user sending the facebook ID
             // and desired credit to be bought
             $this->load->model('competition_model');
-            log_message('error', 'getNewSiteCode  $data=' . print_r($data,1));
-            if(count($this->competition_model->get_competition_by_url($data['url']))){
-                $id = 0;
-                log_message('error', 'getNewSiteCode_get inside if   $id=' . print_r($id,1));
+            log_message('error', 'getNewSiteCode  $data_input=' . print_r($data_input,1));
+            $temp = $this->competition_model->get_competition_by_url($data_input['url']);
+            log_message('error', 'getNewSiteCode  $data=' . print_r($temp,1));
+            if( !count($temp) ){
+                $id = $this->competition_model->create($data_input);
             } else {
-                $id = $this->competition_model->create($data);
-                log_message('error', 'getNewSiteCode_get inside else  $id=' . print_r($id,1));
+                $id = $temp[0]['id'];
             }
-            log_message('error', 'getNewSiteCode_get after if condition  $id=' . print_r($id,1));
+            $data = $this->competition_model->get_competition_by_url($data_input['url']);
             if($id)
             {
                     $rValue['invoke'] = TRUE;
-                    $rValue['data']	= $id;
+                    $rValue['data']	= urlencode(json_encode($data));
             }
             else
             {
                     $rValue['invoke'] = FALSE;
-                    $rValue['error'] = 'This site already has been registered';
+                    $rValue['error'] = 'Error while accessing database';
             }
             log_message('error', 'getNewSiteCode_get response $rValue=' . print_r($rValue,1));
+            // response acts as "return" for the function
+            $this->response($rValue);
+        }
+        
+        function updatePlatformName_get(){
+            $data_input = json_decode(urldecode($this->get('data')), true);
+            // Load the credit model and buy credit for user sending the facebook ID
+            // and desired credit to be bought
+            $this->load->model('competition_model');
+            log_message('error', 'updatePlatformName  $data_input=' . print_r($data_input,1));
+            $data = array( 'name' => $data_input['name'] );
+            $result = $this->competition_model->update_competition_name($data_input['id'], $data);
+            if($result)
+            {
+                    $rValue['invoke'] = TRUE;
+                    $rValue['data']	= $result;
+            }
+            else
+            {
+                    $rValue['invoke'] = FALSE;
+                    $rValue['error'] = 'Error while accessing database';
+            }
+            log_message('error', 'updatePlatformName response $rValue=' . print_r($rValue,1));
             // response acts as "return" for the function
             $this->response($rValue);
         }

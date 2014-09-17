@@ -382,7 +382,7 @@ class core_call extends CI_Model
 			if($rValue->invoke != FALSE) {
 				log_message('error', ' the data : ' . $rValue->data);
 				// return required data ...
-				return $rValue->data;
+				return json_decode(urldecode($rValue->data), true);
 			} else {
 				log_message('error', 'Error calling H7 API, Method: '. $method . ', error message: ' . $rValue->error);
 				return $rValue->error;
@@ -390,6 +390,38 @@ class core_call extends CI_Model
 		} else
 			return "No new Id was Created";
 	}
+        
+        function updatePlatformName($id, $name){
+            $method = 'updatePlatformName';
+            $temp = array(
+                'id' => $id,
+                'name' => $name
+            );
+            log_message('error', 'updatePlatformName -> $temp='.  print_r($temp,1));
+            $data = urlencode(json_encode($temp));
+            $rValue = $this->callCore($method, array('data' => $data));
+            //log_message('error', 'rValue from user credit ====== '.rValue);
+            // Validation for return values ...
+            // The API call will return an array with 2 parameters:
+            // invoke: a boolean that indicates correct processing at API side
+            // data: The returned value itself
+            // If invoke was false, a 3rd parameter is returned containing error message "named: error" ...
+            log_message('error', ' rvalueeeee==== ' . print_r($rValue, TRUE));
+            // If the method was executed successfully ...
+            if ($rValue) {
+                    if($rValue->invoke != FALSE) {
+                            log_message('error', ' the data from core : ' . $rValue->data);
+//                            $rValue->data = json_decode(urldecode($rValue->data), true);
+//                            log_message('error', ' the data after decoding : ' . $rValue->data);
+                            // return required data ...
+                            return $rValue->data;
+                    } else {
+                            log_message('error', 'Error calling H7 API, Method: '. $method . ', error message: ' . $rValue->error);
+                            return $rValue->error;
+                    }
+            } else
+                    return "No new Id was Created";
+        }
 }
 
 /* End of file CoreCall.php */

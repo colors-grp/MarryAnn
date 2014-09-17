@@ -65,4 +65,10 @@ class Platform_model extends CI_Model{
         $this->db->where('day',$day);
         return $this->db->update('platform_credit',$data);
     }
+    
+    function update_platform($id, $data){
+        $this->db->where('id',$id);
+        $this->db->update('platform_type', $data);
+        return $this->db->affected_rows();
+    }
 }
