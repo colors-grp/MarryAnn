@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 10, 2014 at 02:21 AM
+-- Generation Time: Sep 18, 2014 at 09:26 AM
 -- Server version: 5.5.37-cll
 -- PHP Version: 5.4.23
 
@@ -32,6 +32,11 @@ CREATE TABLE IF NOT EXISTS `active_scoreboard` (
   `active_table` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Truncate table before insert `active_scoreboard`
+--
+
+TRUNCATE TABLE `active_scoreboard`;
 -- --------------------------------------------------------
 
 --
@@ -45,6 +50,11 @@ CREATE TABLE IF NOT EXISTS `activity_type` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
+--
+-- Truncate table before insert `activity_type`
+--
+
+TRUNCATE TABLE `activity_type`;
 -- --------------------------------------------------------
 
 --
@@ -56,16 +66,21 @@ CREATE TABLE IF NOT EXISTS `card` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
   `category_id` int(11) NOT NULL,
-  `created` date DEFAULT NULL,
-  `start_date` date DEFAULT NULL,
-  `end_date` date DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  `start_date` datetime DEFAULT NULL,
+  `end_date` datetime DEFAULT NULL,
   `status` enum('active','inactive') DEFAULT NULL,
   `price` int(11) DEFAULT NULL,
   `score` int(11) DEFAULT NULL,
-  `type_id` int(11) NOT NULL DEFAULT '0',
+  `pack_id` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`,`category_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
+--
+-- Truncate table before insert `card`
+--
+
+TRUNCATE TABLE `card`;
 -- --------------------------------------------------------
 
 --
@@ -86,6 +101,11 @@ CREATE TABLE IF NOT EXISTS `cardTemp` (
   `type_id` int(11) NOT NULL DEFAULT '0' COMMENT '0->normal card,1->silver card ...'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+--
+-- Truncate table before insert `cardTemp`
+--
+
+TRUNCATE TABLE `cardTemp`;
 -- --------------------------------------------------------
 
 --
@@ -99,6 +119,11 @@ CREATE TABLE IF NOT EXISTS `card_type` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+--
+-- Truncate table before insert `card_type`
+--
+
+TRUNCATE TABLE `card_type`;
 -- --------------------------------------------------------
 
 --
@@ -111,15 +136,21 @@ CREATE TABLE IF NOT EXISTS `category` (
   `name` varchar(100) NOT NULL,
   `created` date DEFAULT NULL,
   `status` enum('active','inactive') DEFAULT NULL,
-  `start_date` date DEFAULT NULL,
-  `end_date` date DEFAULT NULL,
+  `start_date` datetime DEFAULT NULL,
+  `end_date` datetime DEFAULT NULL,
   `total_score` int(11) NOT NULL,
   `num_of_cards` int(11) NOT NULL,
   `rank` int(11) NOT NULL,
   `color` varchar(7) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
 
+--
+-- Truncate table before insert `category`
+--
+
+TRUNCATE TABLE `category`;
 -- --------------------------------------------------------
 
 --
@@ -134,6 +165,11 @@ CREATE TABLE IF NOT EXISTS `category_card_game` (
   UNIQUE KEY `category_id` (`category_id`,`card_id`,`game_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+--
+-- Truncate table before insert `category_card_game`
+--
+
+TRUNCATE TABLE `category_card_game`;
 -- --------------------------------------------------------
 
 --
@@ -147,6 +183,11 @@ CREATE TABLE IF NOT EXISTS `category_rank` (
   UNIQUE KEY `category_id` (`category_id`,`rank_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+--
+-- Truncate table before insert `category_rank`
+--
+
+TRUNCATE TABLE `category_rank`;
 -- --------------------------------------------------------
 
 --
@@ -164,6 +205,11 @@ CREATE TABLE IF NOT EXISTS `ci_sessions` (
   KEY `last_activity_idx` (`last_activity`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+--
+-- Truncate table before insert `ci_sessions`
+--
+
+TRUNCATE TABLE `ci_sessions`;
 -- --------------------------------------------------------
 
 --
@@ -180,6 +226,11 @@ CREATE TABLE IF NOT EXISTS `competition_round` (
   UNIQUE KEY `round_id` (`round_id`,`competition_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+--
+-- Truncate table before insert `competition_round`
+--
+
+TRUNCATE TABLE `competition_round`;
 -- --------------------------------------------------------
 
 --
@@ -194,6 +245,11 @@ CREATE TABLE IF NOT EXISTS `credit_price` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+--
+-- Truncate table before insert `credit_price`
+--
+
+TRUNCATE TABLE `credit_price`;
 -- --------------------------------------------------------
 
 --
@@ -208,6 +264,11 @@ CREATE TABLE IF NOT EXISTS `duration` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+--
+-- Truncate table before insert `duration`
+--
+
+TRUNCATE TABLE `duration`;
 -- --------------------------------------------------------
 
 --
@@ -223,6 +284,11 @@ CREATE TABLE IF NOT EXISTS `events` (
   PRIMARY KEY (`event_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Truncate table before insert `events`
+--
+
+TRUNCATE TABLE `events`;
 -- --------------------------------------------------------
 
 --
@@ -236,6 +302,11 @@ CREATE TABLE IF NOT EXISTS `game` (
   PRIMARY KEY (`game_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=141 ;
 
+--
+-- Truncate table before insert `game`
+--
+
+TRUNCATE TABLE `game`;
 -- --------------------------------------------------------
 
 --
@@ -257,6 +328,11 @@ CREATE TABLE IF NOT EXISTS `game_object_positions` (
   UNIQUE KEY `game_id` (`game_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Truncate table before insert `game_object_positions`
+--
+
+TRUNCATE TABLE `game_object_positions`;
 -- --------------------------------------------------------
 
 --
@@ -271,6 +347,11 @@ CREATE TABLE IF NOT EXISTS `game_question` (
   KEY `question_id` (`question_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=211 ;
 
+--
+-- Truncate table before insert `game_question`
+--
+
+TRUNCATE TABLE `game_question`;
 -- --------------------------------------------------------
 
 --
@@ -284,6 +365,11 @@ CREATE TABLE IF NOT EXISTS `game_words` (
   UNIQUE KEY `game_id` (`game_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Truncate table before insert `game_words`
+--
+
+TRUNCATE TABLE `game_words`;
 -- --------------------------------------------------------
 
 --
@@ -303,6 +389,11 @@ CREATE TABLE IF NOT EXISTS `media` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
+--
+-- Truncate table before insert `media`
+--
+
+TRUNCATE TABLE `media`;
 -- --------------------------------------------------------
 
 --
@@ -318,8 +409,13 @@ CREATE TABLE IF NOT EXISTS `notification` (
   `message` varchar(500) NOT NULL,
   `date` datetime NOT NULL,
   PRIMARY KEY (`notification_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
+--
+-- Truncate table before insert `notification`
+--
+
+TRUNCATE TABLE `notification`;
 -- --------------------------------------------------------
 
 --
@@ -328,14 +424,27 @@ CREATE TABLE IF NOT EXISTS `notification` (
 
 DROP TABLE IF EXISTS `pack`;
 CREATE TABLE IF NOT EXISTS `pack` (
-  `pack_id` int(11) NOT NULL,
-  `pack_type` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) CHARACTER SET utf8 NOT NULL,
   `cards_num` int(11) NOT NULL,
   `start_date` datetime NOT NULL,
   `end_date` datetime NOT NULL,
-  `pack_price` int(11) NOT NULL,
-  PRIMARY KEY (`pack_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `price` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `pack_name` (`name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Truncate table before insert `pack`
+--
+
+TRUNCATE TABLE `pack`;
+--
+-- Dumping data for table `pack`
+--
+
+INSERT INTO `pack` (`id`, `name`, `cards_num`, `start_date`, `end_date`, `price`) VALUES
+(1, 'normal', 0, '2014-09-14 00:00:00', '2014-09-14 00:00:00', 0);
 
 -- --------------------------------------------------------
 
@@ -345,12 +454,48 @@ CREATE TABLE IF NOT EXISTS `pack` (
 
 DROP TABLE IF EXISTS `platform_credit`;
 CREATE TABLE IF NOT EXISTS `platform_credit` (
-  `platform_id` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
   `day` int(11) NOT NULL,
-  `platform_name` varchar(280) NOT NULL,
+  `name` varchar(280) CHARACTER SET utf8 NOT NULL,
   `daily_credit` int(11) NOT NULL,
-  UNIQUE KEY `platform_id` (`platform_id`,`day`)
+  UNIQUE KEY `platform_id` (`id`,`day`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Truncate table before insert `platform_credit`
+--
+
+TRUNCATE TABLE `platform_credit`;
+--
+-- Dumping data for table `platform_credit`
+--
+
+INSERT INTO `platform_credit` (`id`, `day`, `name`, `daily_credit`) VALUES
+(1, 1, 'web', 0),
+(1, 2, 'web', 0),
+(1, 3, 'web', 0),
+(1, 4, 'web', 0),
+(1, 5, 'web', 0),
+(2, 1, 'android', 0),
+(2, 2, 'android', 0),
+(2, 3, 'android', 0),
+(2, 4, 'android', 0),
+(2, 5, 'android', 0),
+(3, 1, 'iphone', 0),
+(3, 2, 'iphone', 0),
+(3, 3, 'iphone', 0),
+(3, 4, 'iphone', 0),
+(3, 5, 'iphone', 0),
+(4, 1, 'facebook', 0),
+(4, 2, 'facebook', 0),
+(4, 3, 'facebook', 0),
+(4, 4, 'facebook', 0),
+(4, 5, 'facebook', 0),
+(5, 1, 'twitter', 0),
+(5, 2, 'twitter', 0),
+(5, 3, 'twitter', 0),
+(5, 4, 'twitter', 0),
+(5, 5, 'twitter', 0);
 
 -- --------------------------------------------------------
 
@@ -360,7 +505,7 @@ CREATE TABLE IF NOT EXISTS `platform_credit` (
 
 DROP TABLE IF EXISTS `platform_type`;
 CREATE TABLE IF NOT EXISTS `platform_type` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
@@ -369,8 +514,13 @@ CREATE TABLE IF NOT EXISTS `platform_type` (
   `start_credit` varchar(6) NOT NULL,
   `type` varchar(12) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
+--
+-- Truncate table before insert `platform_type`
+--
+
+TRUNCATE TABLE `platform_type`;
 -- --------------------------------------------------------
 
 --
@@ -387,6 +537,11 @@ CREATE TABLE IF NOT EXISTS `puzzle` (
   PRIMARY KEY (`game_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+--
+-- Truncate table before insert `puzzle`
+--
+
+TRUNCATE TABLE `puzzle`;
 -- --------------------------------------------------------
 
 --
@@ -405,6 +560,11 @@ CREATE TABLE IF NOT EXISTS `question` (
   PRIMARY KEY (`question_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=181 ;
 
+--
+-- Truncate table before insert `question`
+--
+
+TRUNCATE TABLE `question`;
 -- --------------------------------------------------------
 
 --
@@ -418,6 +578,11 @@ CREATE TABLE IF NOT EXISTS `rank` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
 
+--
+-- Truncate table before insert `rank`
+--
+
+TRUNCATE TABLE `rank`;
 -- --------------------------------------------------------
 
 --
@@ -434,6 +599,11 @@ CREATE TABLE IF NOT EXISTS `ref_country` (
   UNIQUE KEY `alpha3` (`alpha3`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+--
+-- Truncate table before insert `ref_country`
+--
+
+TRUNCATE TABLE `ref_country`;
 -- --------------------------------------------------------
 
 --
@@ -449,6 +619,11 @@ CREATE TABLE IF NOT EXISTS `ref_currency` (
   KEY `numeric` (`numeric`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
+--
+-- Truncate table before insert `ref_currency`
+--
+
+TRUNCATE TABLE `ref_currency`;
 -- --------------------------------------------------------
 
 --
@@ -465,6 +640,11 @@ CREATE TABLE IF NOT EXISTS `ref_iptocountry` (
   KEY `ip_from` (`ip_from`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+--
+-- Truncate table before insert `ref_iptocountry`
+--
+
+TRUNCATE TABLE `ref_iptocountry`;
 -- --------------------------------------------------------
 
 --
@@ -481,6 +661,11 @@ CREATE TABLE IF NOT EXISTS `ref_language` (
   KEY `two` (`two`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+--
+-- Truncate table before insert `ref_language`
+--
+
+TRUNCATE TABLE `ref_language`;
 -- --------------------------------------------------------
 
 --
@@ -499,6 +684,11 @@ CREATE TABLE IF NOT EXISTS `ref_zoneinfo` (
   KEY `country` (`country`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
+--
+-- Truncate table before insert `ref_zoneinfo`
+--
+
+TRUNCATE TABLE `ref_zoneinfo`;
 -- --------------------------------------------------------
 
 --
@@ -518,23 +708,13 @@ CREATE TABLE IF NOT EXISTS `request` (
   `demand_value` int(11) NOT NULL,
   `offer_value` int(11) NOT NULL,
   PRIMARY KEY (`request_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
-
--- --------------------------------------------------------
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
--- Table structure for table `singers_scoreboard`
+-- Truncate table before insert `request`
 --
 
-DROP TABLE IF EXISTS `temp_scoreboard`;
-CREATE TABLE IF NOT EXISTS `temp_scoreboard` (
-  `rank` int(10) unsigned NOT NULL,
-  `user_id` int(10) unsigned NOT NULL,
-  `user_name` varchar(32) NOT NULL,
-  `score` int(10) unsigned NOT NULL DEFAULT '0',
-  `change` char(1) NOT NULL DEFAULT 'n'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
+TRUNCATE TABLE `request`;
 -- --------------------------------------------------------
 
 --
@@ -549,8 +729,33 @@ CREATE TABLE IF NOT EXISTS `tb_adv` (
   `company` varchar(150) NOT NULL,
   `comment` longtext NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
+--
+-- Truncate table before insert `tb_adv`
+--
+
+TRUNCATE TABLE `tb_adv`;
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `temp_scoreboard`
+--
+
+DROP TABLE IF EXISTS `temp_scoreboard`;
+CREATE TABLE IF NOT EXISTS `temp_scoreboard` (
+  `rank` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  `user_name` varchar(32) NOT NULL,
+  `score` int(10) unsigned NOT NULL DEFAULT '0',
+  `change` char(1) NOT NULL DEFAULT 'n'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Truncate table before insert `temp_scoreboard`
+--
+
+TRUNCATE TABLE `temp_scoreboard`;
 -- --------------------------------------------------------
 
 --
@@ -570,6 +775,11 @@ CREATE TABLE IF NOT EXISTS `transactions` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+--
+-- Truncate table before insert `transactions`
+--
+
+TRUNCATE TABLE `transactions`;
 -- --------------------------------------------------------
 
 --
@@ -583,6 +793,11 @@ CREATE TABLE IF NOT EXISTS `trsnsaction_type` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+--
+-- Truncate table before insert `trsnsaction_type`
+--
+
+TRUNCATE TABLE `trsnsaction_type`;
 -- --------------------------------------------------------
 
 --
@@ -596,6 +811,11 @@ CREATE TABLE IF NOT EXISTS `tv_guide` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=112 ;
 
+--
+-- Truncate table before insert `tv_guide`
+--
+
+TRUNCATE TABLE `tv_guide`;
 -- --------------------------------------------------------
 
 --
@@ -611,6 +831,11 @@ CREATE TABLE IF NOT EXISTS `tv_guide_detail` (
   KEY `show_id_2` (`show_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+--
+-- Truncate table before insert `tv_guide_detail`
+--
+
+TRUNCATE TABLE `tv_guide_detail`;
 -- --------------------------------------------------------
 
 --
@@ -632,6 +857,11 @@ CREATE TABLE IF NOT EXISTS `user` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
+--
+-- Truncate table before insert `user`
+--
+
+TRUNCATE TABLE `user`;
 -- --------------------------------------------------------
 
 --
@@ -647,6 +877,11 @@ CREATE TABLE IF NOT EXISTS `user_activity` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=485 ;
 
+--
+-- Truncate table before insert `user_activity`
+--
+
+TRUNCATE TABLE `user_activity`;
 -- --------------------------------------------------------
 
 --
@@ -663,6 +898,11 @@ CREATE TABLE IF NOT EXISTS `user_card` (
   PRIMARY KEY (`card_serial`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=449 ;
 
+--
+-- Truncate table before insert `user_card`
+--
+
+TRUNCATE TABLE `user_card`;
 -- --------------------------------------------------------
 
 --
@@ -681,6 +921,11 @@ CREATE TABLE IF NOT EXISTS `user_category` (
   UNIQUE KEY `user_id` (`user_id`,`category_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+--
+-- Truncate table before insert `user_category`
+--
+
+TRUNCATE TABLE `user_category`;
 -- --------------------------------------------------------
 
 --
@@ -695,6 +940,11 @@ CREATE TABLE IF NOT EXISTS `user_day` (
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Truncate table before insert `user_day`
+--
+
+TRUNCATE TABLE `user_day`;
 -- --------------------------------------------------------
 
 --
@@ -710,6 +960,11 @@ CREATE TABLE IF NOT EXISTS `user_events` (
   UNIQUE KEY `user_id` (`user_id`,`event_id`,`date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Truncate table before insert `user_events`
+--
+
+TRUNCATE TABLE `user_events`;
 -- --------------------------------------------------------
 
 --
@@ -726,6 +981,11 @@ CREATE TABLE IF NOT EXISTS `user_game` (
   PRIMARY KEY (`user_id`,`game_id`,`score`,`time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+--
+-- Truncate table before insert `user_game`
+--
+
+TRUNCATE TABLE `user_game`;
 -- --------------------------------------------------------
 
 --
@@ -743,6 +1003,11 @@ CREATE TABLE IF NOT EXISTS `user_gift_cards` (
   UNIQUE KEY `sender_id` (`sender_id`,`receiver_id`,`date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Truncate table before insert `user_gift_cards`
+--
+
+TRUNCATE TABLE `user_gift_cards`;
 -- --------------------------------------------------------
 
 --
@@ -764,6 +1029,11 @@ CREATE TABLE IF NOT EXISTS `user_old` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
+--
+-- Truncate table before insert `user_old`
+--
+
+TRUNCATE TABLE `user_old`;
 -- --------------------------------------------------------
 
 --
@@ -778,6 +1048,11 @@ CREATE TABLE IF NOT EXISTS `user_pack` (
   UNIQUE KEY `user_id` (`user_id`,`pack_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Truncate table before insert `user_pack`
+--
+
+TRUNCATE TABLE `user_pack`;
 -- --------------------------------------------------------
 
 --
@@ -791,6 +1066,8 @@ CREATE TABLE IF NOT EXISTS `user_request_locks` (
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+--
+-- Truncate table before insert `user_request_locks`
+--
+
+TRUNCATE TABLE `user_request_locks`;

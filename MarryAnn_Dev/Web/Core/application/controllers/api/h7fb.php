@@ -300,7 +300,7 @@ class H7FB extends REST_Controller
 		log_message('error', 'get_by_id  ' . $account_id);
 		$this->load->model('account/account_model');
 		$query = $this->account_model->get_by_id($account_id);
-                //log_message('error','mo7eb h7fb get_by_id_get() $query='.  print_r($query,TRUE));
+                log_message('error','mo7eb h7fb get_by_id_get() $query='.  print_r($query,TRUE));
 		if($query)
 		{
 			$rValue['invoke'] = TRUE;
@@ -323,7 +323,7 @@ class H7FB extends REST_Controller
 		log_message('error', 'get_by_account_id  ' . $account_id);
 		$this->load->model('account/account_details_model');
 		$query = $this->account_details_model->get_by_account_id($account_id);
-                //log_message('error','mo7eb h7fb get_by_account_id_get() $query='.  print_r($query,TRUE));
+                log_message('error','mo7eb h7fb get_by_account_id_get() $query='.  print_r($query,TRUE));
 		if($query)
 		{
 			$rValue['invoke'] = TRUE;
@@ -705,7 +705,11 @@ class H7FB extends REST_Controller
             $temp = $this->competition_model->get_competition_by_url($data_input['url']);
             log_message('error', 'getNewSiteCode  $data=' . print_r($temp,1));
             if( !count($temp) ){
+                $accountid = $data_input['accountid'];
+                unset($data_input['accountid']);
                 $id = $this->competition_model->create($data_input);
+                $temp = array('id' => $accountid,'site_code' => $id);
+                $this->competition_model->insert_admin_competition($temp);
             } else {
                 $id = $temp[0]['id'];
             }
@@ -744,6 +748,60 @@ class H7FB extends REST_Controller
                     $rValue['error'] = 'Error while accessing database';
             }
             log_message('error', 'updatePlatformName response $rValue=' . print_r($rValue,1));
+            // response acts as "return" for the function
+            $this->response($rValue);
+        }
+        
+        function getUserType_get() {
+		log_message('error', 'getUserType inside');
+            // Get user id
+		$user_id = $this->get('user_id');
+            // Load needed models
+		$this->load->model('account/account_model');
+            // Get user type if found
+		$rValue['data'] = $this->account_model->get_by_id($user_id);
+                if($rValue['data']){
+                    $rValue['invoke'] = TRUE;
+                    $rValue['data'] = $rValue['data']->type;
+                } else {
+			$rValue['invoke'] = FALSE;
+			$rValue['error'] = 'No Such user with given id!!';
+		}
+		log_message('error', 'getUserType $rValue=' . print_r($rValue, TRUE));
+		// response acts as "return" for the function
+		$this->response($rValue);
+	}
+        
+        
+        // Return result of checking if given id is an admin over the current competition.
+        // Inputs: user id, site code in json array format.
+        // Output: FALSE OR TRUE.
+        function isCompetitionAdmin_get(){
+        // Get input sent from platform
+            $data_input = json_decode(urldecode($this->get('data')), true);
+            log_message('error', 'isCompetitionAdmin  $data_input=' . print_r($data_input,1));
+        // Load needed model
+            $this->load->model('competition_model');
+        // Get and Check admin competitions
+            $competitions = $this->competition_model->get_admin_competitions($data_input['id']);
+            $result = 0;
+            foreach($competitions as $competition){
+                if($data_input['site_code'] == $competition['site_code']){
+                    $result = 1;
+                    break;
+                }
+            }
+            if($result)
+            {
+                    $rValue['invoke'] = TRUE;
+                    $rValue['data']	= $result;
+            }
+            else
+            {
+                    $rValue['invoke'] = FALSE;
+                    $rValue['error'] = 'Not admin over given competition.';
+            }
+            log_message('error', 'isCompetitionAdmin response $rValue=' . print_r($rValue,1));
             // response acts as "return" for the function
             $this->response($rValue);
         }

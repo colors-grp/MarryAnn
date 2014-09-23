@@ -66,6 +66,9 @@ class Authentication {
 		}
 
 		log_message('error', 'redirect 3 == 3adah ');
+                if($this->CI->session->userdata('admin')){
+                    redirect('admin_page');
+                }
 		redirect('');
 	}
 

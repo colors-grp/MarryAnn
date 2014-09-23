@@ -49,7 +49,6 @@
 	
 	<link href="http://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" type="text/css" href="<?=base_url()?>/h7-assets/resources/css/demo.css">
-
 <!-- Simple Modal -->
 <!--<link rel="stylesheet"
 	href="<?= $this->config->item('base_url');?>assets/js/simplemodal/css/basic.css">-->
@@ -118,28 +117,20 @@
 </head>
 <body onload = "container_height()">
 <div class="container" id="My-container" style="position: relative;top: 40px;">
-    <div id="credit_descriptionn">
-        <h1>Description</h1><br />
-        <p>
-            <!--<B>Platform Id:</B>All platforms with the same name should have the same id.<br />-->
-            <B>Platform Name:</B>This Field is for your information.(Like: web, ios, android, facebook or twitter)</B><br />
-            <B>Day:</B>Number of day the credit will be given in.<B>(Like: 1, 2, 3, etc.)</B><br />
-            <B>Daily Credit:</B>The amount of credit will be given to player.<br />
-        </p>
-    </div>
-<!--	<div id="add_mcq">
-	<h2>Enter Question and 4 answers</h2>
-		<form id="add_mcq_form" action = "" method="post">
-			<input name = "question" type = "text"></br>
-			<input name = "answer1" type = "text"></br>
-			<input name = "answer2" type = "text"></br>
-			<input name = "answer3" type = "text"></br>
-			<input name = "answer4" type = "text"></br>
-			<input name = "correct_answer" type = "text"></br>
-			<input type="submit" value="Submit" name="mcq_submission">
-		</form>
-
-	</div>-->
+	<div id="category_description">
+            <h1>Description</h1><br />
+            <p>
+                <B>Name:</B>Category name.<br />
+                <B>Created:</B>The date when the category was created.<br />
+                <B>Status:</B>Status of the category active or inactive.(<B>(This option is a fast way to activate a category or deactivate it)</B><br />
+                <B>Start date:</B>When the category will be available to players.<br />
+                <B>End date:</B>When the category will stop being available to players.<B>(Players will not see it)</B><br />
+                <B>Total score:</B>Players scores in this category.<br />
+                <B>Num of cards:</B>Number of cards in this category.<br />
+                <B>Rank:</B>Its rank among all active categories.<br />
+                <B>Color:</B>Its back ground color in the platform.<B>(In hex)</B><br />
+            </p>
+	</div>
 	<table>
 			<?php for ($i = 0; $i < count($tables); $i++) {?>
 		<tr>

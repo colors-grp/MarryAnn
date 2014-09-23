@@ -1,7 +1,7 @@
 <?php
 class Platform_model extends CI_Model{
-    //Update platform type
-    // Inputs: id, type.
+    // Insert platform type
+    // Inputs: data.
     // Output: success flag.
     function insert($data) {
         $this->db->insert('platform_type', $data);
@@ -13,6 +13,14 @@ class Platform_model extends CI_Model{
         $this->db->from('platform_type');
         $query = $this->db->get();
         return $query->result_array();
+    }
+    
+    // Insert new platform credit row
+    // Inputs: data.
+    // Output: success flag.
+    function insert_platform_credit($data) {
+        $this->db->insert('platform_credit', $data);
+        return $this->db->insert_id();
     }
     
     // Get all platforms names
@@ -39,10 +47,12 @@ class Platform_model extends CI_Model{
     // Get row from platform_credit table given its name and its day
     // Input: platform name, day.
     // Output: credit.
-    function get_platform_by_name_day($name, $day){
+    function get_platform_by_name_day($name, $day=0){
         $this->db->select('*');
         $this->db->where('name',$name);
-        $this->db->where('day',$day);
+        if($day){
+            $this->db->where('day',$day);
+        }
         $query = $this->db->get('platform_credit');
         return $query->result_array();
     }

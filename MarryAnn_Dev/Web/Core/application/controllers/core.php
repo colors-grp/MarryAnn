@@ -83,7 +83,14 @@ class Core extends CI_Controller {
 			// Sidecode is a numerical value that represent the site primary ID in Database
 			// Replacing encryption of the HTTP URL with a numerical value to avoid creating invalid characters in URL ...
 			$sitecode = $this -> input -> get('sitecode');
+                        $admin_page = $this -> input -> get('admin_page');
+                        if($admin_page){
+                            $this->session->set_userdata('admin_page', $admin_page);
+                        }
 			$mode = $this -> input -> get('mode');
+                        if($mode){
+                            $this->session->set_userdata('mode', $mode);
+                        }
 			$accountid = $this -> input -> get('accountid');
 			$code = $this -> input -> get('code');
 			$cfbid = $this -> input -> get('cfbid');
@@ -138,10 +145,18 @@ class Core extends CI_Controller {
 		if($accountid)
 		{
 			log_message('error', 'redirect_fb sent back to Core account id = ' .$accountid);
-			if(!$sitecode)
-				$sitecode = 6;
+//			if(!$sitecode)
+//				$sitecode = 6;
+			$provider = $this->session->userdata('provider');
+                        if($provider == 'facebook'){
+                            $mode = '1';
+                        } elseif($provider == 'twitter'){
+                            $mode = '2';
+                        } elseif($provider == 'google'){
+                            $mode = '3';
+                        }
 			// Redirect to Platform with account ID parameter ...
-			$redirect_url =  $this->getSiteUrl($sitecode). '?accountid='.$accountid;
+			$redirect_url =  (($sitecode)?$this->getSiteUrl($sitecode):$this->session->userdata('admin_page')). '?accountid='.$accountid.'&mode='.$mode;
 			log_message('error', 'SAFARIIIIII 111 reditecttt toooo ->> ' . $redirect_url);
 			redirect($redirect_url);
 		}
@@ -151,7 +166,7 @@ class Core extends CI_Controller {
 		// As now we only support Facebook Login, this code redirects to check Facebook login ...
 		if($mode == 'signin')
 		{
-				
+			
 			$cnt ++;
 			log_message('error', 'core.php: mode ====== sign in : '.$mode);
 			$_SESSION['sitecode'] = $sitecode;
@@ -254,8 +269,7 @@ class Core extends CI_Controller {
 		}
 
 		// Handle a redirect from Core (create_connect, or else) ...
-		if($this->authentication->is_signed_in())
-		{
+		if($this->authentication->is_signed_in()) {
 			log_message('error', ' SIGNED IN: ');
 			$cnt ++;
 			if($this->session->userdata('account_id'))
@@ -269,41 +283,40 @@ class Core extends CI_Controller {
                     // Check user's created on date in order to give him competetion's default credit
                         $this->load->model('competition_model');
                         $this->load->model('credit_model');
-						if(!isset($_SESSION['sitecode']))
-							$sitecode = 5;
-						else {
-							$sitecode = $_SESSION['sitecode'];
-						}
-                        $competition = $this->competition_model->get_current_competition($sitecode);
+                        if(!isset($_SESSION['sitecode'])){
+                            $sitecode = 5;
+                        } else {
+                                $sitecode = $_SESSION['sitecode'];
+                        }
+                        $competition = ($sitecode)?$this->competition_model->get_current_competition($sitecode):0;
                         if($competition){
                             $this->credit_model->buy_credit($this->session->userdata('account_id'), $competition->start_credit);
                         }
-                        $provider = $this->session->userdata('provider');
-                        if($provider == 'facebook'){
+                        $mode = $this->session->userdata('mode');
+                        log_message('error', 'core index() inside signed in->> $mode=' . $mode);
+                        if($mode == 'signin'){
                             $mode = '1';
-                        } elseif($provider == 'twitter'){
+                        } elseif($mode == 'twitter'){
                             $mode = '2';
-                        } elseif($provider == 'google'){
+                        } elseif($mode == 'google'){
                             $mode = '3';
                         }
                         
-			// Redirect to Platform with account ID parameter ...
-			$redirect_url =  $this->authentication->getSiteUrl($sitecode). '?accountid='.$this->session->userdata('account_id').'&mode='.$mode;
+                    // Redirect to Platform with account ID parameter ...
+			$redirect_url =  (($sitecode)?$this->authentication->getSiteUrl($sitecode):$this->session->userdata('admin_page')). '?accountid='.$this->session->userdata('account_id').'&mode='.$mode;
 			log_message('error', 'SAFARIIIIII 222 reditecttt toooo ->> ' . $redirect_url);
 			redirect($redirect_url);
-		}
-                else {
+		} else {
                     log_message('error', 'NOT SIGNED IN: ');
                 }
 		if ($cnt == 0){
 			log_message('error', 'teeeeeet1 session = ' . print_r($_SESSION, TRUE));
 			log_message('error', 'teeeeeet1 account id ellye fyl session' . print_r($this->session->userdata('account_id'), TRUE));
 			$this->load_competitions($this->input->get('accountid'));
-			}
-else{
-	log_message('error', 'teeeeeet session = ' . print_r($_SESSION, TRUE));
-	log_message('error', 'teeeeeet account id ellye fyl session' . print_r($this->session->userdata('account_id'), TRUE));
-}
+                } else {
+                        log_message('error', 'teeeeeet session = ' . print_r($_SESSION, TRUE));
+                        log_message('error', 'teeeeeet account id ellye fyl session' . print_r($this->session->userdata('account_id'), TRUE));
+                }
 	}
 	
 

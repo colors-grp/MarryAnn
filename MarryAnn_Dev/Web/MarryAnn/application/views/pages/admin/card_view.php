@@ -49,6 +49,7 @@
 	
 	<link href="http://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" type="text/css" href="<?=base_url()?>/h7-assets/resources/css/demo.css">
+
 <!-- Simple Modal -->
 <!--<link rel="stylesheet"
 	href="<?= $this->config->item('base_url');?>assets/js/simplemodal/css/basic.css">-->
@@ -109,27 +110,62 @@
             <a href='<?=site_url('admin_page/type');?>'>Type</a> | 
             <a href='<?=site_url('admin_page/category');?>'>Categories</a> | 
             <a href='<?=site_url('admin_page/card');?>'>Cards</a> | 
-            <a href='<?=site_url('admin_page/credit');?>'>Platform Credits</a> | 
+            <a href='<?=site_url('admin_page/credit');?>'>Platform Credits</a> |
         <?php if($site_type == 2){ ?>
             <a href='<?=site_url('admin_page/pack');?>'>Pack</a> |
         <?php } ?>
+            
         </div>
 </head>
 <body onload = "container_height()">
 <div class="container" id="My-container" style="position: relative;top: 40px;">
-	<div id="category_description">
-            <h1>Description</h1><br />
-            <p>
-                <B>Name:</B>Category name.<br />
-                <B>Created:</B>The date when the category was created.<br />
-                <B>Status:</B>Status of the category active or inactive.(if set to inactive players will not be able to see it).<br />
-                <B>Start date:</B>When the category will be available to players.<br />
-                <B>End date:</B>When the category will stop being available to players.<br />
-                <B>Total score:</B>Total score of all games played in this category.<B>(This section is calculated by the system)</B><br />
-                <B>Num of cards:</B>Number of cards in this category.<br />
-                <B>Rank:</B>Its rank among all active categories.<br />
-                <B>Color:</B>Its back ground color in the platform.(In hex)<br />
-            </p>
+<!--	<div id="add_mcq">
+	<h2>Enter Question and 4 answers</h2>
+		<form id="add_mcq_form" action = "" method="post">
+			<input name = "question" type = "text"></br>
+			<input name = "answer1" type = "text"></br>
+			<input name = "answer2" type = "text"></br>
+			<input name = "answer3" type = "text"></br>
+			<input name = "answer4" type = "text"></br>
+			<input name = "correct_answer" type = "text"></br>
+			<input type="submit" value="Submit" name="mcq_submission">
+		</form>
+
+	</div>-->
+        <?php if(count($category)){ ?>
+        <div id="choose">
+            <form id="choose_category" action = "<?=site_url('admin_page/card/'.time())?>" method="post">
+                <h2>Choose your category:</h2>
+                    <?php
+                        foreach($category as $row){
+                            echo '<input name = "category_id" type="radio" value="'.$row['id'].'" '.(($cat_id==$row['id'])?'checked':'').' >'.$row['name'].'<br />';
+                        }
+                        if($site_type == 2 && count($pack)){
+                    ?>
+                <h2>Choose your pack:</h2>
+                    <?php
+                            foreach($pack as $row){
+                                echo '<input name = "pack_id" type="radio" value="'.$row['id'].'" '.(($pack_id==$row['id'])?'checked':'').' >'.$row['name'].'<br />';
+                            }
+                        }
+                    ?>
+                <input type="submit" value="Select">
+            </form>
+	</div>
+        <?php } ?>
+        <div id="card_descriptionn">
+                <h1>Description</h1>
+                <p>
+                    <B>Name:</B>Card name.<br />
+                    <!--<B>Category id:</B>Category number which the card is inside.<br />-->
+                    <B>Created:</B>Time when card was created.<br />
+                    <B>Start date:</B>When the card will be available to players.<br />
+                    <B>End date:</B>When the card will stop being available to players.<B>(Players will not see it)</B><br />
+                    <B>Status:</B>Status of the card active or inactive.<B>(This option is a fast way to activate a card or deactivate it)</B><br />
+                    <B>Price:</B>The value used when trading.<B>(This option is for Album only)</B><br />
+                    <B>Score:</B>Which the player will gain when he win or obtain this card.<B>(This option is for Competition only)</B><br />
+                    <!--<B>Type id:</B>The card is inside which pack type.<B>(This option is for Album only)</B><br />-->
+                </p>
 	</div>
 	<table>
 			<?php for ($i = 0; $i < count($tables); $i++) {?>
@@ -143,6 +179,24 @@
 	</table>
 	<div id="show_tables">
 	</div>
+        <?php 
+            if($this->session->userdata('created_path')) { 
+                $path = $this->session->userdata('created_path');
+        ?>
+        <div id="paths">
+            <h3>To insert card assets please read and use these links.</h3><br />
+            <p>
+                <B>Main Path:</B><?=$path['main'];?><br />
+                <B>UI:</B><?=$path['ui'];?><br />
+                <B>Image:</B><?=$path['image'];?><br />
+                <B>Audio:</B><?=$path['audio'];?><br />
+                <B>Video:</B><?=$path['video'];?><br />
+            </p>
+        </div>
+        <?php 
+                $this->session->unset_userdata('created_path');
+            }
+        ?>
 </div>
 
 <script>

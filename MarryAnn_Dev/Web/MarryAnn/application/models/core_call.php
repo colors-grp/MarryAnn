@@ -244,7 +244,7 @@ class core_call extends CI_Model
         function get_by_id($account_id) {
 		$method = 'get_by_id';
 		$rValue = $this->callCore($method, array('account_id' => $account_id));
-                //log_message('error','mo7eb core_call get_by_account_id $rValue='.  print_r($rValue,TRUE));
+                log_message('error','mo7eb core_call get_by_id $rValue='.  print_r($rValue,TRUE));
 		// Validation for return values ...
 		// The API call will return an array with 2 parameters:
 		// invoke: a boolean that indicates correct processing at API side
@@ -421,6 +421,61 @@ class core_call extends CI_Model
                     }
             } else
                     return "No new Id was Created";
+        }
+        
+        // Return user type -. player or admin
+	function getUserType($user_id)
+	{
+		$method = 'getUserType';
+		log_message('error', 'getUserType $user_id=' .$user_id);
+		$rValue = $this->callCore($method, array('user_id' => $user_id));
+		log_message('error', 'getUserType $rValue=' . print_r($rValue, TRUE));
+		// If the method was executed successfully ...
+		if ($rValue) {
+			if($rValue->invoke != FALSE) {
+				log_message('error', 'getUserType the data =' . $rValue->data);
+				// return required data ...
+				return $rValue->data;
+			} else {
+				log_message('error', 'getUserType Error calling H7 API, Method: '. $method . ', error message: ' . $rValue->error);
+				return $rValue->error;
+			}
+		}
+		else{
+                    return "Could not connect to core";
+                }
+	}
+        
+        // Return result of checking if given id is an admin over the current competition.
+        // Inputs: user id, site code.
+        // Output: FALSE OR TRUE.
+        function isCompetitionAdmin($user_id, $site_code){
+            $method = 'isCompetitionAdmin';
+            $temp = array('id' => $user_id,'site_code' => $site_code);
+            log_message('error', 'isCompetitionAdmin -> $temp='.  print_r($temp,1));
+            $data = urlencode(json_encode($temp));
+            $rValue = $this->callCore($method, array('data' => $data));
+            // Validation for return values ...
+            // The API call will return an array with 2 parameters:
+            // invoke: a boolean that indicates correct processing at API side
+            // data: The returned value itself
+            // If invoke was false, a 3rd parameter is returned containing error message "named: error" ...
+            log_message('error', 'isCompetitionAdmin $rValue='. print_r($rValue, TRUE));
+            // If the method was executed successfully ...
+            if ($rValue) {
+                    if($rValue->invoke != FALSE) {
+                            log_message('error', 'isCompetitionAdmin the data from core =' . $rValue->data);
+//                            $rValue->data = json_decode(urldecode($rValue->data), true);
+//                            log_message('error', ' the data after decoding : ' . $rValue->data);
+                            // return required data ...
+                            return $rValue->data;
+                    } else {
+                            log_message('error', 'isCompetitionAdmin Error calling H7 API, Method: '. $method . ', error message: ' . $rValue->error);
+                            return $rValue->error;
+                    }
+            } else{
+                return "No result from core";
+            }
         }
 }
 

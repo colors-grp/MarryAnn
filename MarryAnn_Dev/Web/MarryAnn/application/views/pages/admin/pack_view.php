@@ -118,14 +118,15 @@
 </head>
 <body onload = "container_height()">
 <div class="container" id="My-container" style="position: relative;top: 40px;">
-    <div id="credit_descriptionn">
-        <h1>Description</h1><br />
-        <p>
-            <!--<B>Platform Id:</B>All platforms with the same name should have the same id.<br />-->
-            <B>Platform Name:</B>This Field is for your information.(Like: web, ios, android, facebook or twitter)</B><br />
-            <B>Day:</B>Number of day the credit will be given in.<B>(Like: 1, 2, 3, etc.)</B><br />
-            <B>Daily Credit:</B>The amount of credit will be given to player.<br />
-        </p>
+    <div id="pack_descriptionn">
+            <h1>Description</h1>
+            <p>
+                <B>Name:</B>Pack name.<br />
+                <B>Number of cards:</B>Amount of cards the player will gain when he open this pack.<br />
+                <B>Start date:</B>When pack will be available to open.<br />
+                <B>End date:</B>When pack will be unavailable to open.<B>(Players will not see it)</B><br />
+                <B>Pack Price:</B>Amount of credit player will spend to gain this pack.<br />
+            </p>
     </div>
 <!--	<div id="add_mcq">
 	<h2>Enter Question and 4 answers</h2>

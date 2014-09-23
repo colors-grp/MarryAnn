@@ -30,4 +30,11 @@ class User_model extends CI_Model {
 			return FALSE;
 		}
 	}
+        
+        // Get user from a3m_account table
+//        function get_user_a3m($id){
+//            $this->db->where('id' , $id);
+//            $query = $this->db->get('a3m_account');
+//            return $query->result_array();
+//        }
 }

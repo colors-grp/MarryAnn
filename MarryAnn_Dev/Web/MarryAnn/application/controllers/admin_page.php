@@ -6,40 +6,104 @@ class Admin_page extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		$this->load->database();
-		$this->load->helper('url');
-                $this->load->library('Grocery_CRUD');
-		$this->load->model('game_model');
-                $this->load->model('category_model');
-                $this->load->model('card_model');
-                $this->load->model('core_call');
-                $this->load->model('platform_model');
-                $this->load->model('pack_model');
-		$this->load->model('grocery_crud_model');
+                $helper = array('url');
+		$this->load->helper($helper);
+                $library = array('account/authentication', 'account/authorization', 'Grocery_CRUD');
+                $this->load->library($library);
+                $model = array('game_model','category_model','card_model','core_call','platform_model','grocery_crud_model');
+		$this->load->model($model);
 //                $this->load->library('gc_dependent_select');
 	}
 	function index(){
-        // Get and check if user is an admin
-            
-        // Check all tables if exist and create if not
-            if($this->check_create_all_tables()){
-                redirect(site_url('admin_page/type'));
-            } else {
-                redirect(site_url('admin_page/category'));
+            $accountid = $this->input->get('accountid');
+            $mode = $this->input->get('mode');
+//            if(!$this->session->userdata('language')){
+//                $this->session->set_userdata('language', 'english');
+//            }
+            log_message('error', 'admin_page index() before if signed in account id = '. $accountid);
+//            $this->authentication->sign_out();
+//            if(!$accountid && $this->authentication->is_signed_in()){
+//                $this->authentication->sign_out();
+//            }
+        // Check if user is signed in
+            if($this->authentication->is_signed_in()){
+            // Get and check if user is an admin
+                $accountid = $this->session->userdata('account_id');
+                log_message('error','admin_page index() user logged in $account_id='.$accountid);
+//                $this->session->set_userdata('account_id', 1);
+                if($this->core_call->getUserType($this->session->userdata('account_id')) == 'admin') {
+                // Check all tables if exist and create if not
+                    if($this->check_create_all_tables()){
+                        redirect(site_url('admin_page/type'));
+                    } else { // if tables already created then Get AND Check platform type
+                        $temp = $this->platform_model->get_my_type();
+                        $site_type = ( count($temp) )?$temp[0]['type']:0;
+                        if($site_type){ // if platform type was selected
+                            $result = $this->core_call->isCompetitionAdmin($accountid, $temp[0]['id']);
+                            log_message('error','admin_page index() user logged in $result='. $result);
+                            if($result == 1){
+                                redirect(site_url('admin_page/category'));
+                            } else {
+                                $accountid = $this->session->userdata('account_id');
+                                $this->authentication->sign_out();
+                                echo $result.'<br /><br />';
+                            }
+                        } else { // if platform type was not selected
+                            redirect(site_url('admin_page/type'));
+                        }
+                    }
+                } else {
+                    $accountid = $this->session->userdata('account_id');
+                    $this->authentication->sign_out();
+                    echo 'Go Home Man!!!'.'<br /><br />';
+                    echo 'Your id='.$accountid.'<br /><br />';
+                    echo 'Your type='.$this->core_call->getUserType($accountid).'<br /><br />';
+//                    $this->authentication->sign_out();
+//                    redirect(site_url('admin_page'));
+                }
             }
+        // This is true for redirections from Core ...
+            if($accountid)
+            {
+                    $this->session->set_userdata('account_id', $accountid);
+                    if($mode == 1){ // Facebook
+			$fb = json_decode($this->core_call->fb_get_by_account_id($accountid));
+                        log_message('error','admin_page index() $fb='.  print_r($fb,TRUE));
+			$this->session->set_userdata('provider_id', $fb[0]->facebook_id);
+			log_message('error', 'admin_page FB ID = ' . $fb[0]->facebook_id);
+                        $me = $this->core_call->getMe($accountid);
+                        log_message('error', 'admin_page FB $me= ' . print_r($me,1));
+                        $this->session->set_userdata('username', $me->fullname);
+                    } elseif ($mode == 2){ // Twitter
+                        $tw = json_decode($this->core_call->tw_get_by_account_id($accountid));
+                        log_message('error','admin_page index() $tw='.  print_r($tw,TRUE));
+                        $this->session->set_userdata('provider_id', $tw[0]->twitter_id);
+                        log_message('error', 'redirect 3la platform, TW ID = ' . $tw[0]->twitter_id);
+                        $me = json_decode($this->core_call->get_by_id($accountid));
+                        log_message('error', 'redirect 3la platform, TW from a3m_account $me= ' . print_r($me,1));
+                        $this->session->set_userdata('username', $me->username);
+                    }
+                    $this->session->set_userdata('provider', $mode);
+                    $this->session->set_userdata('admin', 1);
+                    log_message('error', 'admin_page index() back from core !!! account id = '. $accountid .' mode='.$mode);
+                    $this->authentication->sign_in($accountid);
+            }
+        // Load admin's home view
+            $this->load->view('pages/admin/home_view');
 	}
         
         // Check AND Create all tables.
         // Input: none.
-        // Output: none.
+        // Output: boolean.
         function check_create_all_tables(){
         // Check and import all tables if platform_table was not exist
             $table_name = 'platform_type';
             $this->grocery_crud_model->set_basic_table($table_name);
             if(!$this->grocery_crud_model->db_table_exists($table_name)){
                 $this->createAllTables();
-                return FALSE;
-            } else {
                 return TRUE;
+            } else {
+                return FALSE;
             }
         }
         
@@ -66,7 +130,9 @@ class Admin_page extends CI_Controller {
                         $crud->fields($add_fields);
                         $crud->required_fields($add_fields);
                     }
-                    array_push($add_fields, 'id');
+                    unset($add_fields[(count($add_fields)-1)]);
+                    array_splice($add_fields, 0, 0, "id");
+//                    $add_fields[6] = 'id';
                     $crud->columns($add_fields);
                     $crud->edit_fields('name');
                     $crud->display_as('id','Site Code');
@@ -78,10 +144,8 @@ class Admin_page extends CI_Controller {
                     $crud->callback_before_insert(array($this,'platform_type_before_insert_callback'));
                     $crud->callback_after_insert(array($this,'platform_type_after_insert_callback'));
                     $crud->callback_update(array($this,'platform_type_update'));
-//                    $crud->callback_before_insert(array($this,'category_before_insert_callback'));
-//                    $crud->callback_edit_field('name',array($this,'category_name_edit_field'));
                 // fields rules
-                    $crud->set_rules('start_credit','Start credit','numeric');
+                    //$crud->set_rules('start_credit','Start credit','numeric');
                 // Check state and site type
                     $state = $crud->getState();
                     if(($state == 'list' || $state == 'success') && $output['site_type'] != 0){
@@ -92,10 +156,9 @@ class Admin_page extends CI_Controller {
             if($state == 'list' && $output['site_type'] == 0){
                 redirect(site_url('admin_page/type/add'));
             }
-            $me = $this->core_call->getMe(1);
-            $output['name'] = $me->fullname;
-            $output['fb_id'] = 6543541878;
-            $this->load->view ( 'ajax/admin/type_view', $output );
+            $output['name'] = $this->session->userdata('username');
+            $output['fb_id'] = $this->session->userdata('provider_id');
+            $this->load->view ( 'pages/admin/type_view', $output );
         }
         
         function platform_type_update($post_array, $primary_key){
@@ -125,7 +188,9 @@ class Admin_page extends CI_Controller {
         function platform_type_before_insert_callback($post_array){
             $post_array['start_date'] = date("Y/m/d H:i:s", strtotime(str_replace('/', '-', $post_array['start_date'])));
             $post_array['end_date'] = date("Y/m/d H:i:s", strtotime(str_replace('/', '-', $post_array['end_date'])));
+            $post_array['accountid'] = $this->session->userdata('account_id');
             $temp = $this->core_call->getNewSiteCode($post_array);
+            unset($post_array['accountid']);
             $temp[0]['start_date'] = date( "d/m/Y H:i:s", strtotime($temp[0]['start_date']) );
             $temp[0]['end_date'] = date( "d/m/Y H:i:s", strtotime($temp[0]['end_date']) );
             log_message('error','platform_type_before_insert_callback $temp='.print_r($temp,1));
@@ -236,11 +301,9 @@ class Admin_page extends CI_Controller {
             }
             $temp = $this->platform_model->get_my_type();
             $output['site_type'] = (count($temp))?$temp[0]['type']:0;
-            $this->load->model('core_call');
-            $me = $this->core_call->getMe(1);
-            $output['name'] = $me->fullname;
-            $output['fb_id'] = 6543541878;
-            $this->load->view ( 'ajax/admin/category_view', $output );
+            $output['name'] = $this->session->userdata('username');
+            $output['fb_id'] = $this->session->userdata('provider_id');
+            $this->load->view ( 'pages/admin/category_view', $output );
         }
         
         function category_name_field_check($table_name) {
@@ -259,6 +322,14 @@ class Admin_page extends CI_Controller {
                         $this->grocery_crud_model->db_copy_create_table($str,'temp_scoreboard');
                         log_message('error','after db_copy_create_table');
                         $this->session->set_userdata('tables_created', 'TRUE');
+                        log_message('error','after set_userdata');
+                        $folder_path = 'h7-assets/images/categories/'.$table_name;
+                        log_message('error','after $folder_path='.  print_r($folder_path,1));
+                        if(!mkdir($folder_path, 0755, true)) {
+                            log_message('error','mkdir Fail');
+                        } else {
+                            log_message('error','mkdir Success');
+                        }
                         return TRUE;
                     }
                 }
@@ -371,11 +442,9 @@ class Admin_page extends CI_Controller {
 //                ->unset_print();
                 $output['output'][$i] = $crud->render();
             }
-            $this->load->model('core_call');
-            $me = $this->core_call->getMe(1);
-            $output['name'] = $me->fullname;
-            $output['fb_id'] = 6543541878;
-            $this->load->view ( 'ajax/admin/card_view', $output );
+            $output['name'] = $this->session->userdata('username');
+            $output['fb_id'] = $this->session->userdata('provider_id');
+            $this->load->view ( 'pages/admin/card_view', $output );
         }
         
         function card_name_add_field($value='',$primary_key){
@@ -422,10 +491,27 @@ class Admin_page extends CI_Controller {
             if( $this->session->userdata('site_type') == 1){
                 $post_array['pack_id'] = 1;
             }
-            $this->card_model->update_card($primary_key,$post_array);
+            $total = $this->card_model->get_category_cards($post_array['category_id']);
+            $post_array['id'] = $total;
+            $this->card_model->update_card($primary_key, $post_array['category_id'], $post_array);
+            log_message('error','card_after_insert_callback after update_card');
             $category = $this->category_model->get_category_by_id($post_array['category_id']);
-            $category[0]['num_of_cards']++;
-            $this->category_model->update_category($category[0]['id'],$category[0]);
+            log_message('error','card_after_insert_callback after get_category_by_id');
+            $category[0]['num_of_cards'] = $total;
+            $this->category_model->update_category($post_array['category_id'],$category[0]);
+            log_message('error','card_after_insert_callback after update_category');
+            $created_path['main'] = 'h7-assets/images/categories/'.$category[0]['name'].'/cards/'.$total;
+            $created_path['ui'] = 'h7-assets/images/categories/'.$category[0]['name'].'/cards/'.$total.'/ui';
+            $created_path['image'] = 'h7-assets/images/categories/'.$category[0]['name'].'/cards/'.$total.'/image';
+            $created_path['audio'] = 'h7-assets/images/categories/'.$category[0]['name'].'/cards/'.$total.'/audio';
+            $created_path['video'] = 'h7-assets/images/categories/'.$category[0]['name'].'/cards/'.$total.'/video';
+            $this->session->set_userdata('created_path', $created_path);
+            mkdir($created_path['main'], 0755, true);
+            mkdir($created_path['ui'], 0755, true);
+            mkdir($created_path['image'], 0755, true);
+            mkdir($created_path['audio'], 0755, true);
+            mkdir($created_path['video'], 0755, true);
+            log_message('error','card_after_insert_callback after mkdir');
             log_message('error','card_after_insert_callback $post_array='.print_r($post_array,1));
             return TRUE;
         }
@@ -470,7 +556,25 @@ class Admin_page extends CI_Controller {
                     $crud->required_fields($add_fields);
                     $crud->columns($add_fields);
                 // call back functions
-                    $crud->callback_add_field('name',array($this,'credit_platform_name_add_field'));
+                    
+//                    $crud->callback_add_field('name',array($this,'credit_platform_name_add_field'));
+//                    $crud->callback_add_field('day',array($this,'credit_platform_day_add_field'));
+                    $state = $crud->getState();
+                    if($state == 'add'){
+                        $name = 'web';
+                        $total = count($this->platform_model->get_platform_by_name_day($name)) + 1;
+                        $platform = $this->platform_model->get_all_platforms_names();
+                        foreach($platform as $p){
+                            $data = array(
+                                'id' => $p['id'],
+                                'name' => $p['name'],
+                                'day' => $total,
+                                'daily_credit' => 0
+                                );
+                            $this->platform_model->insert_platform_credit($data);
+                        }
+                        redirect(site_url('admin_page/credit/success/'.$total*count($platform)));
+                    }
                     $crud->callback_edit_field('name',array($this,'credit_platform_name_edit_field'));
                     $crud->callback_edit_field('day',array($this,'credit_platform_day_edit_field'));
                     $crud->callback_update(array($this,'credit_update'));
@@ -485,22 +589,26 @@ class Admin_page extends CI_Controller {
             }
             $temp = $this->platform_model->get_my_type();
             $output['site_type'] = (count($temp))?$temp[0]['type']:0;
-            $this->load->model('core_call');
-            $me = $this->core_call->getMe(1);
-            $output['name'] = $me->fullname;
-            $output['fb_id'] = 6543541878;
-            $this->load->view ( 'ajax/admin/credit_view', $output );
+            $output['name'] = $this->session->userdata('username');
+            $output['fb_id'] = $this->session->userdata('provider_id');
+            $this->load->view ( 'pages/admin/credit_view', $output );
         }
         
-        function credit_platform_name_add_field($value, $primary_key){
-            $names = $this->platform_model->get_all_platforms_names();
-            $string = '<select name="name" style="width: 300px;">';
-            foreach ($names as $name){
-                $string .= '<option value="'.$name['name'].'">'.$name['name'].'</option>';
-            }
-            $string .= '</select>';
-            return $string;
-        }
+//        function credit_platform_name_add_field(){
+//            $names = $this->platform_model->get_all_platforms_names();
+//            $string = '<select name="name" style="width: 300px;">';
+//            foreach ($names as $name){
+//                $string .= '<option value="'.$name['name'].'">'.$name['name'].'</option>';
+//            }
+//            $string .= '</select>';
+//            return $string;
+//        }
+//        
+//        function credit_platform_day_add_field(){
+//            $name = 'web';
+//            $total = count($this->platform_model->get_platform_by_name_day($name)) + 1;
+//            return '<input type="hidden" maxlength="50" value="'.$total.'" name="day" style="width:270px"> <B style="min-width: 270px; float: left;">'.$total;
+//        }
         
         function credit_platform_name_edit_field($value='',$primary_key){
             return '<input type="hidden" maxlength="50" value="'.$value.'" name="name" style="width:270px"> <B style="min-width: 270px; float: left;">'.$value.'</B><B style="color: red;">*Platform name unchangeable.</B>';
@@ -542,7 +650,7 @@ class Admin_page extends CI_Controller {
                     $crud = new grocery_CRUD();
                     $crud->set_table( $table );
                     $crud->set_subject( $table );
-//                    $crud->unset_delete();
+                    $crud->unset_delete();
                     $add_fields = array('name','start_date','end_date','price');
                     $crud->add_fields($add_fields); // fields to insert
                     $crud->edit_fields($add_fields); // fields to edit
@@ -566,11 +674,9 @@ class Admin_page extends CI_Controller {
             }
             $temp = $this->platform_model->get_my_type();
             $output['site_type'] = (count($temp))?$temp[0]['type']:0;
-            $this->load->model('core_call');
-            $me = $this->core_call->getMe(1);
-            $output['name'] = $me->fullname;
-            $output['fb_id'] = 6543541878;
-            $this->load->view ( 'ajax/admin/credit_view', $output );
+            $output['name'] = $this->session->userdata('username');
+            $output['fb_id'] = $this->session->userdata('provider_id');
+            $this->load->view ( 'pages/admin/pack_view', $output );
         }
         
 //	function show_table() {
@@ -579,7 +685,7 @@ class Admin_page extends CI_Controller {
 //		$crud->set_table ( $name );
 //		$crud->set_subject ( $name );
 //		$output = $crud->render ();
-//		$this->load->view ( 'ajax/show_tables_view_ajax', $output );
+//		$this->load->view ( 'pages/show_tables_view_ajax', $output );
 //	}
 //	function add_mcq_question () {
 //		log_message('error', 'da5al el function aho');
@@ -609,9 +715,16 @@ class Admin_page extends CI_Controller {
             $file_restore = read_file('./'.$path.'/'.$folder_name.'/'.$file, true);
             $file_array = explode(';', $file_restore);
             foreach ($file_array as $query){
-                $this->db->query("SET FOREIGN_KEY_CHECKS = 0");
-                $this->db->query($query);
-                $this->db->query("SET FOREIGN_KEY_CHECKS = 1");
+                $str = trim($query);
+                if (!empty($str)){
+                    $this->db->query("SET FOREIGN_KEY_CHECKS = 0");
+                    $this->db->query($query);
+                    $this->db->query("SET FOREIGN_KEY_CHECKS = 1");
+                    log_message('error','createAllTables running $query='.print_r($query,1));
+                    //$error = mysql_query($query) or die($query."<br/><br/>".mysql_error());
+                    log_message('error','createAllTables running $error='.print_r(mysql_error(),1));
+                }
+                
             }
 //            }
         }

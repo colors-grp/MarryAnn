@@ -10,16 +10,6 @@
 
 <head>
 <!-- 	CRUD Stuff -->
-	<meta charset="utf-8" />
-	<?php for ($i = 0; $i < count($output); $i++) {
-		$cur = $output[$i];
-		foreach($cur->css_files as $file): ?>
-			<link type="text/css" rel="stylesheet" href="<?php echo $file; ?>" />
-		<?php endforeach; ?>
-		<?php foreach($cur->js_files as $file): ?>
-			<script src="<?php echo $file; ?>"></script>
-		<?php endforeach; 
-	}?>
 	<style type='text/css'>
 	body
 	{
@@ -59,10 +49,6 @@
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		 <div id = "header-container">
 		 <div class="navbar-header">
-			<h4 style = "color: white;">
-                            <img id = "header-pic" src = "http://graph.facebook.com/<?=$fb_id?>/picture" alt="Profile Picture" height="30">
-				<?=$name?>
-			</h4>
 		 </div>
 		 <ul class="nav nav-pills navbar-right" style = "height:40px;" >
 		 	<li>
@@ -104,79 +90,16 @@
          </ul>
          </div>
 	</div>
-        <div style="position: relative; top: 30px; left: 15px;">
-            <?='<br />';?>
-            <a href='<?=base_url();?>'>Home</a> | 
-            <a href='<?=site_url('admin_page/type');?>'>Type</a> | 
-            <a href='<?=site_url('admin_page/category');?>'>Categories</a> | 
-            <a href='<?=site_url('admin_page/card');?>'>Cards</a> | 
-            <a href='<?=site_url('admin_page/credit');?>'>Platform Credits</a> |
-        <?php if($site_type == 2){ ?>
-            <a href='<?=site_url('admin_page/pack');?>'>Pack</a> |
-        <?php } ?>
-            
-        </div>
 </head>
 <body onload = "container_height()">
-<div class="container" id="My-container" style="position: relative;top: 40px;">
-<!--	<div id="add_mcq">
-	<h2>Enter Question and 4 answers</h2>
-		<form id="add_mcq_form" action = "" method="post">
-			<input name = "question" type = "text"></br>
-			<input name = "answer1" type = "text"></br>
-			<input name = "answer2" type = "text"></br>
-			<input name = "answer3" type = "text"></br>
-			<input name = "answer4" type = "text"></br>
-			<input name = "correct_answer" type = "text"></br>
-			<input type="submit" value="Submit" name="mcq_submission">
-		</form>
-
-	</div>-->
-        <?php if(count($category)){ ?>
-        <div id="choose">
-            <form id="choose_category" action = "<?=site_url('admin_page/card/'.time())?>" method="post">
-                <h2>Choose your category and pack</h2>
-                    <?php
-                        foreach($category as $row){
-                            echo '<input name = "category_id" type="radio" value="'.$row['id'].'" '.(($cat_id==$row['id'])?'checked':'').' >'.$row['name'].'<br />';
-                        }
-                        if($site_type == 2){
-                    ?>
-                <h2>Choose your pack</h2>
-                    <?php
-                            foreach($pack as $row){
-                                echo '<input name = "pack_id" type="radio" value="'.$row['id'].'" '.(($pack_id==$row['id'])?'checked':'').' >'.$row['name'].'<br />';
-                            }
-                        }
-                    ?>
-                <input type="submit" value="Select">
-            </form>
-	</div>
-        <?php } ?>
-        <div id="card_descriptionn">
-                <h1>Description</h1><br />
-                <p>
-                    <B>Name:</B>Card name.<br />
-                    <B>Category id:</B>Category number which the card is inside.<br />
-                    <B>Created:</B>When card was created.<br />
-                    <B>Start date:</B>When the card will be available to players.<br />
-                    <B>End date:</B>When the card will stop being available to players.<br />
-                    <B>Status:</B>Status of the card active or inactive.<B>(This option is a fast way to activate a card or deactivate it)</B><br />
-                    <B>Price:</B>The value used when trading.<B>(This option is for Competition only)</B><br />
-                    <B>Score:</B>Which the player will gain when he win or obtain this card.<B>(This option is for Competition only)</B><br />
-                    <B>Type id:</B>The card is inside which pack type.<B>(This option is for Album only)</B><br />
-                </p>
-	</div>
-	<table>
-			<?php for ($i = 0; $i < count($tables); $i++) {?>
-		<tr>
-				<td>
-					<h2><?= $tables[$i]?></h2></br>
-					<?php print_r($output[$i]->output)?>
-				</td>
-		</tr>
-			<?php }?>
-	</table>
+        <div id="sign_in" style="position: relative; top: 50px; left: 10px;">
+            <a href = "<?php echo $this->config->item('core_url');?>?admin_page=<?=site_url('admin_page/');?>&mode=signin<?php if(isset($canvas_fbid)){echo '&cfbid='.$canvas_fbid;}?>" id = "fb-div1" >
+                <img src = "<?=base_url();?>h7-assets/resources/img/fb_login.png" id = "fb_img1" style="height: 45px;">
+            </a>
+            <a href = "<?php echo $this->config->item('core_url');?>?admin_page=<?=site_url('admin_page/');?>&mode=twitter<?php if(isset($canvas_fbid)){echo '&cfbid='.$canvas_fbid;}?>" id = "fb-div2" >
+                <img src = "<?=base_url();?>h7-assets/resources/img/fb_login.png" id = "fb_img2" style="height: 45px;">
+            </a>
+        </div>
 	<div id="show_tables">
 	</div>
 </div>

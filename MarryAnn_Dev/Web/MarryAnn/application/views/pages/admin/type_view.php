@@ -107,11 +107,13 @@
         <div style="position: relative; top: 30px; left: 15px;">
             <?='<br />';?>
             <a href='<?=base_url();?>'>Home</a> | 
+        <?php if($site_type) { //site type selected ?>
             <a href='<?=site_url('admin_page/type');?>'>Type</a> | 
             <a href='<?=site_url('admin_page/category');?>'>Categories</a> | 
             <a href='<?=site_url('admin_page/card');?>'>Cards</a> | 
             <a href='<?=site_url('admin_page/credit');?>'>Platform Credits</a> | 
-        <?php if($site_type == 2) {//album ?>
+        <?php } 
+              if($site_type == 2) {//album ?>
             <a href='<?=site_url('admin_page/pack');?>'>Pack</a> | 
         <?php } ?>
         </div>
@@ -159,12 +161,24 @@
                 </form>
         <h1>All Fields Are Mandatory.</h1>
 	</div>
-<?php } else { ?>
-    <div id="platform_type">
-	<h2>Your Platform type: <?=($site_type==1)?'Competition':'Album';?></h2>
-        <h3>Please choose another tab</h3>
-    </div>
+<?php } if($site_type) { ?>
+-->    <div id="platform_type">
+            <h2>Your Platform type: <B><?=($site_type==1)?'Competition':'Album';?>.</B></h2>
+            <h3>Please choose another tab.</h3>
+        </div><!--
 <?php } ?> -->
+        <div id="type_description">
+            <h1><B>Description</B></h1>
+            <p>
+                <B>Site Code:</B>Platform code through the core.<br />
+                <B>Name:</B>Platform name.<br />
+                <B>Start date:</B>When players will be able to sign in and play.<br />
+                <B>End date:</B>When players will <B>NOT</B> be able to sign in and play.<br />
+                <B>Round:</B>When winners will be announced.<br />
+                <B>Url:</B>Which this platform is signed in with.<br />
+                <B>Start Credit:</B>Amount of credit the player will have when he/she register.<br />
+            </p>
+        </div>
 	<table>
 			<?php for ($i = 0; $i < count($tables); $i++) {?>
 		<tr>

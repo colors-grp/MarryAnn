@@ -1,8 +1,13 @@
 <?php
 class Card_model extends CI_Model {
 	//Get all cards in a certain category
-	function get_cards_by_id($category_id) {
+	function get_cards_by_id($category_id, $active = 0) {// 0-> only active, 1-> inactive, 2-> all
 		$this->db->where('category_id', $category_id);
+                if($active == 0){
+                    $this->db->where('state', 'active');
+                } elseif($active == 1){
+                    $this->db->where('state', 'inactive');
+                }
 		$query = $this->db->get('card');
 		if($query->num_rows() > 0)
 			return $query;
@@ -10,13 +15,12 @@ class Card_model extends CI_Model {
 	}
 
 	//Given a user id and a category , returns cards that user owns in the category
-	function get_user_cards_by_id($category_id , $user_id) {
+	function get_user_cards_by_id($category_id , $user_id, $active = 0) {// 0-> only active, 1-> inactive, 2-> all
             $this->db->select('*');
             $this->db->from('user_card');
             $this->db->where('user_card.category_id' , $category_id);
             $this->db->where('user_card.user_id' , $user_id);
-
-            $this->db->join('card', 'user_card.card_id = card.id AND user_card.category_id = card.category_id');
+            $this->db->join('card', 'user_card.card_id = card.id AND user_card.category_id = card.category_id AND card.state = '.(($active==0)?'acitve':'inactive'));
             $this->db->order_by('id','ASC');
             $query = $this->db->get();
             log_message('error', 'Mo7eb user cards->>>'. $category_id . '   ' . $query->num_rows());
@@ -54,8 +58,8 @@ class Card_model extends CI_Model {
             return $query->row()->total;
         }
         
-        function get_not_interest_cards($user_id,$cat_id){
-            $sql = "SELECT * FROM card AS c  WHERE c.id NOT IN (SELECT c.id FROM card AS c, user_card AS uc WHERE c.id = uc.card_id AND uc.user_id = ".$user_id." AND c.category_id = uc.category_id AND uc.category_id = ".$cat_id.") AND c.category_id = ".$cat_id.";";
+        function get_not_interest_cards($user_id,$cat_id,$active=0) {// 0-> only active, 1-> inactive, 2-> all
+            $sql = "SELECT * FROM card AS c  WHERE c.id NOT IN (SELECT c.id FROM card AS c, user_card AS uc WHERE c.id = uc.card_id AND uc.user_id = ".$user_id." AND c.category_id = uc.category_id AND uc.category_id = ".$cat_id.") AND c.category_id = ".$cat_id." AND c.state = ".(($active==0)?'acitve':'inactive').";";
             $query = $this->db->query($sql);
             if($query != FALSE && $query->num_rows() > 0)
 			return $query;
@@ -74,22 +78,32 @@ class Card_model extends CI_Model {
         }
         
         //return all cards available according to start date
-        function get_available_cards($cat_id){
+        function get_available_cards($cat_id, $active=0) {// 0-> only active, 1-> inactive, 2-> all
             $this->db->select('*');
             $this->db->from('card');
             $this->db->where('category_id',$cat_id);
             $this->db->where('start_date <= DATE_ADD(now(),INTERVAL 6 HOUR)');
+            if($active == 0){
+                $this->db->where('state', 'active');
+            } elseif($active == 1){
+                $this->db->where('state', 'inactive');
+            }
             $query = $this->db->get();
             if($query->num_rows() > 0)
                 return $query;
             return FALSE;
         }
         //return all cards blocked according to start date
-        function get_blocked_cards($cat_id){
+        function get_blocked_cards($cat_id, $active=0) {// 0-> only active, 1-> inactive, 2-> all
             $this->db->select('*');
             $this->db->from('card');
             $this->db->where('category_id',$cat_id);
             $this->db->where('start_date > DATE_ADD(now(),INTERVAL 6 HOUR)');
+            if($active == 0){
+                $this->db->where('state', 'active');
+            } elseif($active == 1){
+                $this->db->where('state', 'inactive');
+            }
             $query = $this->db->get();
             if($query->num_rows() > 0)
                 return $query;
@@ -263,20 +277,26 @@ class Card_model extends CI_Model {
         // Get List of cards given type
         // Inputs: Type number.
         // Output: List of cards.
-        function get_card_by_type_and_opened($type){
+        function get_card_by_type_and_opened($type, $active=0) {// 0-> only active, 1-> inactive, 2-> all
             $this->db->select('category_id, id, start_date');
             $this->db->from('card');
             $this->db->where('type_id', $type);
             $this->db->where('start_date < ',date('Y-m-d 00:00:00'));
+            if($active == 0){
+                $this->db->where('state', 'active');
+            } elseif($active == 1){
+                $this->db->where('state', 'inactive');
+            }
             $query = $this->db->get()->result_array();
             return $query;
         }
         
         // Update card's information
-        // Input: card id, list of new data
+        // Input: card id, category id, list of new data
         // Output: affected rows.
-        function update_card($card_id, $data){
+        function update_card($card_id, $cat_id, $data){
             $this->db->where('id',$card_id);
+            $this->db->where('category_id',$cat_id);
             $this->db->update('card', $data);
             return $this->db->affected_rows();
         }

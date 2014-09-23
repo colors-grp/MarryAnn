@@ -62,4 +62,17 @@ class Competition_model extends CI_Model {
             $this->db->update('competition', $data);
             return $this->db->affected_rows();
         }
+        
+        // Assign admin to an existed competition
+        function insert_admin_competition($data){
+            $this->db->insert('admin_competition', $data);
+            return $this->db->insert_id();
+        }
+        
+        // Get admin competitions from admin_competition table
+        function get_admin_competitions($id){
+            $this->db->where('id', $id);
+            $query = $this->db->get('admin_competition');
+            return $query->result_array();
+        }
 }
