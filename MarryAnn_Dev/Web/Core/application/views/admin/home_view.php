@@ -30,7 +30,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 		<nav id="nav">
 			<ul class="container">
 				<li>
-					<a href="#top">Home</a>
+                                        <a href="<?=site_url('admin/go_home');?>">Home</a>
 				</li>
 				<li>
 					<a href="#work">How it works?</a>
@@ -42,115 +42,10 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 					<a href="#contact">Contact</a>
 				</li>
                                 <li>
-					<a href="<?=site_url('admin/sign_in');?>">Admin sign in</a>
+					<a href="<?=site_url('admin/sign_out');?>">Sign out</a>
 				</li>
 			</ul>
 		</nav>
-
-		<!-- Home -->
-		<div class="wrapper wrapper-style1 wrapper-first">
-			<article class="container" id="top">
-				<div class="row">
-					<div class="4u">
-						<span class="me image image-full"><img src="images/me.jpg" alt="" /></span>
-					</div>
-					<div class="8u">
-						<header>
-							<h1>Connect, Play, and Compete.</h1>
-						</header>
-						<p>
-							The Social platform for online gaming competitions.
-						</p>
-						<p>
-							HitSeven provides a ready-to-go Web and Mobile solution, to operate and manage multi purpose competitions, with full customization.
-						</p>
-						<a href="#work" class="button button-small">How it works?!</a>
-					</div>
-				</div>
-			</article>
-		</div>
-
-		<!-- Work -->
-		<div class="wrapper wrapper-style2">
-			<article id="work">
-				<header>
-					<h2>Build new competitions on HitSeven platform</h2>
-					<span>HitSeven competitions available to users as Facebook App, Website, iOS, and Android smart phone applications.</span>
-				</header>
-				<div class="container">
-					<div class="row">
-						<div class="4u">
-							<section class="box box-style1">
-								<span class="fa featured fa-th-large"></span>
-								<h3>Create Multiple Category Competitions</h3>
-								<p>
-									Each competition can contain multiple internal tracks, each have unlimited set of challenges to players.
-								</p>
-							</section>
-						</div>
-						<div class="4u">
-							<section class="box box-style1">
-								<span class="fa featured fa-trophy"></span>
-								<h3>Manage Scores in Rounds</h3>
-								<p>
-									Setting score results rounds as Daily, Weekly, or Monthly to crown and announce winners regulary.
-								</p>
-							</section>
-						</div>
-						<div class="4u">
-							<section class="box box-style1">
-								<span class="fa featured fa-cogs"></span>
-								<h3>Complete Platform Administration</h3>
-								<p>
-									Each competition has a full administration console to create, manage, and analyze the competition.
-								</p>
-							</section>
-						</div>
-					</div>
-				</div>
-			</article>
-		</div>
-
-		<!-- Work2 -->
-		<div class="wrapper wrapper-style2">
-			<article id="work2">
-				<header>
-					<h2>Users solve multiple challenges, and play games competing with Facebook friends!</h2>
-					<span>Play different games with each challenge to earn higher Score, and go up in rankings!</span>
-				</header>
-				<div class="container">
-					<div class="row">
-						<div class="4u">
-							<section class="box box-style1">
-								<span class="fa featured fa-th"></span>
-								<h3>Cool Challenges</h3>
-								<p>
-									Each challenge can be: A comic story with a following Quiz, Video, Audio, Images, or a standalone game! 
-								</p>
-							</section>
-						</div>
-						<div class="4u">
-							<section class="box box-style1">
-								<span class="fa featured fa-gamepad"></span>
-								<h3>Play & Score</h3>
-								<p>
-									Gamers subscribe with a competition, and have a separate score in each category with live updated scoreboard!
-								</p>
-							</section>
-						</div>
-						<div class="4u">
-							<section class="box box-style1">
-								<span class="fa featured fa-retweet"></span>
-								<h3>Go Social</h3>
-								<p>
-									Share results with Facebook friends, and recognize rounds winners on competition Facebook page!
-								</p>
-							</section>
-						</div>
-					</div>
-				</div>
-			</article>
-		</div>
 
 		<!-- Portfolio -->
 		<div class="wrapper wrapper-style3">
@@ -164,20 +59,35 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 					</div>
 					<div class="row">
 						<?php
-                                                foreach ($site_info->result() as $row) {
-                                                    if($row->url == 'https://hitseven.net/SuperSayem/' && $row->name == 'SuperSayem')
-                                                    {
+                                                log_message('error','admin home_view $site_info='.print_r($site_info,1));
+                                                foreach ($site_info as $row){
+//                                                    log_message('error','admin home_view $row='.print_r($row->result_array(),1));
+//                                                    echo print_r($row,1).'<br />';
+//                                                    if($row->url == 'https://hitseven.net/SuperSayem/' && $row->name == 'SuperSayem')
+//                                                    {
                                                         echo "<div class=\"4u\">";
                                                         echo "<article class=\"box box-style2\">";
                                                         $img = "images\\" . $row->name. ".jpg";
-                                                        $url = ($row->url == 'https://hitseven.net/SuperSayem/')?'http://www.supersayem.com':$row->url;
+//                                                        $url = ($row->url == 'https://hitseven.net/SuperSayem/')?'http://www.supersayem.com':$row->url;
+                                                        $url = $row->url;
                                                         echo "<a href=$url class=\"image image-full\"><img src=$img alt=\"\" /></a>";
                                                         echo "<h3><a href=$url >$row->name</a></h3>";
                                                         echo "</article>";
                                                         echo "</div>";
                                                         break;
-                                                    }
+//                                                    }
 						}
+                                                echo "<div class=\"4u\">";
+                                                echo "<article class=\"box box-style2\">";
+                                                $img = "images\add_competition.jpg";
+//                                                        $url = ($row->url == 'https://hitseven.net/SuperSayem/')?'http://www.supersayem.com':$row->url;
+                                                $url = '#';
+                                                echo "<a href=$url class=\"image image-full\"><img src=$img alt=\"\" /></a>";
+                                                echo "<h3><a href=$url >Add new competition</a></h3>";
+                                                echo "</article>";
+                                                echo "</div>";
+
+                                                
 						?>
 						</div>
 					</div>

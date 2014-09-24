@@ -156,7 +156,26 @@ class Core extends CI_Controller {
                             $mode = '3';
                         }
 			// Redirect to Platform with account ID parameter ...
-			$redirect_url =  (($sitecode)?$this->getSiteUrl($sitecode):$this->session->userdata('admin_page')). '?accountid='.$accountid.'&mode='.$mode;
+                        if($sitecode){
+                            $redirect_url = $this->getSiteUrl($sitecode) . '?accountid='.$accountid.'&mode='.$mode;
+                        } else {
+                            $redirect_url = $this->session->userdata('admin_page');
+                        // This problem only happens when in core functions (by mo7eb) i donot know why :(
+                            $temp = base_url('');
+                            if(strpos($temp, ':443')){
+                                $base_url = substr($temp, 0,strpos($temp, ':443')) . substr($temp, strpos($temp, ':443')+4);
+                            } else {
+                                $base_url = $temp;
+                            }
+                        // End of cutting :443 from base or site url.
+                            if($this->session->userdata('admin_page') != $base_url){
+                                $redirect_url .= '?accountid='.$accountid.'&mode='.$mode;
+                            } else {
+                                $this->load_competitions($accountid);
+                                return;
+                            }
+                            log_message('error', 'SAFARIIIIII 111 $base_url ->> ' . $base_url);
+                        }
 			log_message('error', 'SAFARIIIIII 111 reditecttt toooo ->> ' . $redirect_url);
 			redirect($redirect_url);
 		}
@@ -270,42 +289,59 @@ class Core extends CI_Controller {
 
 		// Handle a redirect from Core (create_connect, or else) ...
 		if($this->authentication->is_signed_in()) {
-			log_message('error', ' SIGNED IN: ');
-			$cnt ++;
-			if($this->session->userdata('account_id'))
-			{
-				log_message('error', 'connect_create sent back to Core account id = ' .$this->session->userdata('account_id'));
-			}
-			else
-			{
-				log_message('error', 'connect_create sent back to Core  and cannot get account ID');
-			}
-                    // Check user's created on date in order to give him competetion's default credit
-                        $this->load->model('competition_model');
-                        $this->load->model('credit_model');
-                        if(!isset($_SESSION['sitecode'])){
-                            $sitecode = 5;
-                        } else {
-                                $sitecode = $_SESSION['sitecode'];
-                        }
-                        $competition = ($sitecode)?$this->competition_model->get_current_competition($sitecode):0;
-                        if($competition){
-                            $this->credit_model->buy_credit($this->session->userdata('account_id'), $competition->start_credit);
-                        }
-                        $mode = $this->session->userdata('mode');
-                        log_message('error', 'core index() inside signed in->> $mode=' . $mode);
-                        if($mode == 'signin'){
-                            $mode = '1';
-                        } elseif($mode == 'twitter'){
-                            $mode = '2';
-                        } elseif($mode == 'google'){
-                            $mode = '3';
-                        }
-                        
-                    // Redirect to Platform with account ID parameter ...
-			$redirect_url =  (($sitecode)?$this->authentication->getSiteUrl($sitecode):$this->session->userdata('admin_page')). '?accountid='.$this->session->userdata('account_id').'&mode='.$mode;
-			log_message('error', 'SAFARIIIIII 222 reditecttt toooo ->> ' . $redirect_url);
-			redirect($redirect_url);
+                // This problem only happens when in core functions (by mo7eb) i donot know why :(
+                    $temp = base_url('');
+                    if(strpos($temp, ':443')){
+                        $base_url = substr($temp, 0,strpos($temp, ':443')) . substr($temp, strpos($temp, ':443')+4);
+                    } else {
+                        $base_url = $temp;
+                    }
+                    log_message('error', 'index() signed in $base_url='.$base_url.' \n admin_page='.$this->session->userdata('admin_page'));
+                    log_message('error', 'index() signed in CHECK='.($this->session->userdata('admin_page') == $base_url)?'TRUE':'FALSE');
+                    if($this->session->userdata('admin_page') == $base_url){
+                        $this->load_competitions($accountid);
+                        return;
+                    }
+                // End of cutting :443 from base or site url.
+                    log_message('error', ' SIGNED IN: ');
+                    $cnt ++;
+                    if($this->session->userdata('account_id'))
+                    {
+                            log_message('error', 'connect_create sent back to Core account id = ' .$this->session->userdata('account_id'));
+                    }
+                    else
+                    {
+                            log_message('error', 'connect_create sent back to Core  and cannot get account ID');
+                    }
+                // Check user's created on date in order to give him competetion's default credit
+                    $this->load->model('competition_model');
+                    $this->load->model('credit_model');
+                    if(!isset($_SESSION['sitecode'])){
+                        $sitecode = 5;
+                    } else {
+                            $sitecode = $_SESSION['sitecode'];
+                    }
+                    $competition = ($sitecode)?$this->competition_model->get_current_competition($sitecode):0;
+                    if($competition){
+                        $this->credit_model->buy_credit($this->session->userdata('account_id'), $competition->start_credit);
+                    }
+                    $mode = $this->session->userdata('mode');
+                    log_message('error', 'core index() inside signed in->> $mode=' . $mode);
+                    if($mode == 'signin') {
+                        $mode = '1';
+                    } elseif($mode == 'twitter') {
+                        $mode = '2';
+                    } elseif($mode == 'google') {
+                        $mode = '3';
+                    }
+                    $accountid = $this->session->userdata('account_id');
+                    if($sitecode){
+                        $redirect_url = $this->getSiteUrl($sitecode).'?accountid='.$accountid.'&mode='.$mode;
+                    } else {
+                        $redirect_url = $this->session->userdata('admin_page').'?accountid='.$accountid.'&mode='.$mode;
+                    }
+                    log_message('error', 'SAFARIIIIII 222 $redirect_url ->> '.$redirect_url);
+                    redirect($redirect_url);
 		} else {
                     log_message('error', 'NOT SIGNED IN: ');
                 }
