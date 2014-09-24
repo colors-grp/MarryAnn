@@ -206,7 +206,7 @@ $this->lang->load('score',$_SESSION['language']);
 				</li>
 				<?php else : ?>
 				<a
-                                    href="<?php echo $this->config->item('core_url');?>?sitecode=<?=$this->config->item('sitecode');?>&mode=signin">
+                                    href="<?php echo $this->config->item('core_url');?>?sitecode=<?=$sitecode;?>&mode=signin">
                                     <img
                                     src="<?=base_url()?>h7-assets/resources/img/main-icons/login_with_facebook.png"
                                     style="height: 40px; width: 300px; position: relative; top: -139px; left: 750px;" >

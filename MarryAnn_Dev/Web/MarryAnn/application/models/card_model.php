@@ -4,9 +4,9 @@ class Card_model extends CI_Model {
 	function get_cards_by_id($category_id, $active = 0) {// 0-> only active, 1-> inactive, 2-> all
 		$this->db->where('category_id', $category_id);
                 if($active == 0){
-                    $this->db->where('state', 'active');
+                    $this->db->where('status', 'active');
                 } elseif($active == 1){
-                    $this->db->where('state', 'inactive');
+                    $this->db->where('status', 'inactive');
                 }
 		$query = $this->db->get('card');
 		if($query->num_rows() > 0)
@@ -20,8 +20,9 @@ class Card_model extends CI_Model {
             $this->db->from('user_card');
             $this->db->where('user_card.category_id' , $category_id);
             $this->db->where('user_card.user_id' , $user_id);
-            $this->db->join('card', 'user_card.card_id = card.id AND user_card.category_id = card.category_id AND card.state = '.(($active==0)?'acitve':'inactive'));
+            $this->db->join('card', 'user_card.card_id = card.id AND user_card.category_id = card.category_id AND card.status = \''.(($active==0)?'active':'inactive').'\'');
             $this->db->order_by('id','ASC');
+//            $this->db->distinct();
             $query = $this->db->get();
             log_message('error', 'Mo7eb user cards->>>'. $category_id . '   ' . $query->num_rows());
             if($query->num_rows() > 0)
@@ -59,7 +60,7 @@ class Card_model extends CI_Model {
         }
         
         function get_not_interest_cards($user_id,$cat_id,$active=0) {// 0-> only active, 1-> inactive, 2-> all
-            $sql = "SELECT * FROM card AS c  WHERE c.id NOT IN (SELECT c.id FROM card AS c, user_card AS uc WHERE c.id = uc.card_id AND uc.user_id = ".$user_id." AND c.category_id = uc.category_id AND uc.category_id = ".$cat_id.") AND c.category_id = ".$cat_id." AND c.state = ".(($active==0)?'acitve':'inactive').";";
+            $sql = "SELECT * FROM card AS c  WHERE c.id NOT IN (SELECT c.id FROM card AS c, user_card AS uc WHERE c.id = uc.card_id AND uc.user_id = ".$user_id." AND c.category_id = uc.category_id AND uc.category_id = ".$cat_id.") AND c.category_id = ".$cat_id." AND c.status = '".(($active==0)?'active':'inactive')."';";
             $query = $this->db->query($sql);
             if($query != FALSE && $query->num_rows() > 0)
 			return $query;
@@ -84,9 +85,9 @@ class Card_model extends CI_Model {
             $this->db->where('category_id',$cat_id);
             $this->db->where('start_date <= DATE_ADD(now(),INTERVAL 6 HOUR)');
             if($active == 0){
-                $this->db->where('state', 'active');
+                $this->db->where('status', 'active');
             } elseif($active == 1){
-                $this->db->where('state', 'inactive');
+                $this->db->where('status', 'inactive');
             }
             $query = $this->db->get();
             if($query->num_rows() > 0)
@@ -100,9 +101,9 @@ class Card_model extends CI_Model {
             $this->db->where('category_id',$cat_id);
             $this->db->where('start_date > DATE_ADD(now(),INTERVAL 6 HOUR)');
             if($active == 0){
-                $this->db->where('state', 'active');
+                $this->db->where('status', 'active');
             } elseif($active == 1){
-                $this->db->where('state', 'inactive');
+                $this->db->where('status', 'inactive');
             }
             $query = $this->db->get();
             if($query->num_rows() > 0)
@@ -283,9 +284,9 @@ class Card_model extends CI_Model {
             $this->db->where('type_id', $type);
             $this->db->where('start_date < ',date('Y-m-d 00:00:00'));
             if($active == 0){
-                $this->db->where('state', 'active');
+                $this->db->where('status', 'active');
             } elseif($active == 1){
-                $this->db->where('state', 'inactive');
+                $this->db->where('status', 'inactive');
             }
             $query = $this->db->get()->result_array();
             return $query;

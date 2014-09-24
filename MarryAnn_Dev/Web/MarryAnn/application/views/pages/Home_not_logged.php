@@ -250,13 +250,13 @@ $this->lang->load('message',$_SESSION['language']);
 				</td>
 				<td>
                                         <!--the facebook login -->
-                                        <a href = "<?php echo $this->config->item('core_url');?>?sitecode=<?=$this->config->item('sitecode');?>&mode=signin<?php if(isset($canvas_fbid)){echo '&cfbid='.$canvas_fbid;}?>" id = "fb-div1" >
+                                        <a href = "<?php echo $this->config->item('core_url');?>?sitecode=<?=$sitecode;?>&mode=signin<?php if(isset($canvas_fbid)){echo '&cfbid='.$canvas_fbid;}?>" id = "fb-div1" >
                                                             <img src = "<?=base_url();?>h7-assets/resources/img/fb_login.png" id = "fb_img1">
                                                     </a>
-                                        <a href = "<?php echo $this->config->item('core_url');?>?sitecode=<?=$this->config->item('sitecode');?>&mode=twitter<?php if(isset($canvas_fbid)){echo '&cfbid='.$canvas_fbid;}?>" id = "fb-div2" >
+                                        <a href = "<?php echo $this->config->item('core_url');?>?sitecode=<?=$sitecode;?>&mode=twitter<?php if(isset($canvas_fbid)){echo '&cfbid='.$canvas_fbid;}?>" id = "fb-div2" >
                                                             <img src = "<?=base_url();?>h7-assets/resources/img/fb_login.png" id = "fb_img2">
                                                     </a>
-                                        <a href = "<?php echo $this->config->item('core_url');?>?sitecode=<?=$this->config->item('sitecode');?>&mode=google<?php if(isset($canvas_fbid)){echo '&cfbid='.$canvas_fbid;}?>" id = "fb-div3" >
+                                        <a href = "<?php echo $this->config->item('core_url');?>?sitecode=<?=$sitecode;?>&mode=google<?php if(isset($canvas_fbid)){echo '&cfbid='.$canvas_fbid;}?>" id = "fb-div3" >
                                                             <img src = "<?=base_url();?>h7-assets/resources/img/fb_login.png" id = "fb_img3">
                                                     </a>
 					<!-- end of FB login -->

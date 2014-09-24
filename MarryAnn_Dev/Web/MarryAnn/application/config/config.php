@@ -19,7 +19,7 @@ $config['base_url']	= 'http://hitseven.net/MarryAnn/MarryAnn/';
 $config['core_api_url']	= 'http://dev.hitseven.net/MarryAnn/Web/Core/index.php?/api/h7fb/';
 $config['core_url']	= 'http://dev.hitseven.net/MarryAnn/Web/Core/';
 $config['platform_url']	= 'http://hitseven.net/MarryAnn/MarryAnn/';
-$config['sitecode']	= '7';
+//$config['sitecode']	= '7';
 
 $config['test_facebook_id']	= '1';
 

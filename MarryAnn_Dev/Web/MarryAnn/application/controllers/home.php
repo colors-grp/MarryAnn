@@ -8,13 +8,10 @@ class Home extends CI_Controller {
 
 		// Load the necessary stuff...
 		$this->load->helper(array('language', 'url', 'form', 'account/ssl'));
-
-		$this->load->library(array('account/authentication', 'account/authorization'));
-		$this->load->model(array( 'session_model', 'core_call'));
-                $this->load->model('category_model');
-                $this->load->model('core_call');
-                $this->load->model('scoreboard_model');
                 $this->load->helper('card');
+		$this->load->library(array('account/authentication', 'account/authorization'));
+                $model = array('scoreboard_model','category_model','platform_model','core_call','session_model');
+		$this->load->model($model);
 
 		// Facebook connections are banned from Platform ...
 
@@ -103,7 +100,9 @@ class Home extends CI_Controller {
             //get categories (SORTED)
 		$data['sorted_cats'] = $this->scoreboard_model->get_sorted_cats();
             //Loading the current round data
-		log_message('error','mo7eb home index() $sitecode='.$this->config->item('sitecode'));
+                $temp = $this->platform_model->get_my_type();
+                $data['sitecode'] = $temp[0]['id'];
+                log_message('error','mo7eb home index() $sitecode=' . $temp[0]['id']);
             // Get top three users in every category
                 for($cat_id=1;$cat_id<=4;$cat_id++){
                     //$cat_name = $this->category_model->get_category_name_by_id($cat_id);

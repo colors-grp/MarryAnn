@@ -67,7 +67,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 //                                                    {
                                                         echo "<div class=\"4u\">";
                                                         echo "<article class=\"box box-style2\">";
-                                                        $img = "images\\" . $row->name. ".jpg";
+                                                        $img = "images\\" . $row->id. ".jpg";
 //                                                        $url = ($row->url == 'https://hitseven.net/SuperSayem/')?'http://www.supersayem.com':$row->url;
                                                         $url = $row->url;
                                                         echo "<a href=$url class=\"image image-full\"><img src=$img alt=\"\" /></a>";

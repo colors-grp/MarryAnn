@@ -6,6 +6,8 @@ if(!function_exists('get_credit'))
 		$CI =& get_instance();
 		// Get facebook user ID
 		$user_id = $_SESSION['user_id'];
+            // Load needed model
+                $CI->load->model('core_call');
 		// Invoke the core to get user's credit from the database
 		$credit = $CI->core_call->getUserCredit($user_id);//????
 		return $credit;

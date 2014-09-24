@@ -139,7 +139,7 @@ class Admin extends CI_Controller {
             if($this->authentication->is_signed_in()){
                 $this->authentication->sign_out();
             }
-            redirect(base_url());
+            redirect(site_url());
         }
         
         // sign out and go to admin/sign in
@@ -147,6 +147,6 @@ class Admin extends CI_Controller {
             if($this->authentication->is_signed_in()){
                     $this->authentication->sign_out();
             }
-            redirect(base_url('admin/sign_in'));
+            redirect(site_url('admin/sign_in'));
         }
 }

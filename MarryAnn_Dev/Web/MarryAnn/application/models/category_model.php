@@ -7,7 +7,8 @@ class Category_model extends CI_Model{
 		$this->db->from('category');
 		$this->db->join('user_category' ,'user_category.category_id = category.id');
 		$this->db->where('user_id' , $user_id);
-                $this->db->where('status' , 0);
+                $this->db->where('category.status' , 'active');
+                $query = $this->db->get();
 		if($query->num_rows() > 0)
 			return $query;
 		return FALSE;

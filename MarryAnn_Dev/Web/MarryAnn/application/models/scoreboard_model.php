@@ -70,6 +70,7 @@ class Scoreboard_model extends CI_Model {
     function get_active_scoreboard($cat_id, $cat_name, $active_table, $limit, $account_ids = FALSE) {
         // Get top ranks names of selected category
         $query['top'] = $this->get_top($cat_id);
+        log_message('error','scoreboard_model get_active_scoreboard $query='.print_r($query,1));
         if($account_ids){ // scoreboard of friends
             $query['all'] = $this->get_all_friends_active($cat_name, $active_table, $limit, $account_ids);
         } else {// scoreboard of all players
