@@ -606,5 +606,9 @@ class Grocery_crud_model  extends CI_Model  {
             $this->db->query($sql);
         }
     }
+    
+    function db_run_sql_query($sql){
+        return $this->db->query($sql);
+    }
 
 }

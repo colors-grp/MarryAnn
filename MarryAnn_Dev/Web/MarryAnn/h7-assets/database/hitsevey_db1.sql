@@ -1070,4 +1070,66 @@ CREATE TABLE IF NOT EXISTS `user_request_locks` (
 -- Truncate table before insert `user_request_locks`
 --
 
+
 TRUNCATE TABLE `user_request_locks`;
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `active_scoreboard`
+--
+
+DROP TABLE IF EXISTS `active_scoreboard`;
+CREATE TABLE IF NOT EXISTS `active_scoreboard` (
+  `category_id` int(11) NOT NULL,
+  `active_table` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Truncate table before insert `active_scoreboard`
+--
+
+TRUNCATE TABLE `active_scoreboard`;
+--
+-- Dumping data for table `active_scoreboard`
+--
+
+INSERT INTO `active_scoreboard` (`category_id`, `active_table`) VALUES
+(1, 1),
+(2, 1),
+(3, 1),
+(4, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `rank`
+--
+
+CREATE TABLE IF NOT EXISTS `rank` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
+
+--
+-- Dumping data for table `rank`
+--
+
+INSERT INTO `rank` (`id`, `name`) VALUES
+(1, 'gold'),
+(2, 'silver'),
+(3, 'bronze'),
+(4, 'king'),
+(5, 'queen'),
+(10, 'International Grand Master'),
+(8, 'Boss'),
+(9, 'Boss-Assist'),
+(6, 'El Kbeer Awi'),
+(7, 'El Kbeer'),
+(11, 'Grand Master'),
+(12, 'Master'),
+(15, 'Khedewy'),
+(16, 'Pasha'),
+(17, 'Sayes'),
+(18, '3abd'),
+(19, 'Amah');

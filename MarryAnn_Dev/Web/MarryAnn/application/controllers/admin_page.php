@@ -351,6 +351,7 @@ class Admin_page extends CI_Controller {
             $post_array['total_score'] = 0;
             $post_array['num_of_cards'] = 0;
             $post_array['rank'] = 0;
+//            $this->update_updating_scoreboards_event();
             return $post_array;
         }
         
@@ -360,6 +361,28 @@ class Admin_page extends CI_Controller {
         
         function category_name_edit_field($value='',$primary_key){
             return '<input type="hidden" maxlength="50" value="'.$value.'" name="name" style="width:270px"> <B style="min-width: 270px; float: left;">'.$value.'</B><B style="color: red;">                *Category name unchangeable.</B>';
+        }
+        
+        // Drop and Re create update_scoreboards Event
+        function update_updating_scoreboards_event(){
+            $temp = $this->category_model->get_all_category();
+            $categories = ($temp)?$temp->result_array:array();
+            if(count($categories)){
+                $this->grocery_crud_model->db_run_sql_query('DELIMITER $$');
+            // Create event with if condition
+                $sql = 'CREATE DEFINER=`hitsevey`@`localhost` EVENT `update_scoreboards` ON SCHEDULE EVERY 20 MINUTE STARTS \'2014-06-28 23:41:57\' ON COMPLETION NOT PRESERVE ENABLE DO IF (SELECT active_table FROM active_scoreboard WHERE category_id = 1) = 1  THEN \n';
+            // Empty scoreboard main table to get usernames from it later
+                $sql .= 'TRUNCATE TABLE '.$categories[0]['name'].'_scoreboard \n';
+            // Copy names from in active scoreboard
+                $sql .= 'INSERT INTO '.$categories[0]['name'].'_scoreboard (SELECT * FROM '.$categories[0]['name'].'_scoreboard_2); \n';
+            // Empty all scoreboard tables
+                foreach($categories as $c){
+                    $sql .= 'TRUNCATE TABLE '.$c['name'].'_scoreboard_2 \n';
+                }
+                
+                
+                
+            }
         }
         
         // Return a view
